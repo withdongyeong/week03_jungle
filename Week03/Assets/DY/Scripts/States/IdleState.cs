@@ -9,7 +9,6 @@ public class IdleState : DYIPlayerState
     public void EnterState()
     {
         rb = DYPlayerStateController.Instance.GetComponent<Rigidbody>();
-        rb.linearVelocity = Vector3.zero; // 이동 멈춤
     }
 
     public void UpdateState(Vector2 moveInput, bool isRunning, bool isDashing)
@@ -58,10 +57,16 @@ public class IdleState : DYIPlayerState
                 DYPlayerStateController.Instance.ChangeState<WalkState>();
         }
 
-        // 감속 처리 (입력이 없을 때 점차적으로 속도 감소)
+        // 🚀 감속 처리 (입력이 없을 때 점차적으로 속도 감소)
         if (moveInput.magnitude == 0)
         {
             rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, Vector3.zero, Time.deltaTime * GlobalSettings.Instance.BoosterDeceleration);
+
+            // 속도가 충분히 줄어들면 완전히 멈추기
+            if (rb.linearVelocity.magnitude < 0.05f)
+            {
+                rb.linearVelocity = Vector3.zero; // 완전 멈춤
+            }
         }
     }
 

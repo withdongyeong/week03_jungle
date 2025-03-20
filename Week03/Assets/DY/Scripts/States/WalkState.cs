@@ -57,22 +57,38 @@ public class WalkState : DYIPlayerState
             DYPlayerStateController.Instance.ChangeState<RunState>();
             return;
         }
-        if (moveInput.magnitude == 0)
-        {
-            DYPlayerStateController.Instance.ChangeState<IdleState>();
-            return;
-        }
 
         // 이동 방향 벡터 계산
-        Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        Vector3 moveDirection = flatMoveInput.normalized;
 
-        // AddForce() 적용
-        rb.AddForce(moveDirection * GlobalSettings.Instance.WalkForce, ForceMode.Force);
+        if (moveInput.magnitude > 0)
+        {
+            // 🚀 이동 중이면 힘을 가해서 이동
+            rb.AddForce(moveDirection * GlobalSettings.Instance.WalkForce, ForceMode.Acceleration);
+
+            // ✅ 최대 속도 제한 추가 (linearVelocity 기준)
+            if (rb.linearVelocity.magnitude > GlobalSettings.Instance.MaxWalkSpeed)
+            {
+                rb.linearVelocity = rb.linearVelocity.normalized * GlobalSettings.Instance.MaxWalkSpeed;
+            }
+        }
+        else
+        {
+            // 💨 감속 적용 (이전 속도를 점진적으로 줄이기)
+            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, Vector3.zero, Time.deltaTime * GlobalSettings.Instance.BoosterDeceleration);
+
+            // 속도가 충분히 줄어들면 Idle 상태로 전환
+            if (rb.linearVelocity.magnitude < 0.1f)
+            {
+                DYPlayerStateController.Instance.ChangeState<IdleState>();
+            }
+        }
     }
 
     public void ExitState()
     {
     }
+
     private void SpeedTurn(Vector3 moveDirection)
     {
         isSpeedTurning = true;

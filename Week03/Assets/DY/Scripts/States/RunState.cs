@@ -9,8 +9,6 @@ public class RunState : DYIPlayerState
     public void EnterState()
     {
         rb = DYPlayerStateController.Instance.GetComponent<Rigidbody>();
-        // Run 상태에서 부드러운 감속을 위해 drag 값 조정 (일정 비율로 줄어들도록)
-        rb.linearDamping = 1f;  // Run 상태에서 자연스러운 감속을 위해 drag 값을 설정
     }
 
     public void UpdateState(Vector2 moveInput, bool isRunning, bool isDashing)
@@ -49,11 +47,6 @@ public class RunState : DYIPlayerState
             }
         }
 
-        if (flatMoveInput.magnitude > 0.1f) // 적당한 threshold로 회전값 적용
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(flatMoveInput);  // x, z값만 사용하여 회전
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 0.1f));  // 회전
-        }
         if (isDashing)
         {
             DYPlayerStateController.Instance.ChangeState<DashState>();
@@ -64,29 +57,38 @@ public class RunState : DYIPlayerState
             DYPlayerStateController.Instance.ChangeState<WalkState>();
             return;
         }
-        if (moveInput.magnitude == 0)
-        {
-            DYPlayerStateController.Instance.ChangeState<IdleState>();
-            return;
-        }
 
         // 이동 방향 벡터 계산
-        Vector3 moveDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
+        Vector3 moveDirection = flatMoveInput.normalized;
 
-        // AddForce() 적용
-        rb.AddForce(moveDirection * GlobalSettings.Instance.RunForce, ForceMode.Force);
-
-        // 감속 처리 (입력이 없을 때 점차적으로 속도 감소)
-        if (moveInput.magnitude == 0)
+        if (moveInput.magnitude > 0)
         {
-            // 속도 감소 (입력 없을 때)
-            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, Vector3.zero, Time.deltaTime * GlobalSettings.Instance.BoosterDeceleration);  // 천천히 멈추게 함
+            // 🚀 이동 중이면 힘을 가해서 이동
+            rb.AddForce(moveDirection * GlobalSettings.Instance.RunForce, ForceMode.Force);
+
+            // ✅ 최대 속도 제한 추가
+            if (rb.linearVelocity.magnitude > GlobalSettings.Instance.MaxRunSpeed)
+            {
+                rb.linearVelocity = rb.linearVelocity.normalized * GlobalSettings.Instance.MaxRunSpeed;
+            }
+        }
+        else
+        {
+            // 💨 감속 적용 (이전 속도를 점진적으로 줄이기)
+            rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, Vector3.zero, Time.deltaTime * GlobalSettings.Instance.BoosterDeceleration);
+
+            // 속도가 충분히 줄어들면 Idle 상태로 전환
+            if (rb.linearVelocity.magnitude < 0.1f)
+            {
+                DYPlayerStateController.Instance.ChangeState<IdleState>();
+            }
         }
     }
 
     public void ExitState()
     {
     }
+
     private void SpeedTurn(Vector3 moveDirection)
     {
         isSpeedTurning = true;

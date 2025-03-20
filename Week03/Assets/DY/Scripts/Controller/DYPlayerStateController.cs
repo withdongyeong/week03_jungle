@@ -60,7 +60,7 @@ public class DYPlayerStateController : MonoBehaviour
     }
 
     // ✅ 카메라 기준으로 이동 입력 변환 함수
-    private Vector3 ConvertInputToCameraRelativeDirection(Vector2 moveInput)
+    public Vector3 ConvertInputToCameraRelativeDirection(Vector2 moveInput)
     {
         if (Camera.main == null) return Vector3.zero;
 
