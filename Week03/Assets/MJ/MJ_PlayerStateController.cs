@@ -25,6 +25,8 @@ public class MJ_PlayerStateController : MonoBehaviour
 
     public float playerMaxPlaneSpeed = 0;
 
+    public bool isQuickTurn;
+
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
@@ -44,40 +46,49 @@ public class MJ_PlayerStateController : MonoBehaviour
     {
         currentState?.UpdateState();
         direction = new Vector3(transform.forward.x, 0, transform.forward.z);      
-        if(direction != targetdir)
+        if(direction != targetdir && !isQuickTurn)
         {
             float angle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
             if (115 >= angle && angle > 2)
-                rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * Vector3.SignedAngle(direction, targetdir, Vector3.up) * 2 * angularSpeed;
+            {
+                rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * angle * 2 * angularSpeed;
+                rb.linearVelocity = Vector3.Project(rb.linearVelocity, transform.forward);
+            }
             else if (-115 <= angle && angle < -2)
-                rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * Vector3.SignedAngle(direction, targetdir, Vector3.up) * 2 * angularSpeed;
-            //else if (angle > 115 || angle < -115)
-            //{
-            //    rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * Vector3.SignedAngle(direction, targetdir, Vector3.up) * 5 * angularSpeed;
-            //    rb.linearVelocity = rb.linearVelocity.normalized;
-            //    if (angle > 2 || angle < -2)
-            //        StartCoroutine(Boost());
-
-            //}
+            {
+                rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * angle * 2 * angularSpeed;
+                rb.linearVelocity = Vector3.Project(rb.linearVelocity, transform.forward);
+            }
+            else if (angle > 115 || angle < -115)
+            {
+                isQuickTurn = true;
+                QuickTurn();
+            }
 
             else
             {
-                if(targetdir != Vector3.zero)
+                if (targetdir != Vector3.zero)
                     transform.rotation = Quaternion.LookRotation(targetdir);
-              
+
                 rb.angularVelocity = Vector3.zero;
             }
         }
+        else if(isQuickTurn)
+        {
+            QuickTurn();
+        }
         rb.AddForce(transform.forward * power * Time.deltaTime);
-        rb.linearVelocity = Vector3.Project(rb.linearVelocity, transform.forward);
+        
     }
 
     public void ChangeState(MJ_IPlayerState nextState)
     {
-
-        if (nextState == currentState)
+        if(currentState!=null)
         {
-            return;
+            if (nextState.GetType() == currentState.GetType())
+            {
+                return;
+            }
         }
         currentState?.ExitState();
         currentState = nextState;
@@ -102,4 +113,20 @@ public class MJ_PlayerStateController : MonoBehaviour
         power /= 2.5f;
     }
 
+    public void QuickTurn()
+    {
+        float quickAngle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
+        if(quickAngle>2 && quickAngle<-2 )
+        {
+            rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * quickAngle * 6 * angularSpeed;
+        }
+        else
+        {
+            if (targetdir != Vector3.zero)
+                transform.rotation = Quaternion.LookRotation(targetdir);
+            rb.angularVelocity = Vector3.zero;
+            isQuickTurn = false;
+        }
+
+    }
 }

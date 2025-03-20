@@ -14,7 +14,7 @@ public class MJ_RunState : MJ_IPlayerState
     {
         player = controller;
         Debug.Log("enter run");
-        player.angularSpeed = 3f;
+        player.angularSpeed = 2f;
 
     }
 
