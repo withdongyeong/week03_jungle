@@ -8,11 +8,12 @@ public class MJ_IdleState : MJ_IPlayerState
     {
         player = controller;
         Debug.Log("enter idle");
+        player.power = 0f;
     }
 
     public void UpdateState()
     {
-       
+      
     }
 
     public void ExitState()

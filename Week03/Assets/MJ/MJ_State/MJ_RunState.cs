@@ -26,6 +26,8 @@ public class MJ_RunState : MJ_IPlayerState
         {
             player.power = 800f;
         }
+        else
+            player.power = 0f;
 
     }
 
@@ -36,7 +38,7 @@ public class MJ_RunState : MJ_IPlayerState
 
     public void OnDash()
     {
-        
+        player.ChangeState(new MJ_DashState());
     }
 
     public void OnJump()

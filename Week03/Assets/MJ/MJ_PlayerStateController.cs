@@ -72,13 +72,16 @@ public class MJ_PlayerStateController : MonoBehaviour
 
                 rb.angularVelocity = Vector3.zero;
             }
+            rb.AddForce(transform.forward * power * Time.deltaTime);
         }
         else if(isQuickTurn)
         {
             QuickTurn();
         }
-        rb.AddForce(transform.forward * power * Time.deltaTime);
-        
+        else
+            rb.AddForce(transform.forward * power * Time.deltaTime);
+
+
     }
 
     public void ChangeState(MJ_IPlayerState nextState)
@@ -106,6 +109,11 @@ public class MJ_PlayerStateController : MonoBehaviour
         currentState?.OnStop();
     }
 
+    public void OnDash()
+    {
+        currentState?.OnDash();
+    }
+
     public IEnumerator Boost()
     {
         power *= 2.5f;
@@ -116,7 +124,8 @@ public class MJ_PlayerStateController : MonoBehaviour
     public void QuickTurn()
     {
         float quickAngle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
-        if(quickAngle>2 && quickAngle<-2 )
+        Debug.Log("Äü ÅÏ!!!!!!!!");
+        if(quickAngle>2 || quickAngle<-2 )
         {
             rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * quickAngle * 6 * angularSpeed;
         }

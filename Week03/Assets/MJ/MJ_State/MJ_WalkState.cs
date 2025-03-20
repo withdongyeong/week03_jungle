@@ -21,6 +21,10 @@ public class MJ_WalkState : MJ_IPlayerState
         {
             player.power = 100f;
         }
+        else
+            player.power = 0f;
+
+
     }
 
     public void ExitState()
@@ -30,7 +34,7 @@ public class MJ_WalkState : MJ_IPlayerState
 
     public void OnDash()
     {
-        
+        player.ChangeState(new MJ_DashState());
     }
 
     public void OnJump()

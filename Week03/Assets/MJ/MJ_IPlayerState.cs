@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public interface MJ_IPlayerState 
 {
-    public void EnterState(MJ_PlayerStateController contoroller);
+    public void EnterState(MJ_PlayerStateController controller);
     public void UpdateState();
     public void ExitState();
 
