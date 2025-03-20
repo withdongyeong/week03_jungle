@@ -49,7 +49,8 @@ public class MJ_DashState : MJ_IPlayerState
         float time = 0;
         player.rb.linearVelocity = Vector3.zero;
         player.targetdir = player.moveAction.ReadValue<Vector2>();
-        while(time < 1)
+        player.targetdir = new Vector3(player.targetdir.y, 0, -player.targetdir.x);
+        while (time < 1)
         {
             time += Time.deltaTime * 5;
             player.rb.linearVelocity = Vector3.Lerp(player.rb.linearVelocity, player.targetdir * 15, Mathf.Sqrt(time));
