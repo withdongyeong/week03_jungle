@@ -17,7 +17,7 @@ public class MJ_PlayerStateController : MonoBehaviour
 
     public float turnSpeed;
 
-    private Vector3 direction;
+    public Vector3 direction;
 
     public Vector3 targetdir = Vector3.forward;
 
@@ -27,6 +27,7 @@ public class MJ_PlayerStateController : MonoBehaviour
 
     public bool isQuickTurn;
 
+    public float maxSpeed = 0;
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
@@ -45,8 +46,8 @@ public class MJ_PlayerStateController : MonoBehaviour
     void Update()
     {
         currentState?.UpdateState();
-        direction = new Vector3(transform.forward.x, 0, transform.forward.z);      
-        if(direction != targetdir && !isQuickTurn)
+        direction = new Vector3(transform.forward.x, 0, transform.forward.z);
+        if (direction != targetdir && !isQuickTurn)
         {
             float angle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
             if (115 >= angle && angle > 2)
@@ -74,12 +75,16 @@ public class MJ_PlayerStateController : MonoBehaviour
             }
             rb.AddForce(transform.forward * power * Time.deltaTime);
         }
-        else if(isQuickTurn)
+        else if (isQuickTurn)
         {
             QuickTurn();
         }
         else
+        {
             rb.AddForce(transform.forward * power * Time.deltaTime);
+            if (rb.linearVelocity.magnitude > maxSpeed)
+                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+        }
 
 
     }
@@ -123,8 +128,8 @@ public class MJ_PlayerStateController : MonoBehaviour
 
     public void QuickTurn()
     {
+        Debug.Log("ÄüÅÏ!!");
         float quickAngle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
-        Debug.Log("Äü ÅÏ!!!!!!!!");
         if(quickAngle>2 || quickAngle<-2 )
         {
             rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * quickAngle * 6 * angularSpeed;

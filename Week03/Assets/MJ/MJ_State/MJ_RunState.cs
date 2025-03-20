@@ -15,20 +15,16 @@ public class MJ_RunState : MJ_IPlayerState
         player = controller;
         Debug.Log("enter run");
         player.angularSpeed = 2f;
-
+        player.maxSpeed = 9f;
+        player.power = 800f;
     }
 
     public void UpdateState()
     {
         player.targetdir = player.moveAction.ReadValue<Vector2>();
         player.targetdir = new Vector3(player.targetdir.y, 0, -player.targetdir.x);
-        if (player.rb.linearVelocity.magnitude < 9)
-        {
-            player.power = 800f;
-        }
-        else
-            player.power = 0f;
 
+ 
     }
 
     public void ExitState()
@@ -58,13 +54,17 @@ public class MJ_RunState : MJ_IPlayerState
 
     IEnumerator IdleCoroutine()
     {
-        for(int i=0; i<3; i++)
+        for(int i=0; i<150; i++)
         {
-            Debug.Log("idleCoroutine");
-            if (player.targetdir == Vector3.zero)
+            
+            if (player.moveAction.ReadValue<Vector2>() == Vector2.zero)
                 yield return null;
             else
+            {
+                Debug.Log(player.targetdir);
                 yield break;
+            }
+                
         }
         player.ChangeState(new MJ_IdleState());
     }

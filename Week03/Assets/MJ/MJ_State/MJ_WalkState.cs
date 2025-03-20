@@ -11,18 +11,15 @@ public class MJ_WalkState : MJ_IPlayerState
         InputSystem.actions.FindAction("Interact").started += OnRun;
         Debug.Log("enter walk");
         player.angularSpeed = 3;
+        player.maxSpeed = 3;
+        player.power = 100f;
     }
 
     public void UpdateState()
     {
         player.targetdir = player.moveAction.ReadValue<Vector2>();
         player.targetdir = new Vector3(player.targetdir.y, 0, -player.targetdir.x);
-        if (player.rb.linearVelocity.magnitude < 3)
-        {
-            player.power = 100f;
-        }
-        else
-            player.power = 0f;
+     
 
 
     }
