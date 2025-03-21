@@ -4,27 +4,24 @@ using UnityEngine.UI;
 
 public class ResourceBarManager : MonoBehaviour
 {
-    //public static ResourceBarManager Instance => _instance;
-    //static ResourceBarManager _instance;
-
-    //Slider Reference.
     Slider resourceSlider;
+    Image fillRectImage;
+    Image backgroundImage; // ìŠ¬ë¼ì´ë”ì˜ ë°°ê²½ ì´ë¯¸ì§€
 
-    //UI Design Reference.
-    float moveDuration = 0.3f;
+    float moveDuration = 0.05f;
+    float blinkInterval = 0.5f; // ì ë©¸ ê°„ê²© (0.5ì´ˆë§ˆë‹¤ ê¹œë¹¡ì„)
+    private Coroutine blinkCoroutine; // ì ë©¸ ì½”ë£¨í‹´ ì°¸ì¡°
 
     private void Awake()
     {
-        //_instance = this;
-
         resourceSlider = GetComponent<Slider>();
         resourceSlider.minValue = 0;
         resourceSlider.maxValue = 100;
         resourceSlider.wholeNumbers = false;
         resourceSlider.value = 0;
 
-
-
+        fillRectImage = resourceSlider.fillRect.GetComponent<Image>();
+        backgroundImage = resourceSlider.transform.Find("Background").GetComponent<Image>(); // ë°°ê²½ ì´ë¯¸ì§€ ì°¸ì¡°
     }
 
     private void Start()
@@ -32,31 +29,75 @@ public class ResourceBarManager : MonoBehaviour
         GameInfoManager.Instance.ResourceUpdateAction += SetValue;
     }
 
-    void SetValue(int newValue)
+    void SetValue(float newValue)
     {
         StopCoroutine("UpdateResourceSliderCoroutine");
         StartCoroutine(UpdateResourceSliderCoroutine(newValue));
     }
 
-    private IEnumerator UpdateResourceSliderCoroutine(int newValue)
+    private IEnumerator UpdateResourceSliderCoroutine(float newValue)
     {
         float elapsedTime = 0f;
-        float startValue = resourceSlider.value; // ½ÃÀÛ °ª ÀúÀå
+        float startValue = resourceSlider.value;
 
         while (elapsedTime < moveDuration)
         {
             elapsedTime += Time.deltaTime;
-            float t = elapsedTime / moveDuration; // 0¿¡¼­ 1·Î ÁøÇà·ü °è»ê
+            float t = elapsedTime / moveDuration;
 
-            // Lerp¸¦ »ç¿ëÇØ ÇöÀç °ª¿¡¼­ ¸ñÇ¥ °ªÀ¸·Î ºÎµå·´°Ô ÀÌµ¿
             resourceSlider.value = Mathf.Lerp(startValue, newValue, t);
+            UpdateSlider(newValue);
 
-            yield return null; // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ´ë±â
+            yield return null;
         }
 
-        // Á¤È®È÷ ¸ñÇ¥ °ª¿¡ µµ´ŞÇÏµµ·Ï ¸¶Áö¸·¿¡ °­Á¦ ¼³Á¤
         resourceSlider.value = newValue;
+        UpdateSlider(newValue); // ìµœì¢… ê°’ ë°˜ì˜
+
+        // 0 ì´í•˜ì¼ ë•Œ ì ë©¸ ì‹œì‘/ì¤‘ì§€
+        if (newValue <= 0)
+        {
+            if (blinkCoroutine == null)
+            {
+                blinkCoroutine = StartCoroutine(BlinkBackground());
+            }
+        }
+        else
+        {
+            if (blinkCoroutine != null)
+            {
+                StopCoroutine(blinkCoroutine);
+                blinkCoroutine = null;
+                backgroundImage.color = Color.gray; // ê¸°ë³¸ ìƒ‰ìƒìœ¼ë¡œ ë³µêµ¬
+            }
+        }
     }
 
+    private void UpdateSlider(float newValue)
+    {
+        if (newValue < 1)
+        {
+            Color currentColor = fillRectImage.color;
+            currentColor.a = 0;
+            fillRectImage.color = currentColor;
+        }
+        else
+        {
+            Color currentColor = fillRectImage.color;
+            currentColor.a = 1;
+            fillRectImage.color = currentColor;
+        }
+    }
 
+    // ë°°ê²½ì„ ë¹¨ê°›ê²Œ ì ë©¸ì‹œí‚¤ëŠ” ì½”ë£¨í‹´
+    private IEnumerator BlinkBackground()
+    {
+        while (true)
+        {
+            backgroundImage.color = Color.red; // ë¹¨ê°„ìƒ‰
+            yield return new WaitForSeconds(blinkInterval / 2); // ì ˆë°˜ ì‹œê°„ ëŒ€ê¸°
+            backgroundImage.color = Color.gray; // ì›ë˜ ìƒ‰ìƒ (í°ìƒ‰)
+            yield return new WaitForSeconds(blinkInterval / 2); // ë‚˜ë¨¸ì§€ ì ˆë°˜ ëŒ€ê¸°
+        }
+    }
 }

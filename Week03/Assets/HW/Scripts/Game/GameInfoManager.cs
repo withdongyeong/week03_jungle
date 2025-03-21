@@ -22,18 +22,26 @@ public class GameInfoManager : MonoBehaviour
     [Header("GameInfos")]
     public int HP => _HP; int _HP; //reamining HP.
     public int Mineral => _mineral; int _mineral; //score.
-    public int Resource => _resource; int _resource; //resource.
+    public float Resource => _resource; float _resource; //resource.
+    public float ResourceRecover => _resourceRecover; float _resourceRecover;
 
     [Header("Actions")]
     public Action<int> HPUpdateAction;
     public Action<int> MineralUpdateAction;
-    public Action<int> ResourceUpdateAction;
+    public Action<float> ResourceUpdateAction;
+
+    [Header("Resource Usages")]
+    public float DashResourceUsage => _dashResourceUsage; float _dashResourceUsage;
+    public float AirDashResourceUsage => _airDashResourceUsage; float _airDashResourceUsage;
 
     void Initialize()
     {
         _HP = 100; 
         _mineral = 0; 
-        _resource = 100; 
+        _resource = 100f;
+        _dashResourceUsage = 30;
+        _airDashResourceUsage = 30;
+        _resourceRecover = 30;
     }
 
     void TriggerAction()
@@ -70,12 +78,17 @@ public class GameInfoManager : MonoBehaviour
     public void SetResource(int newValue)
     {
         _resource = newValue;
-        ResourceUpdateAction?.Invoke(_resource);
+
+        if (_resource > 100) _resource = 100;
+        else if (_resource < -30) _resource = -30;
+            ResourceUpdateAction?.Invoke(_resource);
     }
 
-    public void UpdateResource(int updateValue)
+    public void UpdateResource(float updateValue)
     {
         _resource += updateValue;
+        if (_resource > 100) _resource = 100;
+        else if (_resource < -30) _resource = -30;
         ResourceUpdateAction?.Invoke(_resource);
     }
 }

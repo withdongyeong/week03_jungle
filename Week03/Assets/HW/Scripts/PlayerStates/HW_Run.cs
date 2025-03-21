@@ -54,7 +54,12 @@ public class HW_Run : IPlayerState
 
     private void ToDashState(InputAction.CallbackContext context)
     {
-        HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
+        if(playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.DashResourceUsage))
+        {
+            HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
+        }
+
+        
     }
 
     private void ToAirRunState(InputAction.CallbackContext context) //Ground To Air.
@@ -110,7 +115,10 @@ public class HW_Run : IPlayerState
             if (isBackwardTurn)
             {
                 rotationSpeed = fastRotationSpeed;
+
                 GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/StoppingParticle"), playerMoveManager.gameObject.transform.position, playerMoveManager.gameObject.transform.rotation);
+
+                ToWalkState();
             }
 
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * rotationSpeed));

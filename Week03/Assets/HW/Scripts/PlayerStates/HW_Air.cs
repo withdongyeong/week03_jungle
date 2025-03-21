@@ -20,8 +20,8 @@ public class HW_Air : IPlayerState
 
     }
 
-    float maxAirSpeed = 30f;
-    float airForce = 350f;
+    float maxAirSpeed = 20f;
+    float airForce = 400f;
 
     private void ToWalkState() //OnGroundedAction이 트리거.
     {
@@ -52,7 +52,10 @@ public class HW_Air : IPlayerState
 
     private void ToAirDashState(InputAction.CallbackContext context)
     {
-        HW_PlayerStateController.Instance.ChangeState(new HW_AirDash(controller));
+        if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirDashResourceUsage))
+        {
+            HW_PlayerStateController.Instance.ChangeState(new HW_AirDash(controller));
+        }
     }
 
    

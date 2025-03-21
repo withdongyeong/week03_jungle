@@ -4,11 +4,11 @@ public class HW_PlayerStateController : MonoBehaviour
 {
     public static HW_PlayerStateController Instance => _instance;
     static HW_PlayerStateController _instance;
-    //½Ì±ÛÅÏ »ç¿ë.
+    //ì‹±ê¸€í„´ ì‚¬ìš©.
 
     private IPlayerState currentState;
-    private IPlayerState previousState; // ÀÌÀü »óÅÂ ÀúÀå
-    private InputSystem_Actions actions; // ÀÔ·Â ½Ã½ºÅÛ °ü¸®
+    private IPlayerState previousState; // ì´ì „ ìƒíƒœ ì €ì¥
+    private InputSystem_Actions actions; // ì…ë ¥ ì‹œìŠ¤í…œ ê´€ë¦¬
 
     private void Awake()
     {
@@ -19,14 +19,14 @@ public class HW_PlayerStateController : MonoBehaviour
         }
         _instance = this;
 
-        // ÀÔ·Â ½Ã½ºÅÛ ÃÊ±âÈ­
+        // ì…ë ¥ ì‹œìŠ¤í…œ ì´ˆê¸°í™”
         actions = new InputSystem_Actions();
-        actions.Player.Enable(); // Player ¾×¼Ç ¸Ê È°¼ºÈ­
+        actions.Player.Enable(); // Player ì•¡ì…˜ ë§µ í™œì„±í™”
     }
 
     private void Start()
     {
-        ChangeState(new HW_Idle(this)); //°ÔÀÓ ½ÃÀÛ ½Ã¿¡´Â Idle.
+        ChangeState(new HW_Walk(this)); //ê²Œì„ ì‹œì‘ ì‹œì—ëŠ” Idle.
     }
 
     private void Update()
@@ -38,18 +38,18 @@ public class HW_PlayerStateController : MonoBehaviour
     {
         if (nextState == currentState) return;
         currentState?.ExitState();
-        previousState = currentState; // ÀÌÀü »óÅÂ ÀúÀå
+        previousState = currentState; // ì´ì „ ìƒíƒœ ì €ì¥
         currentState = nextState;
         nextState.EnterState();
     }
 
-    // »óÅÂ Å¬·¡½º¿¡¼­ »ç¿ëÇÒ ÀÔ·Â ¾×¼Ç Á¦°ø
+    // ìƒíƒœ í´ë˜ìŠ¤ì—ì„œ ì‚¬ìš©í•  ì…ë ¥ ì•¡ì…˜ ì œê³µ
     public InputSystem_Actions GetInputActions()
     {
         return actions;
     }
 
-    // ÀÌÀü »óÅÂ ¹İÈ¯ (±âº»°ªÀ¸·Î Idle)
+    // ì´ì „ ìƒíƒœ ë°˜í™˜ (ê¸°ë³¸ê°’ìœ¼ë¡œ Idle)
     public IPlayerState GetPreviousState()
     {
         return previousState ?? new HW_Idle(this);

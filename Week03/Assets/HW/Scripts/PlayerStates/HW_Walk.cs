@@ -20,8 +20,8 @@ public class HW_Walk : IPlayerState
     }
 
     [Header("Walk Variables")]
-    float walkForce = 600f;
-    float maxWalkSpeed = 15f;
+    float walkForce = 800f;
+    float maxWalkSpeed = 10f;
     float walkJumpForce = 8000f;
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
@@ -33,6 +33,8 @@ public class HW_Walk : IPlayerState
         {
             rb.linearVelocity = rb.linearVelocity / rb.linearVelocity.magnitude * 15;
         }
+
+        playerMoveManager.ManageJumpBool(false);
 
         Debug.Log("Entering WalkState");
         actions.Player.Run.performed += ToRunState;
@@ -62,11 +64,15 @@ public class HW_Walk : IPlayerState
 
     private void ToDashState(InputAction.CallbackContext context)
     {
-        HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
+        if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.DashResourceUsage))
+        {
+            HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
+        }
     }
 
     private void ToRunState(InputAction.CallbackContext context)
     {
+
         HW_PlayerStateController.Instance.ChangeState(new HW_Run(controller));
     }
 

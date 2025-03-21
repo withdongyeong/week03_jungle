@@ -21,7 +21,7 @@ public class HW_Dash : IPlayerState
 
     float dashTurnTime = 0.3f; // 회전 지연 시간
     float dashElapsedTime = 0f;
-    float dashTime = 0.23f;
+    float dashTime = 0.2f;
     float dashForce = 25000f; // 각도로 받는 점프력
     float dashAngleY = 5f; // 힘을 받는 각도
     float dashEndForce = 15000f;
@@ -33,6 +33,7 @@ public class HW_Dash : IPlayerState
     public void EnterState()
     {
         playerMoveManager.ManageJumpBool(true);
+        playerMoveManager.ManageDashBool(true);
 
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude < 0.1f)
@@ -90,6 +91,8 @@ public class HW_Dash : IPlayerState
 
     public void ExitState()
     {
+        playerMoveManager.ManageDashBool(false);
+
         GameObject.Destroy(DashParticle);
     }
 

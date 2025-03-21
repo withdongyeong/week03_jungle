@@ -53,7 +53,10 @@ public class HW_AirRun : IPlayerState
 
     private void ToAirDashState(InputAction.CallbackContext context)
     {
-        HW_PlayerStateController.Instance.ChangeState(new HW_AirDash(controller));
+        if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirDashResourceUsage))
+        {
+            HW_PlayerStateController.Instance.ChangeState(new HW_AirDash(controller));
+        }
     }
 
     public void ExitState()

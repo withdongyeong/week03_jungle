@@ -16,17 +16,18 @@ public class PlayerMoveManager : MonoBehaviour
 
     //Actions.
     public Action onGroundedAction;
+    float ResourceRecover;
 
     //MoveVariables.
-    public bool isJumped => _isJumped;
-    bool _isJumped;
+    public bool isJumped => _isJumped; bool _isJumped;
+    public bool isDash => _isDash; bool _isDash;
 
     float groundedTransitionTime = 0.1f;
 
 
     private void Awake()
     {
-        //Singleton √ ±‚»≠.
+        //Singleton Ï¥àÍ∏∞Ìôî.
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
@@ -34,19 +35,22 @@ public class PlayerMoveManager : MonoBehaviour
         }
         _instance = this;
 
-        //Component √ ±‚»≠.
+        //Component Ï¥àÍ∏∞Ìôî.
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
-        
-
     }
 
     private void Start()
     {
         actions = GetComponent<HW_PlayerStateController>().GetInputActions();
-        Physics.gravity = new Vector3(0, -20.0f, 0); // ±‚∫ª∞™¿∫ (0, -9.81, 0)
+        Physics.gravity = new Vector3(0, -20.0f, 0); // Í∏∞Î≥∏Í∞íÏùÄ (0, -9.81, 0)
         Cursor.visible = false;
+
+        _isDash = false;
+        ResourceRecover = GameInfoManager.Instance.ResourceRecover;
     }
+
+
 
     public void MoveByForce(Vector3 force) //Walk. ETC
     {
@@ -67,6 +71,11 @@ public class PlayerMoveManager : MonoBehaviour
     {
         Vector2 moveInput = actions.Player.Move.ReadValue<Vector2>();
         Vector2 lookInput = actions.Player.Look.ReadValue<Vector2>();
+
+        if(!_isJumped && !_isDash)
+        {
+            GameInfoManager.Instance.UpdateResource(ResourceRecover * Time.deltaTime);
+        }
     }
 
 
@@ -75,7 +84,7 @@ public class PlayerMoveManager : MonoBehaviour
     {
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
-        cameraForward.y = 0; // ºˆ∆Ú∏∏ ∞Ì∑¡
+        cameraForward.y = 0; // ÏàòÌèâÎßå Í≥†Î†§
         cameraRight.y = 0;
         return (cameraForward * moveZ + cameraRight * moveX).normalized;
     }
@@ -100,5 +109,26 @@ public class PlayerMoveManager : MonoBehaviour
     public void ManageJumpBool(bool _isJumped)
     {
         this._isJumped = _isJumped;
+    }
+
+    public void ManageDashBool(bool _isDash)
+    {
+        this._isDash = _isDash;
+    }
+
+    public bool UseResourceUsingAction(float resourceUsage)
+    {
+        float currentResource = GameInfoManager.Instance.Resource;
+
+        if(currentResource >= 1)
+        {
+            GameInfoManager.Instance.UpdateResource(-resourceUsage);
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

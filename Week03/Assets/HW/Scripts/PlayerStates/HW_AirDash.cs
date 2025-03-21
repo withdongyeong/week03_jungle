@@ -31,11 +31,14 @@ public class HW_AirDash : IPlayerState
     Vector3 finalAirDashDirection;
     #endregion
 
+
+
     GameObject airDashParticle;
 
     public void EnterState()
     {
         playerMoveManager.ManageJumpBool(true);
+        playerMoveManager.ManageDashBool(true);
 
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude < 0.1f)
@@ -88,6 +91,8 @@ public class HW_AirDash : IPlayerState
 
     public void ExitState()
     {
+        playerMoveManager.ManageDashBool(false);
+
         GameObject.Destroy(airDashParticle);
     }
 
