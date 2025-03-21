@@ -78,11 +78,21 @@ public class ProjectileAttackPattern : IEnemyAttackPattern
 
             GameObject laserExplosion = ObjectPoolManager.Instance.SpawnFromPool(PoolKey.LaserExplosion, targetPos, Quaternion.identity);
 
-            laserExplosion.transform.localScale = GlobalSettings.Instance.laserExplosionScale;
+            Vector3 targetScale = GlobalSettings.Instance.laserExplosionScale;
+            Vector3 startScale = targetScale * 0.5f;
+            laserExplosion.transform.localScale = startScale;
 
-            float impactDuration = GlobalSettings.Instance.laserExplosionEffectTime;
-            attacker.GetComponent<MonoBehaviour>().StartCoroutine(DisableAfterSeconds(PoolKey.LaserExplosion, laserExplosion, impactDuration));
+            float scaleUpTime = GlobalSettings.Instance.explosionScaleUpTime;
+
+            attacker.GetComponent<MonoBehaviour>().StartCoroutine(
+                ScaleUpEffect(laserExplosion.transform, startScale, targetScale, scaleUpTime)
+            );
+
+            attacker.GetComponent<MonoBehaviour>().StartCoroutine(
+                DisableAfterSeconds(PoolKey.LaserExplosion, laserExplosion, scaleUpTime)
+            );
         }
+
     }
 
     private IEnumerator DisableAfterSeconds(PoolKey key, GameObject obj, float seconds)
@@ -90,6 +100,19 @@ public class ProjectileAttackPattern : IEnemyAttackPattern
         yield return new WaitForSeconds(seconds);
         if (obj != null)
             ObjectPoolManager.Instance.ReturnToPool(key, obj);
+    }
+
+    private IEnumerator ScaleUpEffect(Transform target, Vector3 startScale, Vector3 endScale, float duration)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            float t = timer / duration;
+            target.localScale = Vector3.Lerp(startScale, endScale, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        target.localScale = endScale;
     }
 
 

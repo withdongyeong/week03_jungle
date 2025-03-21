@@ -52,12 +52,45 @@ public class ExplosionAttackPattern : IEnemyAttackPattern
         float effectTime = data ? data.effectTime : GlobalSettings.Instance.defaultExplosionEffectTime;
 
         yield return new WaitForSeconds(warningTime);
-        if (warning != null) ObjectPoolManager.Instance.ReturnToPool(PoolKey.Warning, warning);
+
+        if (warning != null)
+            ObjectPoolManager.Instance.ReturnToPool(PoolKey.Warning, warning);
 
         GameObject explosion = ObjectPoolManager.Instance.SpawnFromPool(explosionKey, pos, Quaternion.identity);
+
+        if (explosion != null)
+        {
+            Vector3 targetScale = GlobalSettings.Instance.defaultExplosionScale;
+            Vector3 startScale = targetScale * 0.5f;
+            explosion.transform.localScale = startScale;
+
+            float scaleUpTime = GlobalSettings.Instance.explosionScaleUpTime;
+            attacker.GetComponent<MonoBehaviour>().StartCoroutine(
+                ScaleUpEffect(explosion.transform, startScale, targetScale, scaleUpTime)
+            );
+        }
+
         yield return new WaitForSeconds(effectTime);
-        if (explosion != null) ObjectPoolManager.Instance.ReturnToPool(PoolKey.ExplosionEffect, explosion);
+
+        if (explosion != null)
+            ObjectPoolManager.Instance.ReturnToPool(PoolKey.ExplosionEffect, explosion);
     }
+
+
+    private IEnumerator ScaleUpEffect(Transform target, Vector3 startScale, Vector3 endScale, float duration)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            float t = timer / duration;
+            target.localScale = Vector3.Lerp(startScale, endScale, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        target.localScale = endScale;
+    }
+
+
 
     private Vector3 GetRandomExplosionPosition()
     {

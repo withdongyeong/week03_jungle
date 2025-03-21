@@ -15,18 +15,19 @@ public class GlobalSettings : MonoBehaviour
     public float defaultExplosionEffectTime = 2f;
     public float defaultExplosionRange = 3f;
     public float defaultExplosionHeight = 1f;
+    public Vector3 defaultExplosionScale = new Vector3(10f, 10f, 10f);
+    public float explosionScaleUpTime = 0.5f;
 
-    [Header("Explosion Enemy Spawn Settings")]
-    public int maxExplosionEnemyCount = 5;
-    public float explosionSpawnInterval = 5f;
-    public float explosionSpawnRange = 10f;
-
+    [Header("Default Enemy Settings")]
+    public int maxEnemyCount = 20;
+    public float defaultSpawnInterval = 3f;
+    public float defaultSpawnRange = 30f;
 
     [Header("Default Projectile Settings")]
     public float defaultProjectileSpeed = 100f;
     public float defaultProjectileWarningTime = 0.5f;
 
-    public Vector3 defaultProjectileWarningScale = new Vector3(3f, 3f, 3f);
+    public Vector3 defaultProjectileWarningScale = new Vector3(3f, 0.1f, 3f);
     public float defaultProjectileAttackMinInterval = 3f;
     public float defaultProjectileAttackMaxInterval = 5f;
 

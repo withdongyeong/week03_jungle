@@ -20,9 +20,9 @@ public class EnemyManager : MonoBehaviour
     private int currentEnemyCount = 0;
     private float spawnTimer = 0f;
 
-    private int MaxCount => GlobalSettings.Instance.maxExplosionEnemyCount;
-    private float SpawnInterval => GlobalSettings.Instance.explosionSpawnInterval;
-    private float SpawnRange => GlobalSettings.Instance.explosionSpawnRange;
+    private int MaxCount => GlobalSettings.Instance.maxEnemyCount;
+    private float SpawnInterval => GlobalSettings.Instance.defaultSpawnInterval;
+    private float SpawnRange => GlobalSettings.Instance.defaultSpawnRange;
 
     private void Start()
     {
