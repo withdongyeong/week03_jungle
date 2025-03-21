@@ -13,12 +13,20 @@ public class HW_AirRun : IPlayerState
         this.controller = controller;
         this.actions = controller.GetInputActions();
         playerMoveManager = PlayerMoveManager.Instance;
+        playerMoveManager.onGroundedAction += ToRunState;
+    }
+
+    private void ToRunState()
+    {
+        HW_PlayerStateController.Instance.ChangeState(new HW_Run(controller));
     }
 
     [Header("Run Variables")]
     float maxAirRunSpeed = 80f;
     float airRunForce = 1000f;
-
+    float normalRotationSpeed = 5f; // 기본 회전 속도
+    float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
+    float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
     GameObject airRunParticle = null;
 
     public void EnterState()
@@ -61,6 +69,19 @@ public class HW_AirRun : IPlayerState
         if (moveVector.magnitude > 0.1f) // 입력이 있을 때만 회전
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            float rotationSpeed = normalRotationSpeed;
+
+            // 뒤쪽 입력 감지
+            Vector3 currentForward = rb.transform.forward;
+            float dotProduct = Vector3.Dot(currentForward, moveDirection);
+            bool isBackwardTurn = dotProduct < -fastRotationThreshold;
+
+            if (isBackwardTurn)
+            {
+                rotationSpeed = fastRotationSpeed;
+                GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/StoppingParticle"), playerMoveManager.gameObject.transform.position, playerMoveManager.gameObject.transform.rotation);
+            }
+
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
         }
 
