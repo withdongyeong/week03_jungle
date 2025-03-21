@@ -13,7 +13,7 @@ public class GlobalSettings : MonoBehaviour
     public Vector3 defaultExplosionWarningScale = new Vector3(10f, 10f, 10f);
     public float defaultExplosionWarningTime = 1.5f;
     public float defaultExplosionEffectTime = 2f;
-    public float defaultExplosionRange = 3f;
+    public float attackRandomRange = 10f;
     public float defaultExplosionHeight = 1f;
     public Vector3 defaultExplosionScale = new Vector3(10f, 10f, 10f);
     public float explosionScaleUpTime = 0.5f;
@@ -27,10 +27,10 @@ public class GlobalSettings : MonoBehaviour
     public float defaultProjectileSpeed = 100f;
     public float defaultProjectileWarningTime = 0.5f;
 
-    public Vector3 defaultProjectileWarningScale = new Vector3(3f, 0.1f, 3f);
+    public Vector3 defaultProjectileWarningScale = new Vector3(3f, 7f, 3f);
     public float defaultProjectileAttackMinInterval = 3f;
     public float defaultProjectileAttackMaxInterval = 5f;
-
+    public float defaultProjectileWarningPositionY = 0.5f;
     public float defaultProjectileSpawnHeight = 25f;
     public float defaultProjectileSpawnRange = 15f;
     public float laserExplosionEffectTime = 1f;

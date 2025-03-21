@@ -30,7 +30,6 @@ public class ExplosionAttackPattern : IEnemyAttackPattern
         Vector3 targetPos = GetRandomExplosionPosition();
         GameObject warning = ObjectPoolManager.Instance.SpawnFromPool(warningKey, targetPos, Quaternion.identity);
 
-        float warningTime = data ? data.warningTime : GlobalSettings.Instance.defaultExplosionWarningTime;
         Vector3 scale = data ? data.warningScale : GlobalSettings.Instance.defaultExplosionWarningScale;
         warning.transform.localScale = scale;
 
@@ -97,7 +96,7 @@ public class ExplosionAttackPattern : IEnemyAttackPattern
         var player = HW_PlayerStateController.Instance;
         if (player == null) return Vector3.zero;
 
-        float range = data ? data.range : GlobalSettings.Instance.defaultExplosionRange;
+        float range = data ? data.range : GlobalSettings.Instance.attackRandomRange;
         float height = data ? data.height : GlobalSettings.Instance.defaultExplosionHeight;
 
         Vector3 basePos = player.transform.position;

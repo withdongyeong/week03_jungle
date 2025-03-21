@@ -30,9 +30,11 @@ public class ProjectileAttackPattern : IEnemyAttackPattern
         Vector3 targetPos = GetRandomTargetPosition();
         GameObject warning = ObjectPoolManager.Instance.SpawnFromPool(warningKey, targetPos, Quaternion.identity);
 
-        float warningTime = data ? data.warningTime : GlobalSettings.Instance.defaultProjectileWarningTime;
         Vector3 scale = data ? data.warningScale : GlobalSettings.Instance.defaultProjectileWarningScale;
         warning.transform.localScale = scale;
+        Vector3 localPos = warning.transform.localPosition;
+        localPos.y = GlobalSettings.Instance.defaultProjectileWarningPositionY; ;
+        warning.transform.localPosition = localPos;
 
         attacker.GetComponent<MonoBehaviour>().StartCoroutine(DelayedShoot(targetPos, warning));
         SetNextAttackTime();
@@ -122,7 +124,7 @@ public class ProjectileAttackPattern : IEnemyAttackPattern
         if (player == null) return Vector3.zero;
 
         Vector3 basePos = player.transform.position;
-        float range = GlobalSettings.Instance.defaultExplosionRange; // 재사용
+        float range = GlobalSettings.Instance.attackRandomRange;
         float height = GlobalSettings.Instance.defaultExplosionHeight;
 
         float x = Random.Range(-range, range);

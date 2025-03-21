@@ -49,5 +49,8 @@ MonoBehaviour:
   warningPrefab: {fileID: 5988403175243246575, guid: baec31cd017d99c4daed5dfbc88a074d, type: 3}
   explosionPrefab: {fileID: 5988403175243246575, guid: 0f6463f100d837140ab325cb2bbcbb42, type: 3}
   laserPrefab: {fileID: 2743562884138118611, guid: f336a2d25c501464b8e9a515159ecd33, type: 3}
+  laserExplosionPrefab: {fileID: 5988403175243246575, guid: 0a239024f3cadc9499b081da30989110, type: 3}
   warningKey: 0
   explosionKey: 1
+  laserKey: 2
+  laserExplosionKey: 3

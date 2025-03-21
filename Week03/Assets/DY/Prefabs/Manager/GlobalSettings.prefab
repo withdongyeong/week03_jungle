@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1528648283093544964
+--- !u!1 &5305511079941269421
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3210854354699457466}
-  - component: {fileID: 3907341431407206791}
+  - component: {fileID: 6998758394571428566}
+  - component: {fileID: 6010620243338152470}
   m_Layer: 0
   m_Name: GlobalSettings
   m_TagString: Untagged
@@ -17,28 +17,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3210854354699457466
+--- !u!4 &6998758394571428566
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528648283093544964}
+  m_GameObject: {fileID: 5305511079941269421}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.05588924, y: 1.1909134, z: -1.0362527}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3907341431407206791
+--- !u!114 &6010620243338152470
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1528648283093544964}
+  m_GameObject: {fileID: 5305511079941269421}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4170f87c40be1dc48adc49386a78c370, type: 3}
@@ -47,10 +47,23 @@ MonoBehaviour:
   objectPoolCleanupInterval: 30
   defaultExplosionAttackMinInterval: 5
   defaultExplosionAttackMaxInterval: 8
+  defaultExplosionWarningScale: {x: 10, y: 10, z: 10}
   defaultExplosionWarningTime: 1.5
   defaultExplosionEffectTime: 2
   defaultExplosionRange: 3
   defaultExplosionHeight: 1
-  maxExplosionEnemyCount: 5
-  explosionSpawnInterval: 5
-  explosionSpawnRange: 10
+  defaultExplosionScale: {x: 10, y: 10, z: 10}
+  explosionScaleUpTime: 0.5
+  maxEnemyCount: 20
+  defaultSpawnInterval: 3
+  defaultSpawnRange: 30
+  defaultProjectileSpeed: 100
+  defaultProjectileWarningTime: 0.5
+  defaultProjectileWarningScale: {x: 3, y: 7, z: 3}
+  defaultProjectileAttackMinInterval: 3
+  defaultProjectileAttackMaxInterval: 5
+  defaultProjectileWarningPositionY: 0.5
+  defaultProjectileSpawnHeight: 25
+  defaultProjectileSpawnRange: 15
+  laserExplosionEffectTime: 1
+  laserExplosionScale: {x: 3, y: 3, z: 3}
