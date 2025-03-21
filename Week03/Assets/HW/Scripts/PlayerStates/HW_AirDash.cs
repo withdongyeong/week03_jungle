@@ -6,12 +6,14 @@ public class HW_AirDash : IPlayerState
     private HW_PlayerStateController controller;
     private InputSystem_Actions actions;
     private PlayerMoveManager playerMoveManager;
+    private Rigidbody rigidBody;
 
     public HW_AirDash(HW_PlayerStateController controller)
     {
         this.controller = controller;
         this.actions = controller.GetInputActions();
         playerMoveManager = PlayerMoveManager.Instance;
+        rigidBody = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
     }
 
     float airDashElapsedTime = 0f;
@@ -49,6 +51,8 @@ public class HW_AirDash : IPlayerState
         Vector3 dashDirection = horizontalDirection; // 수평 방향 복사
         dashDirection.y = yComponent; // Y 성분을 양수로 고정
         finalAirDashDirection = dashDirection.normalized;
+
+        rigidBody.MoveRotation(Quaternion.LookRotation(finalAirDashDirection));
 
         airDashParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/DashParticle"), playerMoveManager.transform);
     }

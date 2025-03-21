@@ -20,6 +20,9 @@ public class HW_Run : IPlayerState
     float maxRunSpeed = 70f;
     float runForce = 1000f;
     float runJumpForce = 5500f;
+    float normalRotationSpeed = 5f; // 기본 회전 속도
+    float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
+    float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
 
     [Header("Particle")]
     GameObject groundSweepParticle = null;
@@ -27,9 +30,9 @@ public class HW_Run : IPlayerState
     public void EnterState()
     {
         Debug.Log("Enter Run");
-        actions.Player.Crouch.performed += ToWalkState;
+        actions.Player.Run.performed += ToWalkState;
         actions.Player.Attack.performed += ToDashState;
-        actions.Player.Jump.performed += ToAirState;
+        actions.Player.Jump.performed += ToAirRunState;
 
         //Spawn particle
         groundSweepParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/GroundSweepParticle"), playerMoveManager.gameObject.transform);
@@ -45,13 +48,13 @@ public class HW_Run : IPlayerState
         HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
     }
 
-    private void ToAirState(InputAction.CallbackContext context) //Ground To Air.
+    private void ToAirRunState(InputAction.CallbackContext context) //Ground To Air.
     {
         if(!playerMoveManager.isJumped)
         {
             playerMoveManager.ManageJumpBool(true);
             PlayerMoveManager.Instance.MoveByImpulse(Vector3.up * runJumpForce);
-            HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller));
+            HW_PlayerStateController.Instance.ChangeState(new HW_AirRun(controller));
         }
 
     }
@@ -60,11 +63,11 @@ public class HW_Run : IPlayerState
     public void ExitState()
     {
         Debug.Log("Exit run");
-        actions.Player.Crouch.performed -= ToWalkState;
+        actions.Player.Run.performed -= ToWalkState;
         actions.Player.Attack.performed -= ToDashState;
-        actions.Player.Jump.performed -= ToAirState;
+        actions.Player.Jump.performed -= ToAirRunState;
 
-        GameObject.Destroy(groundSweepParticle, 0.3f);
+        GameObject.Destroy(groundSweepParticle, 0.1f);
     }
 
     public void UpdateState()
@@ -85,10 +88,23 @@ public class HW_Run : IPlayerState
 
         // 캐릭터 방향을 이동 방향에 맞춤 (카메라 기준)
         Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
-        if (moveVector.magnitude > 0.1f) // 입력이 있을 때만 회전
+        if (moveVector.magnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
+            float rotationSpeed = normalRotationSpeed;
+
+            // 뒤쪽 입력 감지
+            Vector3 currentForward = rb.transform.forward;
+            float dotProduct = Vector3.Dot(currentForward, moveDirection);
+            bool isBackwardTurn = dotProduct < -fastRotationThreshold;
+
+            if (isBackwardTurn)
+            {
+                rotationSpeed = fastRotationSpeed;
+                GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/StoppingParticle"), playerMoveManager.gameObject.transform.position, playerMoveManager.gameObject.transform.rotation);
+            }
+
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * rotationSpeed));
         }
 
         // 속도 제한
