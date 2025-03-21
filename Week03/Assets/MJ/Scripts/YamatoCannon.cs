@@ -17,9 +17,16 @@ public class YamatoCannon : MonoBehaviour, IPoolable
     bool isGround = false;
 
     [SerializeField] private float speed;
+
+    [SerializeField] private GameObject warning;
+
+    GameObject currentWarning;
+
+    RaycastHit hit;
     public void ReleaseObject()
     {
         pool.Release(gameObject);
+        Destroy(currentWarning);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -50,6 +57,11 @@ public class YamatoCannon : MonoBehaviour, IPoolable
             {
                 transform.rotation = Quaternion.LookRotation(HW_PlayerStateController.Instance.transform.position - transform.position);
                 isAimed = true;
+                if (Physics.Raycast(transform.position, transform.forward, out hit,1000,1<<7))
+                {
+                    Debug.Log("레이케스트 완료");
+                    currentWarning = Instantiate(warning, hit.point, transform.rotation);
+                }
             }
 
             rb.MovePosition(transform.position + transform.forward * speed * Time.deltaTime);
@@ -65,12 +77,13 @@ public class YamatoCannon : MonoBehaviour, IPoolable
             Collider[] groundColliders = Physics.OverlapSphere(transform.position, 2f, 1<<7);
             if (groundColliders.Length > 0)
                 isGround = true;
+
         }
         else if(isGround)
         {
             time += Time.deltaTime;
-            transform.localScale = new Vector3(1, 1, 1) * (-141.5f + time * 60);
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-141.5f + time * 60)/2, 1<<6);
+            transform.localScale = new Vector3(1, 1, 1) * (-191.5f + time * 80);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-191.5f + time * 80)/2, 1<<6);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].CompareTag("Player"))
@@ -78,7 +91,7 @@ public class YamatoCannon : MonoBehaviour, IPoolable
                     GameInfoManager.Instance.UpdateHP(-1);
                 }
             }
-            if (time > 7.5f)
+            if (time > 6.5f)
                 ReleaseObject();
         }
     }

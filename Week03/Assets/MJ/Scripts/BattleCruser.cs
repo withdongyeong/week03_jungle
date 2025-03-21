@@ -9,8 +9,7 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        ComboAttack();
-     
+        FireYamato();
         
     }
 
@@ -64,5 +63,18 @@ public class BattleCruser : MonoBehaviour
     void FireYamato()
     {
         PoolManager.instance.GetGo("YamatoCannon", transform.position + new Vector3(0, 0, -24), transform.rotation);
+    }
+
+    void Attack()
+    {
+        int attackNum = Random.Range(0, 2);
+        if(attackNum == 0)
+        {
+            StartCoroutine(PulseGun());
+        }
+        else
+        {
+            FireSmallMissile();
+        }
     }
 }
