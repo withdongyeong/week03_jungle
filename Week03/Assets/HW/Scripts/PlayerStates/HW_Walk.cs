@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -21,10 +22,10 @@ public class HW_Walk : IPlayerState
     [Header("Walk Variables")]
     float walkForce = 600f;
     float maxWalkSpeed = 15f;
-    float walkJumpForce = 5000f;
-    float normalRotationSpeed = 5f; // ±âº» È¸Àü ¼Óµµ
-    float fastRotationSpeed = 15f; // ºü¸¥ µÚµ¹¾Æº¸±â ¼Óµµ
-    float fastRotationThreshold = 0.7f; // µÚÂÊ ÀÔ·Â °¨Áö ÀÓ°è°ª (¾à 90µµ)
+    float walkJumpForce = 8000f;
+    float normalRotationSpeed = 5f; // ê¸°ë³¸ íšŒì „ ì†ë„
+    float fastRotationSpeed = 15f; // ë¹ ë¥¸ ë’¤ëŒì•„ë³´ê¸° ì†ë„
+    float fastRotationThreshold = 0.7f; // ë’¤ìª½ ì…ë ¥ ê°ì§€ ì„ê³„ê°’ (ì•½ 90ë„)
 
     public void EnterState()
     {
@@ -37,7 +38,15 @@ public class HW_Walk : IPlayerState
         actions.Player.Run.performed += ToRunState;
         actions.Player.Attack.performed += ToDashState;
         actions.Player.Jump.performed += ToAirState;
-        actions.Player.Move.Enable(); // Move ¾×¼Ç È°¼ºÈ­ º¸Àå
+        actions.Player.Move.Enable(); // Move ì•¡ì…˜ í™œì„±í™” ë³´ì¥
+
+        //Set Control Log
+        ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>
+        {
+            (190, 227, "ì í”„"),   // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 0, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 1
+            (196, 228, "ë‹¬ë¦¬ê¸°"), // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 2, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 3
+            (99, 225, "ëŒ€ì‹œ")    // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 4, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 5
+        });
     }
 
     private void ToAirState(InputAction.CallbackContext context)
@@ -74,7 +83,7 @@ public class HW_Walk : IPlayerState
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude >= 0.1f || rb.linearVelocity.magnitude >= 0.1f)
         {
-            // Ä«¸Ş¶ó ±âÁØ ¹æÇâ °è»ê
+            // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê³„ì‚°
             Transform cameraTransform = Camera.main.transform;
             Vector3 cameraForward = cameraTransform.forward;
             Vector3 cameraRight = cameraTransform.right;
@@ -82,16 +91,16 @@ public class HW_Walk : IPlayerState
             cameraRight.y = 0;
             Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
-            // Èû Àû¿ë
+            // í˜ ì ìš©
             PlayerMoveManager.Instance.MoveByForce(moveDirection * walkForce);
 
-            // Ä³¸¯ÅÍ ¹æÇâ Á¶Á¤
+            // ìºë¦­í„° ë°©í–¥ ì¡°ì •
             if (moveVector.magnitude > 0.1f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 float rotationSpeed = normalRotationSpeed;
 
-                // µÚÂÊ ÀÔ·Â °¨Áö
+                // ë’¤ìª½ ì…ë ¥ ê°ì§€
                 Vector3 currentForward = rb.transform.forward;
                 float dotProduct = Vector3.Dot(currentForward, moveDirection);
                 bool isBackwardTurn = dotProduct < -fastRotationThreshold;
@@ -104,12 +113,12 @@ public class HW_Walk : IPlayerState
                 rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * rotationSpeed));
             }
 
-            // ¼Óµµ Á¦ÇÑ (ºÎµå·¯¿î °¨¼Ó)
+            // ì†ë„ ì œí•œ (ë¶€ë“œëŸ¬ìš´ ê°ì†)
             Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             if (flatVelocity.magnitude > maxWalkSpeed)
             {
-                // °¨¼Ó ¼Óµµ Á¶Á¤
-                float decelerationRate = 5f; // ÃÊ´ç °¨¼Ó Á¤µµ (Á¶Á¤ °¡´É)
+                // ê°ì† ì†ë„ ì¡°ì •
+                float decelerationRate = 5f; // ì´ˆë‹¹ ê°ì† ì •ë„ (ì¡°ì • ê°€ëŠ¥)
                 Vector3 targetVelocity = flatVelocity.normalized * maxWalkSpeed;
                 flatVelocity = Vector3.Lerp(flatVelocity, targetVelocity, Time.deltaTime * decelerationRate);
                 rb.linearVelocity = new Vector3(flatVelocity.x, rb.linearVelocity.y, flatVelocity.z);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,18 +23,32 @@ public class HW_AirRun : IPlayerState
     }
 
     [Header("Run Variables")]
-    float maxAirRunSpeed = 80f;
-    float airRunForce = 1000f;
-    float normalRotationSpeed = 5f; // ±âº» È¸Àü ¼Óµµ
-    float fastRotationSpeed = 15f; // ºü¸¥ µÚµ¹¾Æº¸±â ¼Óµµ
-    float fastRotationThreshold = 0.7f; // µÚÂÊ ÀÔ·Â °¨Áö ÀÓ°è°ª (¾à 90µµ)
+    float minAirRunSpeed = 5f;
+    float maxAirRunSpeed = 40f;
+    float airRunForce = 900f;
+    float normalRotationSpeed = 5f; // ê¸°ë³¸ íšŒì „ ì†ë„
+    float fastRotationSpeed = 15f; // ë¹ ë¥¸ ë’¤ëŒì•„ë³´ê¸° ì†ë„
+    float fastRotationThreshold = 0.7f; // ë’¤ìª½ ì…ë ¥ ê°ì§€ ì„ê³„ê°’ (ì•½ 90ë„)
     GameObject airRunParticle = null;
 
     public void EnterState()
     {
         actions.Player.Attack.performed += ToAirDashState;
+        actions.Player.Run.performed += ToWalkState;
 
         airRunParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/GroundSweepParticle"), playerMoveManager.gameObject.transform);
+
+        ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>
+        {
+            //(190, 227, "ì í”„"),   // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 0, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 1
+            (196, 228, "ë‹¬ë¦¬ê¸° í•´ì œ"), // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 2, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 3
+            (99, 225, "ê³µì¤‘ ëŒ€ì‹œ")    // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 4, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 5
+        });
+    }
+
+    private void ToWalkState(InputAction.CallbackContext context)
+    {
+        HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller));
     }
 
     private void ToAirDashState(InputAction.CallbackContext context)
@@ -51,27 +66,27 @@ public class HW_AirRun : IPlayerState
     public void UpdateState()
     {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
-        if (moveVector.magnitude < 0.1f) return; // ÀÔ·ÂÀÌ ¾øÀ¸¸é Á¾·á
+        if (moveVector.magnitude < 0.1f) return; // ì…ë ¥ì´ ì—†ìœ¼ë©´ ì¢…ë£Œ
 
-        // Ä«¸Ş¶ó ±âÁØ ¹æÇâ °è»ê
-        Transform cameraTransform = Camera.main.transform; // PlayerMoveManager¿¡¼­ Ä«¸Ş¶ó °¡Á®¿È
+        // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê³„ì‚°
+        Transform cameraTransform = Camera.main.transform; // PlayerMoveManagerì—ì„œ ì¹´ë©”ë¼ ê°€ì ¸ì˜´
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
-        cameraForward.y = 0; // ¼öÆò ÀÌµ¿¸¸
+        cameraForward.y = 0; // ìˆ˜í‰ ì´ë™ë§Œ
         cameraRight.y = 0;
         Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
-        // Èû Àû¿ë (¼Óµµ Á¶Àı)
+        // í˜ ì ìš© (ì†ë„ ì¡°ì ˆ)
         PlayerMoveManager.Instance.MoveByForce(moveDirection * airRunForce);
 
-        // Ä³¸¯ÅÍ ¹æÇâÀ» ÀÌµ¿ ¹æÇâ¿¡ ¸ÂÃã (Ä«¸Ş¶ó ±âÁØ)
+        // ìºë¦­í„° ë°©í–¥ì„ ì´ë™ ë°©í–¥ì— ë§ì¶¤ (ì¹´ë©”ë¼ ê¸°ì¤€)
         Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
-        if (moveVector.magnitude > 0.1f) // ÀÔ·ÂÀÌ ÀÖÀ» ¶§¸¸ È¸Àü
+        if (moveVector.magnitude > 0.1f) // ì…ë ¥ì´ ìˆì„ ë•Œë§Œ íšŒì „
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             float rotationSpeed = normalRotationSpeed;
 
-            // µÚÂÊ ÀÔ·Â °¨Áö
+            // ë’¤ìª½ ì…ë ¥ ê°ì§€
             Vector3 currentForward = rb.transform.forward;
             float dotProduct = Vector3.Dot(currentForward, moveDirection);
             bool isBackwardTurn = dotProduct < -fastRotationThreshold;
@@ -80,17 +95,30 @@ public class HW_AirRun : IPlayerState
             {
                 rotationSpeed = fastRotationSpeed;
                 GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/StoppingParticle"), playerMoveManager.gameObject.transform.position, playerMoveManager.gameObject.transform.rotation);
+                rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
+                ToAirState();
             }
 
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
+
         }
 
-        // ¼Óµµ Á¦ÇÑ
+        // ì†ë„ ì œí•œ
         Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         if (flatVelocity.magnitude > maxAirRunSpeed)
         {
             Vector3 limitedVelocity = flatVelocity.normalized * maxAirRunSpeed;
             rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
+        else if (flatVelocity.magnitude < minAirRunSpeed)
+        {
+            ToAirState();
+        }
+
+    }
+
+    private void ToAirState()
+    {
+        HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller));
     }
 }

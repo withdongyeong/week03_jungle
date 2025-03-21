@@ -1,5 +1,5 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -19,11 +19,12 @@ public class HW_Dash : IPlayerState
         playerMoveManager.onGroundedAction += ToRunState;
     }
 
+    float dashTurnTime = 0.3f; // íšŒì „ ì§€ì—° ì‹œê°„
     float dashElapsedTime = 0f;
     float dashTime = 0.23f;
-    float dashVelocity = 60f; // °¢µµ·Î ¹Ş´Â Á¡ÇÁ·Â.
-    float dashAngleY = 5f; // ÈûÀ» ¹Ş´Â °¢µµ.
-    float dashEndForce = 10000f;
+    float dashForce = 25000f; // ê°ë„ë¡œ ë°›ëŠ” ì í”„ë ¥
+    float dashAngleY = 5f; // í˜ì„ ë°›ëŠ” ê°ë„
+    float dashEndForce = 15000f;
     bool dashEnd = false;
     Vector3 finalDashDirection;
 
@@ -31,18 +32,15 @@ public class HW_Dash : IPlayerState
 
     public void EnterState()
     {
-        //Cinemachine camera impulse source Æ®¸®°Å.
-        playerMoveManager.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
-
         playerMoveManager.ManageJumpBool(true);
 
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude < 0.1f)
         {
-            moveVector = new Vector2(0, 1); // ±âº» forward ¹æÇâ
+            moveVector = new Vector2(0, 1); // ê¸°ë³¸ forward ë°©í–¥
         }
 
-        // Ä«¸Ş¶ó ±âÁØ ¹æÇâ °è»ê (¼öÆò)
+        // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê³„ì‚° (ìˆ˜í‰)
         Transform cameraTransform = Camera.main.transform;
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
@@ -50,45 +48,64 @@ public class HW_Dash : IPlayerState
         cameraRight.y = 0;
         Vector3 horizontalDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
-        // YÃà »óÇâ °¢µµ Àû¿ë
-        float yComponent = Mathf.Sin(dashAngleY * Mathf.Deg2Rad); // ¾à 0.2588
-        Vector3 dashDirection = horizontalDirection; // ¼öÆò ¹æÇâ º¹»ç
-        dashDirection.y = yComponent; // Y ¼ººĞÀ» ¾ç¼ö·Î °íÁ¤
+        // Yì¶• ìƒí–¥ ê°ë„ ì ìš©
+        float yComponent = Mathf.Sin(dashAngleY * Mathf.Deg2Rad); // ì•½ 0.2588
+        Vector3 dashDirection = horizontalDirection; // ìˆ˜í‰ ë°©í–¥ ë³µì‚¬
+        dashDirection.y = yComponent; // Y ì„±ë¶„ì„ ì–‘ìˆ˜ë¡œ ê³ ì •
         finalDashDirection = dashDirection.normalized;
 
-        rigidBody.MoveRotation(Quaternion.LookRotation(finalDashDirection));
+        playerMoveManager.MoveByImpulse(finalDashDirection * dashForce);
+
+        // ì¦‰ì‹œ íšŒì „ ëŒ€ì‹  ì½”ë£¨í‹´ìœ¼ë¡œ dashTurnTime ì´í›„ì— íšŒì „
+        playerMoveManager.StartCoroutine(RotateToDashDirection());
 
         DashParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/DashParticle"), playerMoveManager.transform);
+
+        ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>());
     }
 
+    // dashTurnTime ë™ì•ˆ ë¶€ë“œëŸ½ê²Œ íšŒì „í•˜ëŠ” ì½”ë£¨í‹´
+    private IEnumerator RotateToDashDirection()
+    {
+        Quaternion startRotation = rigidBody.rotation; // í˜„ì¬ íšŒì „
+        Quaternion targetRotation = Quaternion.LookRotation(finalDashDirection); // ëª©í‘œ íšŒì „
+        float elapsedTime = 0f;
 
-    private void ToRunState()    
+        while (elapsedTime < dashTurnTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / dashTurnTime;
+            rigidBody.MoveRotation(Quaternion.Slerp(startRotation, targetRotation, t)); // ë¶€ë“œëŸ½ê²Œ ë³´ê°„
+            yield return null;
+        }
+
+        // ìµœì¢… íšŒì „ ê°•ì œ ì„¤ì • (ë³´ê°„ ì˜¤ì°¨ ë°©ì§€)
+        rigidBody.MoveRotation(targetRotation);
+    }
+
+    private void ToRunState()
     {
         HW_PlayerStateController.Instance.ChangeState(new HW_Run(controller));
     }
 
     public void ExitState()
     {
-        //throw new System.NotImplementedException();
-
         GameObject.Destroy(DashParticle);
     }
 
     public void UpdateState()
     {
-        if(!dashEnd && finalDashDirection != null)
+        if (!dashEnd && finalDashDirection != null)
         {
             dashElapsedTime += Time.deltaTime;
 
-            playerMoveManager.MoveByVelocity(finalDashDirection * dashVelocity); 
+            
 
-            if(dashElapsedTime > dashTime)
+            if (dashElapsedTime > dashTime)
             {
                 dashEnd = true;
                 playerMoveManager.MoveByImpulse(-finalDashDirection * dashEndForce);
             }
         }
-
-
     }
 }

@@ -17,14 +17,14 @@ public class HW_Idle : IPlayerState
         playerMoveManager = PlayerMoveManager.Instance;
     }
 
-    float idleJumpForce = 4500f;
+    float idleJumpForce = 7000f;
 
     public void EnterState()
     {
         
 
-        actions.Player.Move.performed += ToWalkState; //¿òÁ÷ÀÓ -> Walk
-        actions.Player.Jump.performed += ToAirState; //Á¡ÇÁ -> Jump
+        actions.Player.Move.performed += ToWalkState; //ì›€ì§ì„ -> Walk
+        actions.Player.Jump.performed += ToAirState; //ì í”„ -> Jump
     }
 
     private void ToAirState(InputAction.CallbackContext context)
@@ -32,7 +32,7 @@ public class HW_Idle : IPlayerState
         if(!playerMoveManager.isJumped)
         {
             playerMoveManager.ManageJumpBool(true); //isJumped => True.
-            PlayerMoveManager.Instance.MoveByImpulse(Vector3.up * idleJumpForce); //Jump. ´ÜÂ÷·ÎÀÎÇÑ °øÁß ÀÌÇàÀ» ÀÏ´Ü ¹è·Á.
+            PlayerMoveManager.Instance.MoveByImpulse(Vector3.up * idleJumpForce); //Jump. ë‹¨ì°¨ë¡œì¸í•œ ê³µì¤‘ ì´í–‰ì„ ì¼ë‹¨ ë°°ë ¤.
             HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller)); 
         }
 
@@ -49,7 +49,7 @@ public class HW_Idle : IPlayerState
     {
         Debug.Log("Exit Idle");
 
-        //¾×¼Ç Á¦°Å.
+        //ì•¡ì…˜ ì œê±°.
         actions.Player.Move.performed -= ToWalkState; 
         actions.Player.Jump.performed -= ToAirState;       
     }

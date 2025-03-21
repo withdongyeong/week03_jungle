@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class HW_AirDash : IPlayerState
@@ -16,15 +18,18 @@ public class HW_AirDash : IPlayerState
         rigidBody = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
     }
 
+    #region move Variables
     float airDashElapsedTime = 0f;
     float airDashTime = 0.3f;
-    float airDashVelocity = 50f; // °¢µµ·Î ¹Ş´Â Á¡ÇÁ·Â.
-    float airDashAngleY = 3f; // ÈûÀ» ¹Ş´Â °¢µµ.
+    float airDashForce = 25000f; // ê°ë„ë¡œ ë°›ëŠ” ì í”„ë ¥.
+    float airDashAngleY = 3f; // í˜ì„ ë°›ëŠ” ê°ë„.
     float controlEnableTime = 0.6f;
     float elapsedControlEnableTime = 0;
-    float airDashEndForce = 10000f; //³¡³µÀ» ¶§ ¿ª¹æÇâÀ¸·Î ¹Ş´Â Èû.
+    float airDashEndForce = 15000f; //ëë‚¬ì„ ë•Œ ì—­ë°©í–¥ìœ¼ë¡œ ë°›ëŠ” í˜.
+    float airDashTurnTime = 0.2f;
     bool airDashEnd = false;
     Vector3 finalAirDashDirection;
+    #endregion
 
     GameObject airDashParticle;
 
@@ -35,10 +40,10 @@ public class HW_AirDash : IPlayerState
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude < 0.1f)
         {
-            moveVector = new Vector2(0, 1); // ±âº» forward ¹æÇâ
+            moveVector = new Vector2(0, 1); // ê¸°ë³¸ forward ë°©í–¥
         }
 
-        // Ä«¸Ş¶ó ±âÁØ ¹æÇâ °è»ê (¼öÆò)
+        // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê³„ì‚° (ìˆ˜í‰)
         Transform cameraTransform = Camera.main.transform;
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
@@ -46,15 +51,39 @@ public class HW_AirDash : IPlayerState
         cameraRight.y = 0;
         Vector3 horizontalDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
-        // YÃà »óÇâ °¢µµ Àû¿ë
-        float yComponent = Mathf.Sin(airDashAngleY * Mathf.Deg2Rad); // ¾à 0.2588
-        Vector3 dashDirection = horizontalDirection; // ¼öÆò ¹æÇâ º¹»ç
-        dashDirection.y = yComponent; // Y ¼ººĞÀ» ¾ç¼ö·Î °íÁ¤
+        // Yì¶• ìƒí–¥ ê°ë„ ì ìš©
+        float yComponent = Mathf.Sin(airDashAngleY * Mathf.Deg2Rad); // ì•½ 0.2588
+        Vector3 dashDirection = horizontalDirection; // ìˆ˜í‰ ë°©í–¥ ë³µì‚¬
+        dashDirection.y = yComponent; // Y ì„±ë¶„ì„ ì–‘ìˆ˜ë¡œ ê³ ì •
         finalAirDashDirection = dashDirection.normalized;
+
+        playerMoveManager.MoveByImpulse(finalAirDashDirection * airDashForce);
 
         rigidBody.MoveRotation(Quaternion.LookRotation(finalAirDashDirection));
 
         airDashParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/DashParticle"), playerMoveManager.transform);
+
+        playerMoveManager.StartCoroutine(RotateToAirDashDirection());
+
+        ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>());
+    }
+
+    private IEnumerator RotateToAirDashDirection()
+    {
+        Quaternion startRotation = rigidBody.rotation; // í˜„ì¬ íšŒì „
+        Quaternion targetRotation = Quaternion.LookRotation(finalAirDashDirection); // ëª©í‘œ íšŒì „
+        float elapsedTime = 0f;
+
+        while (elapsedTime < airDashTurnTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / airDashTurnTime;
+            rigidBody.MoveRotation(Quaternion.Slerp(startRotation, targetRotation, t)); // ë¶€ë“œëŸ½ê²Œ ë³´ê°„
+            yield return null;
+        }
+
+        // ìµœì¢… íšŒì „ ê°•ì œ ì„¤ì • (ë³´ê°„ ì˜¤ì°¨ ë°©ì§€)
+        rigidBody.MoveRotation(targetRotation);
     }
 
     public void ExitState()
@@ -69,8 +98,6 @@ public class HW_AirDash : IPlayerState
         if (!airDashEnd && finalAirDashDirection != null)
         {
             airDashElapsedTime += Time.deltaTime;
-
-            playerMoveManager.MoveByVelocity(finalAirDashDirection * airDashVelocity);
 
             if (airDashElapsedTime > airDashTime)
             {
