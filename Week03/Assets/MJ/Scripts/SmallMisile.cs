@@ -1,16 +1,26 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
-public class SmallMisile : MonoBehaviour
+public class SmallMisile : MonoBehaviour, IPoolable
 {
     float time = 0f;
     Rigidbody rb;
     [SerializeField] private float speed;
+
+    public IObjectPool<GameObject> pool { get; set; }
+
+    private int layerMask = (1 << 6) | (1 << 7);
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    private void OnEnable()
+    {
+        time = 0f;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -35,6 +45,27 @@ public class SmallMisile : MonoBehaviour
 
             }
         }
+
+        Vector3 point0 = transform.TransformPoint(0, 0, 0.5f);
+        Vector3 point1 = transform.TransformPoint(0, 0, -0.5f);
+        Collider[] hitColliders = Physics.OverlapCapsule(point0,point1,0.5f,layerMask);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            if (hitColliders[i].CompareTag("Player"))
+            {
+                GameInfoManager.Instance.UpdateHP(-10);
+            }
+        }
+        if (hitColliders.Length > 0)
+        {
+            ReleaseObject();
+        }
+            
+    }
+
+    public void ReleaseObject()
+    {
+        pool.Release(gameObject);
     }
 }
 

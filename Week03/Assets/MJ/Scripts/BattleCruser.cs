@@ -10,7 +10,8 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        Invoke("ComboAttack", 1f);
+        Invoke("FireSmallMissile", 1f);
+        
     }
 
     // Update is called once per frame
@@ -21,12 +22,13 @@ public class BattleCruser : MonoBehaviour
 
     private void FireSmallMissile()
     {
+        Debug.Log("น฿ป็");
         for(int b=0; b<3; b++)
         {
             for (int i = 0; i < 6; i++)
             {
-                Instantiate(smallMissile, transform.position + new Vector3(-15.1f, 5 * b - 5, i * 4 - 10), Quaternion.LookRotation(-transform.right));
-                Instantiate(smallMissile, transform.position + new Vector3(15.1f, 5 * b - 5, i * 4 - 10), Quaternion.LookRotation(transform.right));
+                PoolManager.instance.GetGo("SmallMissile", transform.position + new Vector3(-15.2f, 5 * b - 5, i * 4 - 10), Quaternion.LookRotation(-transform.right));
+                PoolManager.instance.GetGo("SmallMissile", transform.position + new Vector3(15.2f, 5 * b - 5, i * 4 - 10), Quaternion.LookRotation(transform.right));
             }
         }
 
