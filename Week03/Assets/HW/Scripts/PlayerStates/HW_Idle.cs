@@ -40,7 +40,7 @@ public class HW_Idle : IPlayerState
 
     private void ToWalkState(InputAction.CallbackContext context)
     {
-        playerMoveManager.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
+        //playerMoveManager.GetComponent<CinemachineImpulseSource>().GenerateImpulse();
 
         HW_PlayerStateController.Instance.ChangeState(new HW_Walk(controller));
     }

@@ -34,7 +34,7 @@ public class HW_Air : IPlayerState
 
         //input action √ ±‚»≠.
         actions.Player.Attack.performed += ToAirDashState;
-        actions.Player.Crouch.performed += ToAirRunState;
+        actions.Player.Run.performed += ToAirRunState;
     }
 
     private void ToAirRunState(InputAction.CallbackContext context)
@@ -52,7 +52,7 @@ public class HW_Air : IPlayerState
     public void ExitState()
     {
         actions.Player.Attack.performed -= ToAirDashState;
-        actions.Player.Crouch.performed -= ToAirRunState;
+        actions.Player.Run.performed -= ToAirRunState;
     }
 
     public void UpdateState()

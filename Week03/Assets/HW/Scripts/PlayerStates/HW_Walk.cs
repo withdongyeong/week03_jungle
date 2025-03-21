@@ -19,9 +19,8 @@ public class HW_Walk : IPlayerState
     }
 
     [Header("Walk Variables")]
-    float walkForce = 300f;
-    float initialWalkPower = 10f;
-    float maxWalkSpeed = 25f;
+    float walkForce = 600f;
+    float maxWalkSpeed = 15f;
     float walkJumpForce = 5000f;
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
@@ -29,10 +28,16 @@ public class HW_Walk : IPlayerState
 
     public void EnterState()
     {
+        if(rb.linearVelocity.magnitude > 15)
+        {
+            rb.linearVelocity = rb.linearVelocity / rb.linearVelocity.magnitude * 15;
+        }
+
         Debug.Log("Entering WalkState");
-        actions.Player.Crouch.performed += ToRunState;
+        actions.Player.Run.performed += ToRunState;
         actions.Player.Attack.performed += ToDashState;
         actions.Player.Jump.performed += ToAirState;
+        actions.Player.Move.Enable(); // Move 액션 활성화 보장
     }
 
     private void ToAirState(InputAction.CallbackContext context)
@@ -59,7 +64,7 @@ public class HW_Walk : IPlayerState
     public void ExitState()
     {
         Debug.Log("Exit Walk");
-        actions.Player.Crouch.performed -= ToRunState;
+        actions.Player.Run.performed -= ToRunState;
         actions.Player.Attack.performed -= ToDashState;
         actions.Player.Jump.performed -= ToAirState;
     }
@@ -81,7 +86,6 @@ public class HW_Walk : IPlayerState
             PlayerMoveManager.Instance.MoveByForce(moveDirection * walkForce);
 
             // 캐릭터 방향 조정
-            Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
             if (moveVector.magnitude > 0.1f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -105,7 +109,7 @@ public class HW_Walk : IPlayerState
             if (flatVelocity.magnitude > maxWalkSpeed)
             {
                 // 감속 속도 조정
-                float decelerationRate = 1f; // 초당 감속 정도 (조정 가능)
+                float decelerationRate = 5f; // 초당 감속 정도 (조정 가능)
                 Vector3 targetVelocity = flatVelocity.normalized * maxWalkSpeed;
                 flatVelocity = Vector3.Lerp(flatVelocity, targetVelocity, Time.deltaTime * decelerationRate);
                 rb.linearVelocity = new Vector3(flatVelocity.x, rb.linearVelocity.y, flatVelocity.z);
