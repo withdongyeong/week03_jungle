@@ -23,7 +23,7 @@ public class GlobalSettings : MonoBehaviour
 
 
     [Header("Default Projectile Settings")]
-    public float defaultProjectileSpeed = 50f;
+    public float defaultProjectileSpeed = 100f;
     public float defaultProjectileWarningTime = 0.5f;
 
     public Vector3 defaultProjectileWarningScale = new Vector3(3f, 3f, 3f);
@@ -32,6 +32,8 @@ public class GlobalSettings : MonoBehaviour
 
     public float defaultProjectileSpawnHeight = 25f;
     public float defaultProjectileSpawnRange = 15f;
+    public float laserExplosionEffectTime = 1f;
+    public Vector3 laserExplosionScale = new Vector3(3f, 3f, 3f);
 
     private void Awake()
     {

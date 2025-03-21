@@ -10,10 +10,12 @@ public class EnemyManager : MonoBehaviour
     public GameObject warningPrefab;
     public GameObject explosionPrefab;
     public GameObject laserPrefab;
+    public GameObject laserExplosionPrefab;
 
     public PoolKey warningKey = PoolKey.Warning;
     public PoolKey explosionKey = PoolKey.ExplosionEffect;
     public PoolKey laserKey = PoolKey.ProjectileLaser;
+    public PoolKey laserExplosionKey = PoolKey.LaserExplosion;
 
     private int currentEnemyCount = 0;
     private float spawnTimer = 0f;
@@ -26,7 +28,9 @@ public class EnemyManager : MonoBehaviour
     {
         ObjectPoolManager.Instance.CreatePool(warningKey, warningPrefab, 10);
         ObjectPoolManager.Instance.CreatePool(explosionKey, explosionPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(laserKey, laserPrefab, 10); // ❗ laserPrefab으로 수정
+        ObjectPoolManager.Instance.CreatePool(laserKey, laserPrefab, 10);
+        ObjectPoolManager.Instance.CreatePool(laserExplosionKey, laserExplosionPrefab, 10);
+
     }
 
     private void Update()

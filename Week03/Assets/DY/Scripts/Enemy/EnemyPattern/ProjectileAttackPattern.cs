@@ -73,7 +73,23 @@ public class ProjectileAttackPattern : IEnemyAttackPattern
         }
 
         if (projectile != null)
+        {
             ObjectPoolManager.Instance.ReturnToPool(PoolKey.ProjectileLaser, projectile);
+
+            GameObject laserExplosion = ObjectPoolManager.Instance.SpawnFromPool(PoolKey.LaserExplosion, targetPos, Quaternion.identity);
+
+            laserExplosion.transform.localScale = GlobalSettings.Instance.laserExplosionScale;
+
+            float impactDuration = GlobalSettings.Instance.laserExplosionEffectTime;
+            attacker.GetComponent<MonoBehaviour>().StartCoroutine(DisableAfterSeconds(PoolKey.LaserExplosion, laserExplosion, impactDuration));
+        }
+    }
+
+    private IEnumerator DisableAfterSeconds(PoolKey key, GameObject obj, float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
+        if (obj != null)
+            ObjectPoolManager.Instance.ReturnToPool(key, obj);
     }
 
 
