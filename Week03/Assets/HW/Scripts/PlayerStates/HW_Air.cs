@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,7 +14,7 @@ public class HW_Air : IPlayerState
         this.controller = controller;
         this.actions = controller.GetInputActions();
 
-        //Áö¸é Ãæµ¹ °¨Áö. Air -> Walk.
+        //ì§€ë©´ ì¶©ëŒ ê°ì§€. Air -> Walk.
         playerMoveManager = PlayerMoveManager.Instance;
         playerMoveManager.onGroundedAction += ToWalkState;
 
@@ -22,7 +23,7 @@ public class HW_Air : IPlayerState
     float maxAirSpeed = 30f;
     float airForce = 350f;
 
-    private void ToWalkState() //OnGroundedActionÀÌ Æ®¸®°Å.
+    private void ToWalkState() //OnGroundedActionì´ íŠ¸ë¦¬ê±°.
     {
         HW_PlayerStateController.Instance.ChangeState(new HW_Walk(controller));
     }
@@ -30,11 +31,18 @@ public class HW_Air : IPlayerState
 
     public void EnterState()
     {
-        playerMoveManager.ManageJumpBool(true); //Á¡ÇÁÇÑ »óÈ².
+        playerMoveManager.ManageJumpBool(true); //ì í”„í•œ ìƒí™©.
 
-        //input action ÃÊ±âÈ­.
+        //input action ì´ˆê¸°í™”.
         actions.Player.Attack.performed += ToAirDashState;
         actions.Player.Run.performed += ToAirRunState;
+
+        ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>
+        {
+            //(190, 227, "ì í”„"),   // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 0, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 1
+            (196, 228, "ê³µì¤‘ ë‹¬ë¦¬ê¸°"), // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 2, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 3
+            (99, 225, "ê³µì¤‘ ëŒ€ì‹œ")    // í‚¤ë³´ë“œ: ì¸ë±ìŠ¤ 4, ê²Œì„íŒ¨ë“œ: ì¸ë±ìŠ¤ 5
+        });
     }
 
     private void ToAirRunState(InputAction.CallbackContext context)
@@ -58,28 +66,28 @@ public class HW_Air : IPlayerState
     public void UpdateState()
     {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
-        if (moveVector.magnitude < 0.1f) return; // ÀÔ·ÂÀÌ ¾øÀ¸¸é Á¾·á
+        if (moveVector.magnitude < 0.1f) return; // ì…ë ¥ì´ ì—†ìœ¼ë©´ ì¢…ë£Œ
 
-        // Ä«¸Ş¶ó ±âÁØ ¹æÇâ °è»ê
-        Transform cameraTransform = Camera.main.transform; // PlayerMoveManager¿¡¼­ Ä«¸Ş¶ó °¡Á®¿È
+        // ì¹´ë©”ë¼ ê¸°ì¤€ ë°©í–¥ ê³„ì‚°
+        Transform cameraTransform = Camera.main.transform; // PlayerMoveManagerì—ì„œ ì¹´ë©”ë¼ ê°€ì ¸ì˜´
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
-        cameraForward.y = 0; // ¼öÆò ÀÌµ¿¸¸
+        cameraForward.y = 0; // ìˆ˜í‰ ì´ë™ë§Œ
         cameraRight.y = 0;
         Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
-        // Èû Àû¿ë (¼Óµµ Á¶Àı)
+        // í˜ ì ìš© (ì†ë„ ì¡°ì ˆ)
         PlayerMoveManager.Instance.MoveByForce(moveDirection * airForce);
 
-        // Ä³¸¯ÅÍ ¹æÇâÀ» ÀÌµ¿ ¹æÇâ¿¡ ¸ÂÃã (Ä«¸Ş¶ó ±âÁØ)
+        // ìºë¦­í„° ë°©í–¥ì„ ì´ë™ ë°©í–¥ì— ë§ì¶¤ (ì¹´ë©”ë¼ ê¸°ì¤€)
         Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
-        if (moveVector.magnitude > 0.1f) // ÀÔ·ÂÀÌ ÀÖÀ» ¶§¸¸ È¸Àü
+        if (moveVector.magnitude > 0.1f) // ì…ë ¥ì´ ìˆì„ ë•Œë§Œ íšŒì „
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
         }
 
-        // ¼Óµµ Á¦ÇÑ
+        // ì†ë„ ì œí•œ
         Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         if (flatVelocity.magnitude > maxAirSpeed)
         {
