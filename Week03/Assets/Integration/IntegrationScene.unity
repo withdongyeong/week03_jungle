@@ -3606,10 +3606,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: GlobalSettings
       objectReference: {fileID: 0}
-    - target: {fileID: 5305511079941269421, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6998758394571428566, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -8653,6 +8649,10 @@ PrefabInstance:
     - target: {fileID: 2094311683877324296, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
       propertyPath: m_Name
       value: BattleCruser
+      objectReference: {fileID: 0}
+    - target: {fileID: 2094311683877324296, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
       propertyPath: m_LocalPosition.x

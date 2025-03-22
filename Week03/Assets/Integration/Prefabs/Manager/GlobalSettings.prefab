@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectPoolCleanupInterval: 30
+  laserDamage: -5
+  explosionDamage: -20
   defaultExplosionAttackMinInterval: 5
   defaultExplosionAttackMaxInterval: 8
   defaultExplosionWarningScale: {x: 10, y: 10, z: 10}

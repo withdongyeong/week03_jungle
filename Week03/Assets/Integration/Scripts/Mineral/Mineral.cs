@@ -7,20 +7,25 @@ public class Mineral : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player")) return;
-
-        var manager = FindAnyObjectByType<MineralManager>();
-        manager?.NotifyMineralCollected(gameObject);
-
-        int score = type switch
+        if (other.CompareTag("Player"))
         {
-            MineralType.Mineral1 => GlobalSettings.Instance.mineral1Score,
-            MineralType.Mineral2 => GlobalSettings.Instance.mineral2Score,
-            MineralType.Mineral3 => GlobalSettings.Instance.mineral3Score,
-            _ => 0
-        };
+            var manager = FindAnyObjectByType<MineralManager>();
+            manager?.NotifyMineralCollected(gameObject);
 
-        GameInfoManager.Instance.UpdateMineral(score);
-        Debug.Log("미네랄 먹음!!");
+            int score = type switch
+            {
+                MineralType.Mineral1 => GlobalSettings.Instance.mineral1Score,
+                MineralType.Mineral2 => GlobalSettings.Instance.mineral2Score,
+                MineralType.Mineral3 => GlobalSettings.Instance.mineral3Score,
+                _ => 0
+            };
+
+            GameInfoManager.Instance.UpdateMineral(score);
+        }
+        else if (other.CompareTag("Projectile")) // 공격체에 맞았을 때
+        {
+            var manager = FindAnyObjectByType<MineralManager>();
+            manager?.NotifyMineralCollected(gameObject);
+        }
     }
 }

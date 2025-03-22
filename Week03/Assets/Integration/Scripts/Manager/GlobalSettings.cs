@@ -7,6 +7,10 @@ public class GlobalSettings : MonoBehaviour
     [Header("Object Pool")]
     public float objectPoolCleanupInterval = 30f;
 
+    [Header("Enemy Damages")]
+    public int laserDamage = -5;
+    public int explosionDamage = -20;
+
     [Header("Default Explosion Settings")]
     public float defaultExplosionAttackMinInterval = 5f;
     public float defaultExplosionAttackMaxInterval = 8f;
