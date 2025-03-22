@@ -11,7 +11,7 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        Invoke( "FireSmallMissile",1f);
+        InvokeRepeating("Attack", 1f, 10f);
         
     }
 

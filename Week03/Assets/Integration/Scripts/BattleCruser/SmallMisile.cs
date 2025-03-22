@@ -27,7 +27,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
         time += Time.deltaTime;
         if (1.8f > time && time > 0)
         {
-            rb.MovePosition(transform.position + new Vector3 (0,-100*Time.deltaTime,0));
+            rb.MovePosition(transform.position + new Vector3(0, -100 * Time.deltaTime, 0));
             Debug.Log(transform.position);
 
         }
@@ -36,7 +36,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
             transform.LookAt(HW_PlayerStateController.Instance.transform);
 
         }
-        else if (time > 3.4f)
+        else if (12f > time && time > 3.4f)
         {
             rb.linearVelocity = transform.forward * speed * 3.5f;
             Vector3 targetDir = HW_PlayerStateController.Instance.transform.position - transform.position;
@@ -46,8 +46,10 @@ public class SmallMisile : MonoBehaviour, IPoolable
 
             }
         }
+        else
+            ReleaseObject();
 
-        Vector3 point0 = transform.TransformPoint(0, 0, 0.5f);
+            Vector3 point0 = transform.TransformPoint(0, 0, 0.5f);
         Vector3 point1 = transform.TransformPoint(0, 0, -0.5f);
         Collider[] hitColliders = Physics.OverlapCapsule(point0,point1,0.5f,layerMask);
         for (int i = 0; i < hitColliders.Length; i++)
