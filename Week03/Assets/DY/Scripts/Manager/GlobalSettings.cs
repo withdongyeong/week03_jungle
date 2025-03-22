@@ -36,6 +36,19 @@ public class GlobalSettings : MonoBehaviour
     public float laserExplosionEffectTime = 1f;
     public Vector3 laserExplosionScale = new Vector3(3f, 3f, 3f);
 
+    [Header("Default Mineral Settings")]
+    public int maxMineralCount = 20;
+    public float mineralSpawnInterval = 3f;
+    public float mineralSpawnRange = 80f;
+
+    public float mineral1Probability = 0.3f;
+    public float mineral2Probability = 0.3f;
+    public float mineral3Probability = 0.4f;
+    [Header("Mineral Score Table")]
+    public int mineral1Score = 4;
+    public int mineral2Score = 8;
+    public int mineral3Score = 16;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
