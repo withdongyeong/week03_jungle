@@ -85,7 +85,7 @@ public class PlayerMoveManager : MonoBehaviour
 
     public void StartVibration()
     {
-        Gamepad.current.SetMotorSpeeds(0.5f, 0.5f); // 좌우 모터 중간 세기로 0.5초 진동
+        Gamepad.current?.SetMotorSpeeds(0.5f, 0.5f); // 좌우 모터 중간 세기로 0.5초 진동
         Invoke(nameof(StopVibration), 0.12f); // 0.5초 후 진동 중지
     }
 

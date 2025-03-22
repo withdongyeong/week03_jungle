@@ -12,7 +12,7 @@ public class MineralTextManager : MonoBehaviour
     {
         mineralText = GetComponent<TextMeshProUGUI>();
 
-        mineralText.text = "Mineral : 0 / 100";
+        mineralText.text = "Mineral\n0 / 100";
     }
 
     private void Start()
@@ -29,22 +29,22 @@ public class MineralTextManager : MonoBehaviour
     private IEnumerator UpdateMineralTextCoroutine(int newValue)
     {
         float elapsedTime = 0f;
-        float startValue = GetCurrentMineralValue(); // ÇöÀç °ª ÆÄ½ÌÇØ¼­ °¡Á®¿À±â
+        float startValue = GetCurrentMineralValue(); // í˜„ìž¬ ê°’ íŒŒì‹±í•´ì„œ ê°€ì ¸ì˜¤ê¸°
 
         while (elapsedTime < moveDuration)
         {
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / moveDuration;
 
-            // Lerp·Î ÇöÀç °ª¿¡¼­ ¸ñÇ¥ °ª±îÁö º¸°£
+            // Lerpë¡œ í˜„ìž¬ ê°’ì—ì„œ ëª©í‘œ ê°’ê¹Œì§€ ë³´ê°„
             float currentValue = Mathf.Lerp(startValue, newValue, t);
-            mineralText.text = $"Mineral : {Mathf.RoundToInt(currentValue)} / 100";
+            mineralText.text = $"Mineral\n{Mathf.RoundToInt(currentValue)} / 100";
 
-            yield return null; // ´ÙÀ½ ÇÁ·¹ÀÓ±îÁö ´ë±â
+            yield return null; // ë‹¤ìŒ í”„ë ˆìž„ê¹Œì§€ ëŒ€ê¸°
         }
 
-        // Á¤È®È÷ ¸ñÇ¥ °ª¿¡ µµ´ÞÇÏµµ·Ï ¸¶Áö¸· ¼³Á¤
-        mineralText.text = $"Mineral : {newValue} / 100";
+        // ì •í™•ížˆ ëª©í‘œ ê°’ì— ë„ë‹¬í•˜ë„ë¡ ë§ˆì§€ë§‰ ì„¤ì •
+        mineralText.text = $"Mineral\n{newValue} / 100";
     }
 
     private float GetCurrentMineralValue()
@@ -52,12 +52,12 @@ public class MineralTextManager : MonoBehaviour
         if (string.IsNullOrEmpty(mineralText.text))
             return 0f;
 
-        // "Mineral : 50 / 100" Çü½Ä¿¡¼­ ¼ýÀÚ ºÎºÐ ÃßÃâ
+        // "Mineral : 50 / 100" í˜•ì‹ì—ì„œ ìˆ«ìž ë¶€ë¶„ ì¶”ì¶œ
         string[] parts = mineralText.text.Split(' ');
         if (parts.Length >= 3 && float.TryParse(parts[2], out float value))
         {
             return value;
         }
-        return 0f; // ÆÄ½Ì ½ÇÆÐ ½Ã ±âº»°ª 0
+        return 0f; // íŒŒì‹± ì‹¤íŒ¨ ì‹œ ê¸°ë³¸ê°’ 0
     }
 }

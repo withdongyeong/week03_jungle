@@ -85,8 +85,8 @@ public class HW_Run : IPlayerState
         actions.Player.Jump.performed -= ToAirRunState;
 
         GameObject.Destroy(groundSweepParticle, 0.1f);
-        Gamepad.current.SetMotorSpeeds(0f, 0f);
-    }
+        Gamepad.current?.SetMotorSpeeds(0f, 0f);
+    }   
 
     public void UpdateState()
     {
@@ -139,8 +139,8 @@ public class HW_Run : IPlayerState
         {
             ToWalkState();
         }
-
-        Gamepad.current.SetMotorSpeeds(0.1f, 0.1f);
+            
+        Gamepad.current?.SetMotorSpeeds(0.1f, 0.1f);
     }
 
     private void ToWalkState()
