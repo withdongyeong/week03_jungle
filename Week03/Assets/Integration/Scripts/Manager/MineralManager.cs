@@ -6,10 +6,14 @@ public class MineralManager : MonoBehaviour
     public GameObject mineral1Prefab;
     public GameObject mineral2Prefab;
     public GameObject mineral3Prefab;
+    public GameObject mineralCollectEffectPrefab;
+    public GameObject mineralDestroyEffectPrefab;
 
     public PoolKey mineral1Key = PoolKey.Mineral_1;
     public PoolKey mineral2Key = PoolKey.Mineral_2;
     public PoolKey mineral3Key = PoolKey.Mineral_3;
+    public PoolKey mineralCollectEffectKey = PoolKey.mineralCollectEffect;
+    public PoolKey mineralDestroyEffectKey = PoolKey.mineralDestroyEffect;
 
     private float spawnTimer = 0f;
     private List<GameObject> activeMinerals = new();
@@ -24,9 +28,11 @@ public class MineralManager : MonoBehaviour
 
     private void Start()
     {
-        ObjectPoolManager.Instance.CreatePool(mineral1Key, mineral1Prefab, 10);
-        ObjectPoolManager.Instance.CreatePool(mineral2Key, mineral2Prefab, 10);
-        ObjectPoolManager.Instance.CreatePool(mineral3Key, mineral3Prefab, 10);
+        ObjectPoolManager.Instance.CreatePool(mineral1Key, mineral1Prefab, 15);
+        ObjectPoolManager.Instance.CreatePool(mineral2Key, mineral2Prefab, 5);
+        ObjectPoolManager.Instance.CreatePool(mineral3Key, mineral3Prefab, 3);
+        ObjectPoolManager.Instance.CreatePool(mineralCollectEffectKey, mineralCollectEffectPrefab, 3);
+        ObjectPoolManager.Instance.CreatePool(mineralDestroyEffectKey, mineralDestroyEffectPrefab, 5);
     }
 
     private void Update()
@@ -72,15 +78,25 @@ public class MineralManager : MonoBehaviour
         return new Vector3(basePos.x + x, y, basePos.z + z);
     }
 
-    public void NotifyMineralCollected(GameObject mineral)
+    public void NotifyMineralCollected(GameObject mineral, Mineral.MineralHitType hitType)
     {
         if (activeMinerals.Contains(mineral))
-        {
             activeMinerals.Remove(mineral);
-        }
 
         PoolKey key = GetMineralKey(mineral);
         ObjectPoolManager.Instance.ReturnToPool(key, mineral);
+
+        switch (hitType)
+        {
+            case Mineral.MineralHitType.CollectedByPlayer:
+                ObjectPoolManager.Instance.SpawnFromPool(mineralCollectEffectKey, mineral.transform.position, Quaternion.identity);
+                break;
+
+            case Mineral.MineralHitType.DestroyedByProjectile:
+                ObjectPoolManager.Instance.SpawnFromPool(mineralDestroyEffectKey, mineral.transform.position, Quaternion.identity);
+                break;
+        }
+
     }
 
     private PoolKey GetMineralKey(GameObject obj)

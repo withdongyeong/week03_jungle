@@ -11,6 +11,8 @@ public enum PoolKey
     Drone,
     PulseProjectile,
     SmallMissile,
-    YamatoCannon
+    YamatoCannon,
+    mineralCollectEffect,
+    mineralDestroyEffect
 
 }

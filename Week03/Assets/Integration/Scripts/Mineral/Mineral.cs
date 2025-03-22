@@ -4,14 +4,17 @@ public class Mineral : MonoBehaviour
 {
     public enum MineralType { Mineral1, Mineral2, Mineral3 }
     public MineralType type;
+    public enum MineralHitType
+    {
+        CollectedByPlayer,
+        DestroyedByProjectile
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            var manager = FindAnyObjectByType<MineralManager>();
-            manager?.NotifyMineralCollected(gameObject);
-
             int score = type switch
             {
                 MineralType.Mineral1 => GlobalSettings.Instance.mineral1Score,
@@ -21,11 +24,12 @@ public class Mineral : MonoBehaviour
             };
 
             GameInfoManager.Instance.UpdateMineral(score);
+            FindAnyObjectByType<MineralManager>()?.NotifyMineralCollected(gameObject, MineralHitType.CollectedByPlayer);
         }
         else if (other.CompareTag("Projectile"))
         {
-            var manager = FindAnyObjectByType<MineralManager>();
-            manager?.NotifyMineralCollected(gameObject);
+            FindAnyObjectByType<MineralManager>()?.NotifyMineralCollected(gameObject, MineralHitType.DestroyedByProjectile);
         }
     }
+
 }

@@ -5113,6 +5113,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3902049184374826098, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
+      propertyPath: mineralCollectEffectPrefab
+      value: 
+      objectReference: {fileID: 2087948834549187985, guid: 85e21fa8570e41a4f9d2541b6dbca4d6, type: 3}
+    - target: {fileID: 3902049184374826098, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
+      propertyPath: mineralDestroyEffectPrefab
+      value: 
+      objectReference: {fileID: 2087948834549187985, guid: 7eeba5eb7e7b83c4ea7ce62a0e300905, type: 3}
     - target: {fileID: 7420264657858362943, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
       propertyPath: m_Name
       value: MineralManager
