@@ -11,7 +11,7 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        DroneAttack();
+     
         
     }
 
@@ -89,14 +89,16 @@ public class BattleCruser : MonoBehaviour
 
     void Attack()
     {
-        int attackNum = Random.Range(0, 2);
-        if(attackNum == 0)
+        int attackNum = Random.Range(0, 3);
+        if (attackNum == 0)
         {
             StartCoroutine(PulseGun());
         }
-        else
+        else if (attackNum == 1)
         {
             FireSmallMissile();
         }
+        else
+            DroneAttack();
     }
 }

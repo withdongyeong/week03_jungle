@@ -57,11 +57,11 @@ public class Drone : MonoBehaviour, IPoolable
                 finalPosition = HW_PlayerStateController.Instance.transform.position;
 
             }
-            else if(1f<timeForFire || timeForFire < 1.3f)
+            else if(1f<timeForFire && timeForFire < 1.1f)
             {
                 isTracking = false;
             }
-            else if (1.3f < timeForFire)
+            else if (1.1f < timeForFire)
             {
                 isDroneFire = false;
                 lineRenderer.endWidth = 2f;
@@ -72,7 +72,7 @@ public class Drone : MonoBehaviour, IPoolable
                 }
                 lineRenderer.SetPosition(0, transform.position);
                 lineRenderer.SetPosition(1, transform.position + transform.forward * 800);
-                Invoke("TurnOffLaser", 0.03f);
+                Invoke("TurnOffLaser", 0.05f);
 
             }
             timeForFire += Time.deltaTime;
@@ -85,7 +85,7 @@ public class Drone : MonoBehaviour, IPoolable
     IEnumerator DroneRoutine()
     {
         time = 0f;
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         isDroneFire = true;
         lineRenderer.positionCount = 2;
         while (time<2f)
