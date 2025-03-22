@@ -97,11 +97,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6538150502299864419}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b9de418146502249b36f1aa8f9b4fe5, type: 3}
+  m_Script: {fileID: 11500000, guid: e2b108e1041233f46b2f61b1dc1f4f84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 800
-  warning: {fileID: 6626971696320364410, guid: c51c53b9d38d9cd4ba1f7faf574c12a9, type: 3}
+  speed: 0
+  warning: {fileID: 6626971696320364410, guid: 78d531dafe69135418e98be44ea68bda, type: 3}
 --- !u!54 &3637051036599894715
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -50,7 +50,15 @@ MonoBehaviour:
   explosionPrefab: {fileID: 5988403175243246575, guid: 2a679b2c076a2854cb249c423881bc00, type: 3}
   laserPrefab: {fileID: 2743562884138118611, guid: 0c078f2555e7ade45aa30e5b330cff2f, type: 3}
   laserExplosionPrefab: {fileID: 5988403175243246575, guid: 4c3c6c7f9958f8b47b876ba66a8f3cf5, type: 3}
+  dronePrefab: {fileID: 6256572013890748254, guid: 89796882672ed8a4dacc14e5bbdfe5b0, type: 3}
+  pulsePrefab: {fileID: 5837719957669596441, guid: 3f896698f74647641904b0b52894258d, type: 3}
+  yamatoPrefab: {fileID: 6538150502299864419, guid: 8d5f8610dd70fe54f97394b88d6658d1, type: 3}
+  smallMissilePrefab: {fileID: 1558270230357458291, guid: 2393b13f84400c348a405c7068618ac6, type: 3}
   warningKey: 0
   explosionKey: 1
   laserKey: 2
   laserExplosionKey: 3
+  drone: 8
+  pulse: 9
+  yamato: 11
+  smallMissile: 10

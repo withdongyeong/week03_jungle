@@ -11,11 +11,20 @@ public class EnemyManager : MonoBehaviour
     public GameObject explosionPrefab;
     public GameObject laserPrefab;
     public GameObject laserExplosionPrefab;
+    public GameObject dronePrefab;
+    public GameObject pulsePrefab;
+    public GameObject yamatoPrefab;
+    public GameObject smallMissilePrefab;
+
 
     public PoolKey warningKey = PoolKey.Warning;
     public PoolKey explosionKey = PoolKey.ExplosionEffect;
     public PoolKey laserKey = PoolKey.ProjectileLaser;
     public PoolKey laserExplosionKey = PoolKey.LaserExplosion;
+    public PoolKey drone = PoolKey.Drone;
+    public PoolKey pulse = PoolKey.PulseProjectile;
+    public PoolKey yamato = PoolKey.YamatoCannon;
+    public PoolKey smallMissile = PoolKey.SmallMissile;
 
     private int currentEnemyCount = 0;
     private float spawnTimer = 0f;
@@ -30,6 +39,11 @@ public class EnemyManager : MonoBehaviour
         ObjectPoolManager.Instance.CreatePool(explosionKey, explosionPrefab, 10);
         ObjectPoolManager.Instance.CreatePool(laserKey, laserPrefab, 10);
         ObjectPoolManager.Instance.CreatePool(laserExplosionKey, laserExplosionPrefab, 10);
+        ObjectPoolManager.Instance.CreatePool(drone, dronePrefab, 10);
+        ObjectPoolManager.Instance.CreatePool(pulse, pulsePrefab, 10);
+        ObjectPoolManager.Instance.CreatePool(yamato, yamatoPrefab, 3);
+        ObjectPoolManager.Instance.CreatePool(smallMissile, smallMissilePrefab, 10);
+
 
     }
 

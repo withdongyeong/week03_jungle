@@ -7,5 +7,10 @@ public enum PoolKey
     MeleeDash,
     Mineral_1,
     Mineral_2,
-    Mineral_3
+    Mineral_3,
+    Drone,
+    PulseProjectile,
+    SmallMissile,
+    YamatoCannon
+
 }
