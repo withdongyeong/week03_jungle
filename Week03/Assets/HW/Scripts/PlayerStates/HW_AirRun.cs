@@ -159,7 +159,7 @@ public class HW_AirRun : IPlayerState
                 isJumping = false;
             }
 
-            Gamepad.current.SetMotorSpeeds(0.5f, 0.5f);
+            Gamepad.current?.SetMotorSpeeds(0.5f, 0.5f);
         }
         else if (isJumping) // 점프 입력이 끝나면 파티클 제거
         {
@@ -169,11 +169,11 @@ public class HW_AirRun : IPlayerState
                 airJumpParticle = null;
             }
             isJumping = false;
-            Gamepad.current.SetMotorSpeeds(0f, 0f);
+            Gamepad.current?.SetMotorSpeeds(0f, 0f);
         }
         else
         {
-            Gamepad.current.SetMotorSpeeds(0f,0f);
+            Gamepad.current?.SetMotorSpeeds(0f, 0f);
         }
     }
 
