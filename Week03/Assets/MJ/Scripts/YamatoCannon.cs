@@ -59,7 +59,7 @@ public class YamatoCannon : MonoBehaviour, IPoolable
                 isAimed = true;
                 if (Physics.Raycast(transform.position, transform.forward, out hit,1000,1<<7))
                 {
-                    Debug.Log("·¹ÀÌÄÉ½ºÆ® ¿Ï·á");
+                    Debug.Log("ë ˆì´ì¼€ìŠ¤íŠ¸ ì™„ë£Œ");
                     currentWarning = Instantiate(warning, hit.point, transform.rotation);
                 }
             }
@@ -82,8 +82,8 @@ public class YamatoCannon : MonoBehaviour, IPoolable
         else if(isGround)
         {
             time += Time.deltaTime;
-            transform.localScale = new Vector3(1, 1, 1) * (-191.5f + time * 80);
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-191.5f + time * 80)/2, 1<<6);
+            transform.localScale = new Vector3(1, 1, 1) * (-391.5f + time * 160);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-391.5f + time * 160)/2, 1<<6);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].CompareTag("Player"))
@@ -91,7 +91,7 @@ public class YamatoCannon : MonoBehaviour, IPoolable
                     GameInfoManager.Instance.UpdateHP(-1);
                 }
             }
-            if (time > 6.5f)
+            if (time > 4.5f)
                 ReleaseObject();
         }
     }

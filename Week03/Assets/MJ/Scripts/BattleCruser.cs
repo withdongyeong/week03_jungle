@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleCruser : MonoBehaviour
@@ -9,7 +11,7 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        FireYamato();
+        DroneAttack();
         
     }
 
@@ -21,7 +23,7 @@ public class BattleCruser : MonoBehaviour
 
     private void FireSmallMissile()
     {
-        Debug.Log("¹ß»ç");
+        Debug.Log("ë°œì‚¬");
         for(int b=0; b<3; b++)
         {
             for (int i = 0; i < 6; i++)
@@ -63,6 +65,26 @@ public class BattleCruser : MonoBehaviour
     void FireYamato()
     {
         PoolManager.instance.GetGo("YamatoCannon", transform.position + new Vector3(0, 0, -24), transform.rotation);
+    }
+
+    void DroneAttack()
+    {
+        List<int> randomList = new() { 0, 1, 2, 3, 4, 5 };
+        for(int i=0; i<3; i++)
+        {
+            var drone = PoolManager.instance.GetGo("Drone", transform.position + new Vector3(6 * i - 33, 0, 0), transform.rotation);
+            int randomNum = randomList[Random.Range(0, randomList.Count)];
+            drone.GetComponent<Drone>().Init(randomNum);
+            randomList.Remove(randomNum);
+        }
+        for (int i = 0; i < 3; i++)
+        {
+            var drone = PoolManager.instance.GetGo("Drone", transform.position + new Vector3(-6 * i + 33, 0, 0), transform.rotation);
+            int randomNum = randomList[Random.Range(0, randomList.Count)];
+            drone.GetComponent<Drone>().Init(randomNum);
+            randomList.Remove(randomNum);
+        }
+
     }
 
     void Attack()

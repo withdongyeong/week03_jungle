@@ -1,7 +1,15 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
-public class DroneBullet : MonoBehaviour
+public class DroneBullet : MonoBehaviour,IPoolable
 {
+    public IObjectPool<GameObject> pool { get; set; }
+
+    public void ReleaseObject()
+    {
+        pool.Release(gameObject);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -11,6 +19,6 @@ public class DroneBullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        transform.Translate(transform.forward * Time.deltaTime * 10);
     }
 }
