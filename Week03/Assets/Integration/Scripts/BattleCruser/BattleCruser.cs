@@ -11,7 +11,7 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        InvokeRepeating("Attack", 1f, 10f);
+        Invoke( "FireSmallMissile",1f);
         
     }
 
@@ -28,6 +28,7 @@ public class BattleCruser : MonoBehaviour
         {
             for (int i = 0; i < 6; i++)
             {
+                Debug.Log("발사");
                 ObjectPoolManager.Instance.SpawnFromPool(PoolKey.SmallMissile, transform.position + new Vector3(-15.2f, 5 * b - 5, i * 4 - 10), Quaternion.LookRotation(transform.right));
                 ObjectPoolManager.Instance.SpawnFromPool(PoolKey.SmallMissile, transform.position + new Vector3(15.2f, 5 * b - 5, i * 4 - 10), Quaternion.LookRotation(-transform.right));
             }

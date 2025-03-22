@@ -27,7 +27,8 @@ public class SmallMisile : MonoBehaviour, IPoolable
         time += Time.deltaTime;
         if (1.8f > time && time > 0)
         {
-            rb.MovePosition(transform.position + transform.forward * speed * Time.deltaTime * 13f);
+            rb.MovePosition(transform.position + new Vector3 (0,-100*Time.deltaTime,0));
+            Debug.Log(transform.position);
 
         }
         else if (3.4f > time && time > 1.8f)
@@ -66,6 +67,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
     public void ReleaseObject()
     {
         ObjectPoolManager.Instance.ReturnToPool(PoolKey.SmallMissile, gameObject);
+        Debug.Log("돌아감");
     }
 }
 
