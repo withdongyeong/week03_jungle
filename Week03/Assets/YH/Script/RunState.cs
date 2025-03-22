@@ -22,4 +22,9 @@ public class RunState : IPlayerState
         Debug.Log("Exit Run");
         
     }
+
+    public void FixedUpdateState()
+    {
+
+    }
 }

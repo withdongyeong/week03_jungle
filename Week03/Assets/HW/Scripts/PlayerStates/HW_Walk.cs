@@ -20,7 +20,7 @@ public class HW_Walk : IPlayerState
     }
 
     [Header("Walk Variables")]
-    float walkForce = 800f;
+    float walkForce = 300f;
     float maxWalkSpeed = 10f;
     float walkJumpForce = 3000f;
     float normalRotationSpeed = 5f; // 기본 회전 속도
@@ -86,9 +86,15 @@ public class HW_Walk : IPlayerState
 
     public void UpdateState()
     {
+        
+        
+    }
+
+    public void FixedUpdateState()
+    {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
 
-        if (moveVector.magnitude >= 0.1f || rb.linearVelocity.magnitude >= 0.1f)
+        if (moveVector.magnitude >= 0.1f)
         {
             // 카메라 기준 방향 계산
             Transform cameraTransform = Camera.main.transform;
@@ -97,9 +103,9 @@ public class HW_Walk : IPlayerState
             cameraForward.y = 0;
             cameraRight.y = 0;
             Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
-
+            Debug.Log(moveDirection);
             // 힘 적용
-            PlayerMoveManager.Instance.MoveByForce(moveDirection * walkForce);
+            PlayerMoveManager.Instance.MoveByImpulse(moveDirection * walkForce);
 
             // 캐릭터 방향 조정
             if (moveVector.magnitude > 0.1f)

@@ -105,6 +105,13 @@ public class HW_AirDash : IPlayerState
 
     public void UpdateState()
     {
+
+
+
+    }
+
+    public void FixedUpdateState()
+    {
         elapsedControlEnableTime += Time.deltaTime;
 
         if (!airDashEnd && finalAirDashDirection != null)
@@ -117,14 +124,12 @@ public class HW_AirDash : IPlayerState
                 playerMoveManager.MoveByImpulse(-finalAirDashDirection * airDashEndForce);
             }
 
-            
+
         }
 
-        if(elapsedControlEnableTime > controlEnableTime)
+        if (elapsedControlEnableTime > controlEnableTime)
         {
             HW_PlayerStateController.Instance.ChangeState(new HW_AirRun(controller));
         }
-
-
     }
 }

@@ -19,4 +19,9 @@ public class WalkState : IPlayerState
         Debug.Log("Exit Walk");
         
     }
+
+    public void FixedUpdateState()
+    {
+
+    }
 }

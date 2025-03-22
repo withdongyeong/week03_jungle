@@ -59,5 +59,8 @@ public class HW_Idle : IPlayerState
         
     }
 
+    public void FixedUpdateState()
+    {
 
+    }
 }

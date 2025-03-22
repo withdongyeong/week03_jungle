@@ -12,26 +12,38 @@ public class HW_PlayerStateController : MonoBehaviour
 
     private void Awake()
     {
+
+
         if (_instance != null && _instance != this)
         {
             Destroy(gameObject);
             return;
         }
         _instance = this;
-
-        // 입력 시스템 초기화
         actions = new InputSystem_Actions();
-        actions.Player.Enable(); // Player 액션 맵 활성화
+
+        actions.Player.Enable();
+
+        //Instantiate((GameObject)Resources.Load("HW/Camera/FreeLook Camera"));
+
+
     }
 
     private void Start()
     {
         ChangeState(new HW_Walk(this)); //게임 시작 시에는 Idle.
+
+
     }
 
     private void Update()
     {
         currentState?.UpdateState();
+    }
+
+    private void FixedUpdate()
+    {
+        currentState?.FixedUpdateState();
     }
 
     public void ChangeState(IPlayerState nextState)
@@ -53,6 +65,15 @@ public class HW_PlayerStateController : MonoBehaviour
     public IPlayerState GetPreviousState()
     {
         return previousState ?? new HW_Idle(this);
+    }
+
+    private void OnDestroy()
+    {
+        if (currentState != null)
+        {
+            currentState.ExitState(); // 상태 정리 보장
+            currentState = null;
+        }
     }
 
 }

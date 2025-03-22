@@ -20,4 +20,9 @@ public class IdleState : IPlayerState
         Debug.Log("Exit Idle");
         
     }
+
+    public void FixedUpdateState()
+    {
+
+    }
 }
