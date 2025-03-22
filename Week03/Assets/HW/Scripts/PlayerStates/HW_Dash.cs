@@ -112,11 +112,16 @@ public class HW_Dash : IPlayerState
 
     public void UpdateState()
     {
+
+    }
+
+    public void FixedUpdateState()
+    {
         if (!dashEnd && finalDashDirection != null)
         {
             dashElapsedTime += Time.deltaTime;
 
-            
+
 
             if (dashElapsedTime > dashTime)
             {

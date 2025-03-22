@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ public class HW_Run : IPlayerState
     private HW_PlayerStateController controller;
     private InputSystem_Actions actions;
     PlayerMoveManager playerMoveManager;
+    Rigidbody rb;
 
     public HW_Run(HW_PlayerStateController controller)
     {
@@ -40,6 +42,7 @@ public class HW_Run : IPlayerState
 
         //Spawn particle
         groundSweepParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/GroundSweepParticle"), playerMoveManager.gameObject.transform);
+        rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
 
         ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>
         {
@@ -90,6 +93,17 @@ public class HW_Run : IPlayerState
 
     public void UpdateState()
     {
+ 
+    }
+
+    private void ToWalkState()
+    {
+
+        HW_PlayerStateController.Instance.ChangeState(new HW_Walk(controller));
+    }
+
+    public void FixedUpdateState()
+    {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude < 0.1f) return; // 입력이 없으면 종료
 
@@ -102,10 +116,10 @@ public class HW_Run : IPlayerState
         Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
         // 힘 적용 (속도 조절)
-        PlayerMoveManager.Instance.MoveByForce(moveDirection * runForce);
+        PlayerMoveManager.Instance.MoveByImpulse(moveDirection * runForce);
 
         // 캐릭터 방향을 이동 방향에 맞춤 (카메라 기준)
-        Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
+
         if (moveVector.magnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -135,18 +149,11 @@ public class HW_Run : IPlayerState
             Vector3 limitedVelocity = flatVelocity.normalized * maxRunSpeed;
             rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
         }
-        else if(flatVelocity.magnitude < minRunSpeed)
+        else if (flatVelocity.magnitude < minRunSpeed)
         {
             ToWalkState();
         }
-            
-        Gamepad.current?.SetMotorSpeeds(0.1f, 0.1f);
-    }
 
-    private void ToWalkState()
-    {
-
-        HW_PlayerStateController.Instance.ChangeState(new HW_Walk(controller));
     }
 }
 

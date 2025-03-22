@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/HW/Scenes/The Last Prove 1.unity
+    guid: 8e4975e44ced77d43a154a6fd252dfd4
+  - enabled: 1
+    path: Assets/HW/Scenes/The Last Prove 2.unity
+    guid: 19086620d3fdeac4ea31b127c064ddad
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   m_UseUCBPForAssetBundles: 0

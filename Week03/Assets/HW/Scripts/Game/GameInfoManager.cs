@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameInfoManager : MonoBehaviour
@@ -6,8 +8,17 @@ public class GameInfoManager : MonoBehaviour
     public static GameInfoManager Instance => _instance;
     static GameInfoManager _instance;
 
+    public static List<int> ObjectiveByStage => _objectiveByStage;
+    static List<int> _objectiveByStage;
+
     private void Awake()
     {
+        //Singleton 초기화.
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
         _instance = this;
 
         Initialize();
@@ -25,9 +36,12 @@ public class GameInfoManager : MonoBehaviour
     public float Resource => _resource; float _resource; //resource.
     public float ResourceRecover => _resourceRecover; float _resourceRecover;
 
+    public int CurrentStage => _currentStage; [SerializeField]int _currentStage = 1;
+    public int LastStage => _lastStage; int _lastStage;
+
     [Header("Actions")]
     public Action<int> HPUpdateAction;
-    public Action<int> MineralUpdateAction;
+    public Action<int, int> MineralUpdateAction;
     public Action<float> ResourceUpdateAction;
 
     [Header("Resource Usages")]
@@ -43,12 +57,15 @@ public class GameInfoManager : MonoBehaviour
         _airDashResourceUsage = 30;
         _resourceRecover = 30;
         _airJumpResourceUsage = 30f;
+
+        //_currentStage = 1;
+        _objectiveByStage = new List<int> {0, 100, 200, 300, 400, 500 };
     }
 
     void TriggerAction()
     {
         HPUpdateAction?.Invoke(_HP);
-        MineralUpdateAction?.Invoke(_mineral);
+        MineralUpdateAction?.Invoke(_mineral, _objectiveByStage[_currentStage]);
         ResourceUpdateAction?.Invoke(_resource);
     }
 
@@ -67,16 +84,16 @@ public class GameInfoManager : MonoBehaviour
     public void SetMineral(int newValue)
     {
         _mineral = newValue;
-        MineralUpdateAction?.Invoke(_mineral);
+        MineralUpdateAction?.Invoke(_mineral, _objectiveByStage[_currentStage]);
     }
 
     public void UpdateMineral(int updateValue)
     {
         _mineral += updateValue;
-        MineralUpdateAction?.Invoke(_mineral);
+        MineralUpdateAction?.Invoke(_mineral, _objectiveByStage[_currentStage]);
     }
 
-    public void SetResource(int newValue)
+    public void SetResource(float newValue)
     {
         _resource = newValue;
 
