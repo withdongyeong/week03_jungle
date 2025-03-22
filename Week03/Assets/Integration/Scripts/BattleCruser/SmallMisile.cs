@@ -6,6 +6,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
     float time = 0f;
     Rigidbody rb;
     [SerializeField] private float speed;
+    bool targeting = true;
 
     public IObjectPool<GameObject> pool { get; set; }
 
@@ -20,6 +21,8 @@ public class SmallMisile : MonoBehaviour, IPoolable
     private void OnEnable()
     {
         time = 0f;
+        targeting = true;
+        rb.linearVelocity = Vector3.zero;
     }
     // Update is called once per frame
     void Update()
@@ -36,20 +39,23 @@ public class SmallMisile : MonoBehaviour, IPoolable
             transform.LookAt(HW_PlayerStateController.Instance.transform);
 
         }
-        else if (12f > time && time > 3.4f)
+        else if (10f > time && time > 3.4f)
         {
             rb.linearVelocity = transform.forward * speed * 3.5f;
             Vector3 targetDir = HW_PlayerStateController.Instance.transform.position - transform.position;
-            if (Vector3.Angle(transform.forward, targetDir) < 53f)
+            if (Vector3.Angle(transform.forward, targetDir) <50f && targeting)
             {
                 transform.rotation = Quaternion.LookRotation(Vector3.Slerp(transform.forward, targetDir, 0.01f));
-
+            }
+            else if ((Vector3.Angle(transform.forward, targetDir) >= 50f))
+            {
+                targeting = false;
             }
         }
         else
             ReleaseObject();
 
-            Vector3 point0 = transform.TransformPoint(0, 0, 0.5f);
+        Vector3 point0 = transform.TransformPoint(0, 0, 0.5f);
         Vector3 point1 = transform.TransformPoint(0, 0, -0.5f);
         Collider[] hitColliders = Physics.OverlapCapsule(point0,point1,0.5f,layerMask);
         for (int i = 0; i < hitColliders.Length; i++)
