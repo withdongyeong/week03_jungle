@@ -89,7 +89,7 @@ public class HW_Walk : IPlayerState
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         Debug.Log(moveVector);
 
-        if (moveVector.magnitude >= 0.1f || rb.linearVelocity.magnitude >= 0.1f)
+        if (moveVector.magnitude >= 0.1f)
         {
             // 카메라 기준 방향 계산
             Transform cameraTransform = Camera.main.transform;

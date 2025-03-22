@@ -2,6 +2,7 @@ using System;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerMoveManager : MonoBehaviour
 {
@@ -51,8 +52,31 @@ public class PlayerMoveManager : MonoBehaviour
 
         _isDash = false;
         ResourceRecover = GameInfoManager.Instance.ResourceRecover;
+
+        actions.Player.Interact.performed += RestartCurrentScene;
+        actions.Player.Previous.performed += DecreasePlayerHp;
+        actions.Player.Next.performed += IncreaseMineral;
     }
 
+    private void IncreaseMineral(InputAction.CallbackContext context)
+    {
+        GameInfoManager.Instance.UpdateMineral(30);
+    }
+
+    private void DecreasePlayerHp(InputAction.CallbackContext context)
+    {
+        GameInfoManager.Instance.UpdateHP(-15);
+    }
+
+    public void RestartCurrentScene(InputAction.CallbackContext context)
+    {
+        Debug.Log("RestartCurrentScene triggered");
+        actions.Disable(); // 입력 비활성화
+        //actions.Player.Reset; // 입력 버퍼 초기화 (선택 사항)
+        _isDash = false; // 대시 상태 강제 초기화
+        _isJumped = false; // 점프 상태 강제 초기화
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
 
     public void MoveByForce(Vector3 force) //Walk. ETC
@@ -86,7 +110,7 @@ public class PlayerMoveManager : MonoBehaviour
     public void StartVibration()
     {
         Gamepad.current?.SetMotorSpeeds(0.5f, 0.5f); // 좌우 모터 중간 세기로 0.5초 진동
-        Invoke(nameof(StopVibration), 0.12f); // 0.5초 후 진동 중지
+        Invoke(nameof(StopVibration), 0.2f); // 0.5초 후 진동 중지
     }
 
     private void StopVibration()
@@ -151,5 +175,26 @@ public class PlayerMoveManager : MonoBehaviour
         {
             return false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        // 이벤트 구독 해제 (메모리 누수 방지)
+        if (actions != null)
+        {
+            actions.Player.Interact.performed -= RestartCurrentScene;
+            actions.Player.Previous.performed -= DecreasePlayerHp;
+            actions.Player.Next.performed -= IncreaseMineral;
+        }
+    }
+
+    internal void RestartCurrentScene()
+    {
+        Debug.Log("RestartCurrentScene triggered");
+        actions.Disable(); // 입력 비활성화
+        //actions.Player.Reset; // 입력 버퍼 초기화 (선택 사항)
+        _isDash = false; // 대시 상태 강제 초기화
+        _isJumped = false; // 점프 상태 강제 초기화
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

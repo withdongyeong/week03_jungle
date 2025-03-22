@@ -19,7 +19,7 @@ public class HW_Air : IPlayerState
 
     float maxAirSpeed = 20f;
     float airForce = 400f;
-    float airJumpForce = 800f;
+    float airJumpForce = 400f;
 
     GameObject airJumpParticle;
     bool isJumping = false; // 점프 입력 상태 추적
