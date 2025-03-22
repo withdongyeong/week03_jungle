@@ -7,7 +7,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
     Rigidbody rb;
     [SerializeField] private float speed;
     bool targeting = true;
-
+    Vector3 startPosition;
     public IObjectPool<GameObject> pool { get; set; }
 
     private int layerMask = (1 << 6) | (1 << 7);
@@ -27,11 +27,15 @@ public class SmallMisile : MonoBehaviour, IPoolable
     // Update is called once per frame
     void Update()
     {
+        if(time == 0)
+        {
+            startPosition = transform.position;
+        }
         time += Time.deltaTime;
         if (1.8f > time && time > 0)
         {
-            rb.MovePosition(transform.position + new Vector3(0, -100 * Time.deltaTime, 0));
-            Debug.Log(transform.position);
+            transform.position = Vector3.Lerp(startPosition,new Vector3(transform.position.x, startPosition.y - 35 , transform.position.z),time/1.8f);
+         
 
         }
         else if (3.4f > time && time > 1.8f)
