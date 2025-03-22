@@ -13,35 +13,34 @@ public class HW_Air : IPlayerState
     {
         this.controller = controller;
         this.actions = controller.GetInputActions();
-
-        //지면 충돌 감지. Air -> Walk.
         playerMoveManager = PlayerMoveManager.Instance;
         playerMoveManager.onGroundedAction += ToWalkState;
-
     }
 
-    float maxAirSpeed = 30f;
-    float airForce = 350f;
+    float maxAirSpeed = 20f;
+    float airForce = 400f;
+    float airJumpForce = 800f;
 
-    private void ToWalkState() //OnGroundedAction이 트리거.
+    GameObject airJumpParticle;
+    bool isJumping = false; // 점프 입력 상태 추적
+
+    private void ToWalkState()
     {
         HW_PlayerStateController.Instance.ChangeState(new HW_Walk(controller));
     }
 
-
     public void EnterState()
     {
-        playerMoveManager.ManageJumpBool(true); //점프한 상황.
+        playerMoveManager.ManageJumpBool(true);
 
-        //input action 초기화.
         actions.Player.Attack.performed += ToAirDashState;
         actions.Player.Run.performed += ToAirRunState;
 
         ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>
         {
-            //(190, 227, "점프"),   // 키보드: 인덱스 0, 게임패드: 인덱스 1
-            (196, 228, "공중 달리기"), // 키보드: 인덱스 2, 게임패드: 인덱스 3
-            (99, 225, "공중 대시")    // 키보드: 인덱스 4, 게임패드: 인덱스 5
+            (190, 227, "호버링"),
+            (196, 228, "공중 달리기"),
+            (99, 225, "공중 대시")
         });
     }
 
@@ -52,48 +51,96 @@ public class HW_Air : IPlayerState
 
     private void ToAirDashState(InputAction.CallbackContext context)
     {
-        HW_PlayerStateController.Instance.ChangeState(new HW_AirDash(controller));
+        if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirDashResourceUsage))
+        {
+            HW_PlayerStateController.Instance.ChangeState(new HW_AirDash(controller));
+        }
     }
-
-   
 
     public void ExitState()
     {
         actions.Player.Attack.performed -= ToAirDashState;
         actions.Player.Run.performed -= ToAirRunState;
+
+        // 상태 종료 시 파티클 제거
+        if (airJumpParticle != null)
+        {
+            GameObject.Destroy(airJumpParticle);
+            airJumpParticle = null;
+        }
     }
 
     public void UpdateState()
     {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
-        if (moveVector.magnitude < 0.1f) return; // 입력이 없으면 종료
-
-        // 카메라 기준 방향 계산
-        Transform cameraTransform = Camera.main.transform; // PlayerMoveManager에서 카메라 가져옴
-        Vector3 cameraForward = cameraTransform.forward;
-        Vector3 cameraRight = cameraTransform.right;
-        cameraForward.y = 0; // 수평 이동만
-        cameraRight.y = 0;
-        Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
-
-        // 힘 적용 (속도 조절)
-        PlayerMoveManager.Instance.MoveByForce(moveDirection * airForce);
-
-        // 캐릭터 방향을 이동 방향에 맞춤 (카메라 기준)
-        Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
-        if (moveVector.magnitude > 0.1f) // 입력이 있을 때만 회전
+        if (moveVector.magnitude >= 0.1f) // 입력이 있을 때만 이동
         {
+            Transform cameraTransform = Camera.main.transform;
+            Vector3 cameraForward = cameraTransform.forward;
+            Vector3 cameraRight = cameraTransform.right;
+            cameraForward.y = 0;
+            cameraRight.y = 0;
+            Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
+
+            PlayerMoveManager.Instance.MoveByForce(moveDirection * airForce);
+
+            Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
+
+            Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            if (flatVelocity.magnitude > maxAirSpeed)
+            {
+                Vector3 limitedVelocity = flatVelocity.normalized * maxAirSpeed;
+                rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            }
         }
 
-        // 속도 제한
-        Vector3 flatVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
-        if (flatVelocity.magnitude > maxAirSpeed)
+        // 공중 점프 입력 처리
+        float jumpInput = actions.Player.Jump.ReadValue<float>();
+        if (jumpInput > 0.3f)
         {
-            Vector3 limitedVelocity = flatVelocity.normalized * maxAirSpeed;
-            rb.linearVelocity = new Vector3(limitedVelocity.x, rb.linearVelocity.y, limitedVelocity.z);
+            if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirJumpResourceUsagePerSec * Time.deltaTime))
+            {
+                PlayerMoveManager.Instance.MoveByForce(Vector3.up * airJumpForce);
+
+                // 점프 시작 시 파티클 생성 (한 번만)
+                if (!isJumping)
+                {
+                    if (airJumpParticle != null)
+                    {
+                        GameObject.Destroy(airJumpParticle); // 기존 파티클 제거
+                    }
+                    airJumpParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/AirJumpParticle"), playerMoveManager.transform);
+                    isJumping = true;
+                }
+            }
+            else
+            {
+                if (airJumpParticle != null)
+                {
+                    GameObject.Destroy(airJumpParticle);
+                    airJumpParticle = null;
+                }
+                isJumping = false;
+            }
+
+            Gamepad.current.SetMotorSpeeds(0.5f, 0.5f); 
+        }
+        else if (isJumping) // 점프 입력이 끝나면 파티클 제거
+        {
+            if (airJumpParticle != null)
+            {
+                GameObject.Destroy(airJumpParticle);
+                airJumpParticle = null;
+            }
+            isJumping = false;
+
+            Gamepad.current.SetMotorSpeeds(0f, 0f);
+        }
+        else
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f); 
         }
     }
-
 }

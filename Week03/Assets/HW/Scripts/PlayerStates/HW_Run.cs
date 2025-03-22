@@ -21,7 +21,7 @@ public class HW_Run : IPlayerState
     float maxRunSpeed = 35f;
     float minRunSpeed = 2f;
     float runForce = 800f;
-    float runJumpForce = 8500f;
+    float runJumpForce = 3500f;
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
     float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
@@ -36,6 +36,8 @@ public class HW_Run : IPlayerState
         actions.Player.Attack.performed += ToDashState;
         actions.Player.Jump.performed += ToAirRunState;
 
+        playerMoveManager.ManageJumpBool(false);
+
         //Spawn particle
         groundSweepParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/GroundSweepParticle"), playerMoveManager.gameObject.transform);
 
@@ -45,6 +47,7 @@ public class HW_Run : IPlayerState
             (196, 228, "달리기 해제"), // 키보드: 인덱스 2, 게임패드: 인덱스 3
             (99, 225, "대시")    // 키보드: 인덱스 4, 게임패드: 인덱스 5
         });
+        
     }
 
     private void ToWalkState(InputAction.CallbackContext context)
@@ -54,7 +57,12 @@ public class HW_Run : IPlayerState
 
     private void ToDashState(InputAction.CallbackContext context)
     {
-        HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
+        if(playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.DashResourceUsage))
+        {
+            HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
+        }
+
+        
     }
 
     private void ToAirRunState(InputAction.CallbackContext context) //Ground To Air.
@@ -77,6 +85,7 @@ public class HW_Run : IPlayerState
         actions.Player.Jump.performed -= ToAirRunState;
 
         GameObject.Destroy(groundSweepParticle, 0.1f);
+        Gamepad.current.SetMotorSpeeds(0f, 0f);
     }
 
     public void UpdateState()
@@ -110,7 +119,10 @@ public class HW_Run : IPlayerState
             if (isBackwardTurn)
             {
                 rotationSpeed = fastRotationSpeed;
+
                 GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/StoppingParticle"), playerMoveManager.gameObject.transform.position, playerMoveManager.gameObject.transform.rotation);
+                playerMoveManager.StartVibration();
+                ToWalkState();
             }
 
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * rotationSpeed));
@@ -127,10 +139,13 @@ public class HW_Run : IPlayerState
         {
             ToWalkState();
         }
+
+        Gamepad.current.SetMotorSpeeds(0.1f, 0.1f);
     }
 
     private void ToWalkState()
     {
+
         HW_PlayerStateController.Instance.ChangeState(new HW_Walk(controller));
     }
 }
