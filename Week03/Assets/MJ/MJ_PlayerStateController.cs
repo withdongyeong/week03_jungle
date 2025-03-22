@@ -27,7 +27,7 @@ public class MJ_PlayerStateController : MonoBehaviour
 
     public bool isQuickTurn;
 
-    public float maxSpeed = 0;
+    public Transform cameraTransform;
     private void Awake()
     {
         moveAction = InputSystem.actions.FindAction("Move");
@@ -46,47 +46,6 @@ public class MJ_PlayerStateController : MonoBehaviour
     void Update()
     {
         currentState?.UpdateState();
-        direction = new Vector3(transform.forward.x, 0, transform.forward.z);
-        if (direction != targetdir && !isQuickTurn)
-        {
-            float angle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
-            if (115 >= angle && angle > 2)
-            {
-                rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * angle * 2 * angularSpeed;
-                rb.linearVelocity = Vector3.Project(rb.linearVelocity, transform.forward);
-            }
-            else if (-115 <= angle && angle < -2)
-            {
-                rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * angle * 2 * angularSpeed;
-                rb.linearVelocity = Vector3.Project(rb.linearVelocity, transform.forward);
-            }
-            else if (angle > 115 || angle < -115)
-            {
-                isQuickTurn = true;
-                QuickTurn();
-            }
-
-            else
-            {
-                if (targetdir != Vector3.zero)
-                    transform.rotation = Quaternion.LookRotation(targetdir);
-
-                rb.angularVelocity = Vector3.zero;
-            }
-            rb.AddForce(transform.forward * power * Time.deltaTime);
-        }
-        else if (isQuickTurn)
-        {
-            QuickTurn();
-        }
-        else
-        {
-            rb.AddForce(transform.forward * power * Time.deltaTime);
-            if (rb.linearVelocity.magnitude > maxSpeed)
-                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-        }
-
-
     }
 
     public void ChangeState(MJ_IPlayerState nextState)
@@ -119,28 +78,16 @@ public class MJ_PlayerStateController : MonoBehaviour
         currentState?.OnDash();
     }
 
-    public IEnumerator Boost()
+    private void SpeedChange()
     {
-        power *= 2.5f;
-        yield return new WaitForSeconds(1f);
-        power /= 2.5f;
+        float speedDif = targetdir.x * playerMaxPlaneSpeed - rb.linearVelocity.x;
+        if(Mathf.Abs(speedDif) < 0.2f)
+        {
+            speedDif = 0.2f * Mathf.Sign(speedDif);
+        }
+        rb.linearVelocity += new Vector3(speedDif * Time.deltaTime * 0.5f, 0, 0);  
     }
 
-    public void QuickTurn()
-    {
-        Debug.Log("ÄüÅÏ!!");
-        float quickAngle = Vector3.SignedAngle(direction, targetdir, Vector3.up);
-        if(quickAngle>2 || quickAngle<-2 )
-        {
-            rb.angularVelocity = Vector3.up * Mathf.Deg2Rad * quickAngle * 6 * angularSpeed;
-        }
-        else
-        {
-            if (targetdir != Vector3.zero)
-                transform.rotation = Quaternion.LookRotation(targetdir);
-            rb.angularVelocity = Vector3.zero;
-            isQuickTurn = false;
-        }
 
-    }
+
 }

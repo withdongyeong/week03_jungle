@@ -42,4 +42,8 @@ public class MJ_IdleState : MJ_IPlayerState
         
     }
 
+    private void SpeedChange()
+    {
+
+    }
 }

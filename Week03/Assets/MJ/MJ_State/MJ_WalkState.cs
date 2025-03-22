@@ -11,7 +11,7 @@ public class MJ_WalkState : MJ_IPlayerState
         InputSystem.actions.FindAction("Interact").started += OnRun;
         Debug.Log("enter walk");
         player.angularSpeed = 3;
-        player.maxSpeed = 3;
+        player.maxSpeed = 5;
         player.power = 100f;
     }
 
