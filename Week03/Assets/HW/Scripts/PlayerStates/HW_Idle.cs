@@ -17,7 +17,7 @@ public class HW_Idle : IPlayerState
         playerMoveManager = PlayerMoveManager.Instance;
     }
 
-    float idleJumpForce = 7000f;
+    float idleJumpForce = 2500f;
 
     public void EnterState()
     {

@@ -1,5 +1,7 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMoveManager : MonoBehaviour
 {
@@ -23,7 +25,7 @@ public class PlayerMoveManager : MonoBehaviour
     public bool isDash => _isDash; bool _isDash;
 
     float groundedTransitionTime = 0.1f;
-
+    private CinemachineImpulseSource impulseSource;
 
     private void Awake()
     {
@@ -38,6 +40,7 @@ public class PlayerMoveManager : MonoBehaviour
         //Component 초기화.
         capsuleCollider = GetComponent<CapsuleCollider>();
         rigidBody = GetComponent<Rigidbody>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     private void Start()
@@ -76,6 +79,22 @@ public class PlayerMoveManager : MonoBehaviour
         {
             GameInfoManager.Instance.UpdateResource(ResourceRecover * Time.deltaTime);
         }
+
+
+    }
+
+    public void StartVibration()
+    {
+        Gamepad.current.SetMotorSpeeds(0.5f, 0.5f); // 좌우 모터 중간 세기로 0.5초 진동
+        Invoke(nameof(StopVibration), 0.12f); // 0.5초 후 진동 중지
+    }
+
+    private void StopVibration()
+    {
+        if (Gamepad.current != null)
+        {
+            Gamepad.current.SetMotorSpeeds(0f, 0f); // 진동 중지
+        }
     }
 
 
@@ -97,7 +116,9 @@ public class PlayerMoveManager : MonoBehaviour
         {
             ManageJumpBool(false);
             Invoke("OnGroundActionInvoker", groundedTransitionTime);
-            
+
+            impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
+            StartVibration();
         }
     }
 
@@ -120,7 +141,7 @@ public class PlayerMoveManager : MonoBehaviour
     {
         float currentResource = GameInfoManager.Instance.Resource;
 
-        if(currentResource >= 1)
+        if(currentResource >= 0.00001)
         {
             GameInfoManager.Instance.UpdateResource(-resourceUsage);
 

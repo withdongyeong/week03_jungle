@@ -75,7 +75,7 @@ public class ResourceBarManager : MonoBehaviour
 
     private void UpdateSlider(float newValue)
     {
-        if (newValue < 1)
+        if (newValue < 0.001f)
         {
             Color currentColor = fillRectImage.color;
             currentColor.a = 0;

@@ -33,7 +33,7 @@ public class GameInfoManager : MonoBehaviour
     [Header("Resource Usages")]
     public float DashResourceUsage => _dashResourceUsage; float _dashResourceUsage;
     public float AirDashResourceUsage => _airDashResourceUsage; float _airDashResourceUsage;
-
+    public float AirJumpResourceUsagePerSec => _airJumpResourceUsage; float _airJumpResourceUsage;
     void Initialize()
     {
         _HP = 100; 
@@ -42,6 +42,7 @@ public class GameInfoManager : MonoBehaviour
         _dashResourceUsage = 30;
         _airDashResourceUsage = 30;
         _resourceRecover = 30;
+        _airJumpResourceUsage = 30f;
     }
 
     void TriggerAction()

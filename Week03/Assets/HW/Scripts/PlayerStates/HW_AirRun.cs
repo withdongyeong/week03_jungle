@@ -29,7 +29,10 @@ public class HW_AirRun : IPlayerState
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
     float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
+    float airJumpForce = 850f;
+    bool isJumping = false;
     GameObject airRunParticle = null;
+    GameObject airJumpParticle;
 
     public void EnterState()
     {
@@ -40,10 +43,11 @@ public class HW_AirRun : IPlayerState
 
         ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>
         {
-            //(190, 227, "점프"),   // 키보드: 인덱스 0, 게임패드: 인덱스 1
+            (190, 227, "호버링"),   // 키보드: 인덱스 0, 게임패드: 인덱스 1
             (196, 228, "달리기 해제"), // 키보드: 인덱스 2, 게임패드: 인덱스 3
             (99, 225, "공중 대시")    // 키보드: 인덱스 4, 게임패드: 인덱스 5
         });
+        
     }
 
     private void ToWalkState(InputAction.CallbackContext context)
@@ -62,6 +66,13 @@ public class HW_AirRun : IPlayerState
     public void ExitState()
     {
         actions.Player.Attack.performed -= ToAirDashState;
+
+        // 상태 종료 시 파티클 제거
+        if (airJumpParticle != null)
+        {
+            GameObject.Destroy(airJumpParticle);
+            airJumpParticle = null;
+        }
 
         GameObject.Destroy(airRunParticle, 0.2f);
     }
@@ -96,14 +107,16 @@ public class HW_AirRun : IPlayerState
 
             if (isBackwardTurn)
             {
+
                 rotationSpeed = fastRotationSpeed;
                 GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/StoppingParticle"), playerMoveManager.gameObject.transform.position, playerMoveManager.gameObject.transform.rotation);
                 rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
+                playerMoveManager.StartVibration();
                 ToAirState();
             }
 
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
-
+            
         }
 
         // 속도 제한
@@ -118,10 +131,58 @@ public class HW_AirRun : IPlayerState
             ToAirState();
         }
 
+        float jumpInput = actions.Player.Jump.ReadValue<float>();
+        if (jumpInput > 0.3f)
+        {
+            if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirJumpResourceUsagePerSec * Time.deltaTime))
+            {
+                PlayerMoveManager.Instance.MoveByForce(Vector3.up * airJumpForce);
+
+                // 점프 시작 시 파티클 생성 (한 번만)
+                if (!isJumping)
+                {
+                    if (airJumpParticle != null)
+                    {
+                        GameObject.Destroy(airJumpParticle); // 기존 파티클 제거
+                    }
+                    airJumpParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/AirJumpParticle"), playerMoveManager.transform);
+                    isJumping = true;
+                }
+            }
+            else
+            {
+                if (airJumpParticle != null)
+                {
+                    GameObject.Destroy(airJumpParticle);
+                    airJumpParticle = null;
+                }
+                isJumping = false;
+            }
+
+            Gamepad.current.SetMotorSpeeds(0.5f, 0.5f);
+        }
+        else if (isJumping) // 점프 입력이 끝나면 파티클 제거
+        {
+            if (airJumpParticle != null)
+            {
+                GameObject.Destroy(airJumpParticle);
+                airJumpParticle = null;
+            }
+            isJumping = false;
+            Gamepad.current.SetMotorSpeeds(0f, 0f);
+        }
+        else
+        {
+            Gamepad.current.SetMotorSpeeds(0f,0f);
+        }
     }
+
 
     private void ToAirState()
     {
         HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller));
     }
 }
+
+
+

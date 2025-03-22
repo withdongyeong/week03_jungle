@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class HW_AirDash : IPlayerState
@@ -9,23 +10,24 @@ public class HW_AirDash : IPlayerState
     private InputSystem_Actions actions;
     private PlayerMoveManager playerMoveManager;
     private Rigidbody rigidBody;
-
+    private CinemachineImpulseSource impulseSource;
     public HW_AirDash(HW_PlayerStateController controller)
     {
         this.controller = controller;
         this.actions = controller.GetInputActions();
         playerMoveManager = PlayerMoveManager.Instance;
         rigidBody = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
+        impulseSource = playerMoveManager.GetComponent<CinemachineImpulseSource>();
     }
 
     #region move Variables
     float airDashElapsedTime = 0f;
     float airDashTime = 0.3f;
-    float airDashForce = 25000f; // 각도로 받는 점프력.
+    float airDashForce = 170000f; // 각도로 받는 점프력.
     float airDashAngleY = 3f; // 힘을 받는 각도.
     float controlEnableTime = 0.6f;
     float elapsedControlEnableTime = 0;
-    float airDashEndForce = 15000f; //끝났을 때 역방향으로 받는 힘.
+    float airDashEndForce = 23000f; //끝났을 때 역방향으로 받는 힘.
     float airDashTurnTime = 0.2f;
     bool airDashEnd = false;
     Vector3 finalAirDashDirection;
@@ -60,13 +62,17 @@ public class HW_AirDash : IPlayerState
         dashDirection.y = yComponent; // Y 성분을 양수로 고정
         finalAirDashDirection = dashDirection.normalized;
 
-        playerMoveManager.MoveByImpulse(finalAirDashDirection * airDashForce);
+        if (impulseSource != null)
+        {
+            impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
+        }
 
-        rigidBody.MoveRotation(Quaternion.LookRotation(finalAirDashDirection));
+        //rigidBody.MoveRotation(Quaternion.LookRotation(finalAirDashDirection));
 
         airDashParticle = GameObject.Instantiate((GameObject)Resources.Load("HW/Particle/DashParticle"), playerMoveManager.transform);
 
         playerMoveManager.StartCoroutine(RotateToAirDashDirection());
+        playerMoveManager.StartVibration();
 
         ControlLogManager.Instance.SetControlLogText(new List<(int keyboardSpriteIndex, int controllerSpriteIndex, string actionText)>());
     }
@@ -82,6 +88,7 @@ public class HW_AirDash : IPlayerState
             elapsedTime += Time.deltaTime;
             float t = elapsedTime / airDashTurnTime;
             rigidBody.MoveRotation(Quaternion.Slerp(startRotation, targetRotation, t)); // 부드럽게 보간
+            playerMoveManager.MoveByImpulse(finalAirDashDirection * airDashForce * Time.deltaTime);
             yield return null;
         }
 

@@ -22,7 +22,7 @@ public class HW_Walk : IPlayerState
     [Header("Walk Variables")]
     float walkForce = 800f;
     float maxWalkSpeed = 10f;
-    float walkJumpForce = 8000f;
+    float walkJumpForce = 3000f;
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
     float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
@@ -87,6 +87,8 @@ public class HW_Walk : IPlayerState
     public void UpdateState()
     {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
+        Debug.Log(moveVector);
+
         if (moveVector.magnitude >= 0.1f || rb.linearVelocity.magnitude >= 0.1f)
         {
             // 카메라 기준 방향 계산
