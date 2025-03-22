@@ -10,7 +10,6 @@ public class Projectile : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("데미지입음");
             int damage = GetDamageByType(type);
             GameInfoManager.Instance.UpdateHP(damage);
         }

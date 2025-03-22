@@ -22,7 +22,7 @@ public class Mineral : MonoBehaviour
 
             GameInfoManager.Instance.UpdateMineral(score);
         }
-        else if (other.CompareTag("Projectile")) // 공격체에 맞았을 때
+        else if (other.CompareTag("Projectile"))
         {
             var manager = FindAnyObjectByType<MineralManager>();
             manager?.NotifyMineralCollected(gameObject);
