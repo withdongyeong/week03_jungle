@@ -84,6 +84,11 @@ public class PlayerMoveManager : MonoBehaviour
         rigidBody.AddForce(force, ForceMode.Force);
     }
 
+    public void MoveByAccel(Vector3 accel)
+    {
+        rigidBody.AddForce(accel, ForceMode.Acceleration);
+    }
+
     public void MoveByImpulse(Vector3 impulseForce) //Dash. ETC
     {
         rigidBody.AddForce(impulseForce, ForceMode.Impulse);

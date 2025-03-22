@@ -19,4 +19,9 @@ public class DashState : IPlayerState
     {
         Debug.Log("Exit Dash");
     }
+
+    public void FixedUpdateState()
+    {
+
+    }
 }

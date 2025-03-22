@@ -29,7 +29,7 @@ public class HW_AirRun : IPlayerState
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
     float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
-    float airJumpForce = 450f;
+    float airJumpForce = 300f;
     bool isJumping = false;
     GameObject airRunParticle = null;
     GameObject airJumpParticle;
@@ -79,6 +79,17 @@ public class HW_AirRun : IPlayerState
 
     public void UpdateState()
     {
+
+    }
+
+
+    private void ToAirState()
+    {
+        HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller));
+    }
+
+    public void FixedUpdateState()
+    {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude < 0.1f) return; // 입력이 없으면 종료
 
@@ -91,7 +102,7 @@ public class HW_AirRun : IPlayerState
         Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
         // 힘 적용 (속도 조절)
-        PlayerMoveManager.Instance.MoveByForce(moveDirection * airRunForce);
+        PlayerMoveManager.Instance.MoveByImpulse(moveDirection * airRunForce);
 
         // 캐릭터 방향을 이동 방향에 맞춤 (카메라 기준)
         Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
@@ -116,7 +127,7 @@ public class HW_AirRun : IPlayerState
             }
 
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 5f));
-            
+
         }
 
         // 속도 제한
@@ -136,7 +147,7 @@ public class HW_AirRun : IPlayerState
         {
             if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirJumpResourceUsagePerSec * Time.deltaTime))
             {
-                PlayerMoveManager.Instance.MoveByForce(Vector3.up * airJumpForce);
+                PlayerMoveManager.Instance.MoveByImpulse(Vector3.up * airJumpForce);
 
                 // 점프 시작 시 파티클 생성 (한 번만)
                 if (!isJumping)
@@ -175,12 +186,6 @@ public class HW_AirRun : IPlayerState
         {
             Gamepad.current?.SetMotorSpeeds(0f, 0f);
         }
-    }
-
-
-    private void ToAirState()
-    {
-        HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller));
     }
 }
 

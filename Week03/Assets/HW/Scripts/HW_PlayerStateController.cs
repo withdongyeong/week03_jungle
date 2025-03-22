@@ -22,6 +22,7 @@ public class HW_PlayerStateController : MonoBehaviour
         _instance = this;
         actions = new InputSystem_Actions();
 
+        actions.Player.Enable();
 
         //Instantiate((GameObject)Resources.Load("HW/Camera/FreeLook Camera"));
 
@@ -33,12 +34,16 @@ public class HW_PlayerStateController : MonoBehaviour
         ChangeState(new HW_Walk(this)); //게임 시작 시에는 Idle.
 
 
-        actions.Player.Enable();
     }
 
     private void Update()
     {
         currentState?.UpdateState();
+    }
+
+    private void FixedUpdate()
+    {
+        currentState?.FixedUpdateState();
     }
 
     public void ChangeState(IPlayerState nextState)

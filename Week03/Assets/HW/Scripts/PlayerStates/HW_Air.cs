@@ -18,8 +18,8 @@ public class HW_Air : IPlayerState
     }
 
     float maxAirSpeed = 20f;
-    float airForce = 400f;
-    float airJumpForce = 400f;
+    float airForce = 350f;
+    float airJumpForce = 350f;
 
     GameObject airJumpParticle;
     bool isJumping = false; // 점프 입력 상태 추적
@@ -72,6 +72,11 @@ public class HW_Air : IPlayerState
 
     public void UpdateState()
     {
+
+    }
+
+    public void FixedUpdateState()
+    {
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude >= 0.1f) // 입력이 있을 때만 이동
         {
@@ -82,7 +87,7 @@ public class HW_Air : IPlayerState
             cameraRight.y = 0;
             Vector3 moveDirection = (cameraForward * moveVector.y + cameraRight * moveVector.x).normalized;
 
-            PlayerMoveManager.Instance.MoveByForce(moveDirection * airForce);
+            PlayerMoveManager.Instance.MoveByImpulse(moveDirection * airForce);
 
             Rigidbody rb = PlayerMoveManager.Instance.GetComponent<Rigidbody>();
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -102,7 +107,7 @@ public class HW_Air : IPlayerState
         {
             if (playerMoveManager.UseResourceUsingAction(GameInfoManager.Instance.AirJumpResourceUsagePerSec * Time.deltaTime))
             {
-                PlayerMoveManager.Instance.MoveByForce(Vector3.up * airJumpForce);
+                PlayerMoveManager.Instance.MoveByImpulse(Vector3.up * airJumpForce);
 
                 // 점프 시작 시 파티클 생성 (한 번만)
                 if (!isJumping)
@@ -125,7 +130,7 @@ public class HW_Air : IPlayerState
                 isJumping = false;
             }
 
-            Gamepad.current?.SetMotorSpeeds(0.5f, 0.5f); 
+            Gamepad.current?.SetMotorSpeeds(0.5f, 0.5f);
         }
         else if (isJumping) // 점프 입력이 끝나면 파티클 제거
         {
@@ -140,7 +145,7 @@ public class HW_Air : IPlayerState
         }
         else
         {
-            Gamepad.current?.SetMotorSpeeds(0f, 0f); 
+            Gamepad.current?.SetMotorSpeeds(0f, 0f);
         }
     }
 }

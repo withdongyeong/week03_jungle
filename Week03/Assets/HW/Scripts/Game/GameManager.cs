@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     InputSystem_Actions actions;
 
     GameInfoManager gameInfoManager;
-    [SerializeField] GameObject cam;
+    //[SerializeField] GameObject cam;
 
 
 
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         gameInfoManager.MineralUpdateAction += CheckSuccess;
         gameInfoManager.HPUpdateAction += CheckFail;
 
-        cam.SetActive(true);
+        //cam.SetActive(true);
     }
 
     private void CheckFail(int currentHP)
