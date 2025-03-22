@@ -65,7 +65,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
 
     public void ReleaseObject()
     {
-        pool.Release(gameObject);
+        ObjectPoolManager.Instance.ReturnToPool(PoolKey.SmallMissile, gameObject);
     }
 }
 

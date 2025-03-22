@@ -25,7 +25,7 @@ public class YamatoCannon : MonoBehaviour, IPoolable
     RaycastHit hit;
     public void ReleaseObject()
     {
-        pool.Release(gameObject);
+        ObjectPoolManager.Instance.ReturnToPool(PoolKey.YamatoCannon, gameObject);
         Destroy(currentWarning);
     }
 

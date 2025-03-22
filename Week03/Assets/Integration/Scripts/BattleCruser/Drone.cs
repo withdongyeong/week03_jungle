@@ -22,7 +22,7 @@ public class Drone : MonoBehaviour, IPoolable
 
     public void ReleaseObject()
     {
-        pool.Release(gameObject);
+        ObjectPoolManager.Instance.ReturnToPool(PoolKey.Drone, gameObject);
     }
 
     public void Init(int i)

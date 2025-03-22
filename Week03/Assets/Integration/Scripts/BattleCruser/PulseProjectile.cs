@@ -32,7 +32,7 @@ public class PulseProjectile : MonoBehaviour , IPoolable
     }
     public void ReleaseObject()
     {
-        pool.Release(gameObject);
+        ObjectPoolManager.Instance.ReturnToPool(PoolKey.PulseProjectile, gameObject);
     }
 
 
