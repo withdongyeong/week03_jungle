@@ -29,7 +29,7 @@ public class HW_AirRun : IPlayerState
     float normalRotationSpeed = 5f; // 기본 회전 속도
     float fastRotationSpeed = 15f; // 빠른 뒤돌아보기 속도
     float fastRotationThreshold = 0.7f; // 뒤쪽 입력 감지 임계값 (약 90도)
-    float airJumpForce = 300f;
+    float airJumpForce = 120f;
     bool isJumping = false;
     GameObject airRunParticle = null;
     GameObject airJumpParticle;
