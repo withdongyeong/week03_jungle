@@ -9,11 +9,17 @@ public class PulseProjectile : MonoBehaviour , IPoolable
     private int layerMask = (1 << 6) | (1 << 7);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    private void OnEnable()
     {
         transform.LookAt(HW_PlayerStateController.Instance.transform);
-        rb = GetComponent<Rigidbody>();
+        rb.linearVelocity = Vector3.zero;
         rb.AddForce(transform.forward * 100, ForceMode.Impulse);
+
     }
 
     // Update is called once per frame
@@ -24,7 +30,7 @@ public class PulseProjectile : MonoBehaviour , IPoolable
         {
             if (hitColliders[i].CompareTag("Player"))
             {
-                GameInfoManager.Instance.UpdateHP(-10);
+                GameInfoManager.Instance.UpdateHP(-5);
             }
         }
         if(hitColliders.Length > 0)

@@ -49,7 +49,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
             Vector3 targetDir = HW_PlayerStateController.Instance.transform.position - transform.position;
             if (Vector3.Angle(transform.forward, targetDir) <50f && targeting)
             {
-                transform.rotation = Quaternion.LookRotation(Vector3.Slerp(transform.forward, targetDir, 0.01f));
+                transform.rotation = Quaternion.LookRotation(Vector3.Slerp(transform.forward, targetDir, 0.013f));
             }
             else if ((Vector3.Angle(transform.forward, targetDir) >= 50f))
             {
@@ -66,7 +66,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
         {
             if (hitColliders[i].CompareTag("Player"))
             {
-                GameInfoManager.Instance.UpdateHP(-5);
+                GameInfoManager.Instance.UpdateHP(-2);
             }
         }
         if (hitColliders.Length > 0)

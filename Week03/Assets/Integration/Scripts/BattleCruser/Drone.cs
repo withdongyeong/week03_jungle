@@ -56,7 +56,7 @@ public class Drone : MonoBehaviour, IPoolable
                 lineRenderer.SetPosition(1, HW_PlayerStateController.Instance.transform.position);
                 transform.rotation = Quaternion.LookRotation(HW_PlayerStateController.Instance.transform.position - transform.position);
                 finalPosition = HW_PlayerStateController.Instance.transform.position;
-                if(timeForFire < 0.87f)
+                if(timeForFire < 0.8f)
                 {
                     lineRenderer.startColor = Color.yellow;
                     lineRenderer.endColor = Color.yellow;
@@ -67,18 +67,18 @@ public class Drone : MonoBehaviour, IPoolable
                     lineRenderer.endColor = Color.red;
                 }
             }
-            else if(1f<timeForFire && timeForFire < 1.05f)
+            else if(1f<timeForFire && timeForFire < 1.01f)
             {
                 isTracking = false;
             }
-            else if (1.05f < timeForFire)
+            else if (1.04f < timeForFire)
             {
                 isDroneFire = false;
                 lineRenderer.endWidth = 2f;
                 lineRenderer.startWidth = 2f;
                 if (Physics.Raycast(transform.position, transform.forward, out hit, 800, 1 << 6))
                 {
-                    GameInfoManager.Instance.UpdateHP(-10);
+                    GameInfoManager.Instance.UpdateHP(-3);
                 }
                 lineRenderer.SetPosition(0, transform.position);
                 lineRenderer.SetPosition(1, transform.position + transform.forward * 800);
