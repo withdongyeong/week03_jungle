@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class YH_Garen : MonoBehaviour
 {
-    [SerializeField]
-    private float speed = 100f;
+    
 
     private Transform stick;
     private bool isAttacking = false;
@@ -60,12 +59,5 @@ public class YH_Garen : MonoBehaviour
     }
     
     
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!isAttacking) return;
-        if (other.CompareTag("Player"))
-        {
-            GameInfoManager.Instance.UpdateHP(GlobalSettings.Instance.spinDamage);
-        }
-    }
+    
 }
