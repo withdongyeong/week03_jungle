@@ -1,9 +1,12 @@
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class MainCamera : MonoBehaviour
 {
     UnityEngine.Camera cam;
+    Vector2 rotationEuler;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,8 +17,10 @@ public class MainCamera : MonoBehaviour
     void Update()
     {
         Vector2 mouseMove = Mouse.current.delta.ReadValue();
+        rotationEuler.x -= mouseMove.y * 0.3f;
+        rotationEuler.y += mouseMove.x * 0.3f;
         Debug.Log(mouseMove);
-        transform.Rotate(-mouseMove.y * 0.5f, mouseMove.x * 0.5f, 0);
+        transform.rotation = Quaternion.Euler(rotationEuler.x, rotationEuler.y, 0f);
 
     }
 }
