@@ -12,14 +12,13 @@ public class YH_Beam : MonoBehaviour
 
     private void Awake()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        
         playerMoveManager = PlayerMoveManager.Instance;
-        transform.position = playerMoveManager.transform.position + new Vector3(30f,0,30f);
         StartCoroutine(MoveBeamCoroutine());
     }
 
@@ -39,15 +38,34 @@ public class YH_Beam : MonoBehaviour
 
     private void MoveBeam()
     {
-        if ((playerMoveManager.transform.position - transform.position).magnitude < 30f)
+        if ((playerMoveManager.transform.position - transform.position).magnitude < 10f)
         {
             
-            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(pos.x,transform.position.y,pos.z), Time.fixedDeltaTime * 10));
+            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(pos.x,transform.position.y,pos.z), Time.fixedDeltaTime * GlobalSettings.Instance.beamSpeed * 10f));
         }
         else
         {
             
-            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(pos.x,transform.position.y,pos.z), Time.fixedDeltaTime * 2));
+            rb.MovePosition(Vector3.Lerp(transform.position, new Vector3(pos.x,transform.position.y,pos.z), Time.fixedDeltaTime * GlobalSettings.Instance.beamSpeed));
+        }
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            
+            GameInfoManager.Instance.UpdateHP(GlobalSettings.Instance.beamEnterDamage);
+        }
+    }
+    
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            
+            GameInfoManager.Instance.UpdateHP(GlobalSettings.Instance.beamStayDamage);
         }
     }
 }

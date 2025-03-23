@@ -52,6 +52,15 @@ public class GlobalSettings : MonoBehaviour
     public int mineral1Score = 4;
     public int mineral2Score = 8;
     public int mineral3Score = 16;
+    
+    [Header("Beam Settings")]
+    public int beamEnterDamage = -5;
+    public int beamStayDamage = -1;
+    public float beamSpeed = 2;
+    
+    [Header("Spin Settings")]
+    public int spinDamage = -5;
+    public float spinSpeed = 100;
 
     private void Awake()
     {
