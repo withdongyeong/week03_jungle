@@ -536,6 +536,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3902049184374826098, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
+      propertyPath: mapObject
+      value: 
+      objectReference: {fileID: 5196844471795964366}
     - target: {fileID: 7420264657858362943, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
       propertyPath: m_Name
       value: MineralManager
@@ -1938,6 +1942,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
+--- !u!1 &5196844471795964366 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7469911645190143179, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
+  m_PrefabInstance: {fileID: 5196844471795964365}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8793461780255005455
 PrefabInstance:
   m_ObjectHideFlags: 0
