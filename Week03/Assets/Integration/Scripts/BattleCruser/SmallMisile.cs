@@ -13,7 +13,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
     private int layerMask = (1 << 6) | (1 << 7);
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
