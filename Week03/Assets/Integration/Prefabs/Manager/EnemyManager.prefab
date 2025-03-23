@@ -46,6 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionEnemyPrefab: {fileID: 4667830073649404021, guid: 8a176b62b002d034f9ffb0e6638c3702, type: 3}
   projectileEnemyPrefab: {fileID: 736419953407946666, guid: 7b8f76e23cc72684bafbc8db105cfc9a, type: 3}
+  cubeEnemyPrefab: {fileID: 2357469950284528808, guid: 68d0731ed8a2c374b96aeca3c831f1c3, type: 3}
+  beamEnemyPrefab: {fileID: 3242141849375865512, guid: 25fb59e9ab5de63419503fb856bd0593, type: 3}
+  bossPrefab: {fileID: 2094311683877324296, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
   warningPrefab: {fileID: 5988403175243246575, guid: be5d374904486c441b4c3c9dc6b93263, type: 3}
   explosionPrefab: {fileID: 5988403175243246575, guid: 2a679b2c076a2854cb249c423881bc00, type: 3}
   laserPrefab: {fileID: 2743562884138118611, guid: 0c078f2555e7ade45aa30e5b330cff2f, type: 3}

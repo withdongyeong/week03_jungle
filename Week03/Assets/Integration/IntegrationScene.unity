@@ -5113,21 +5113,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3902049184374826098, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
-      propertyPath: mineralCollectEffectPrefab
-      value: 
-      objectReference: {fileID: 2087948834549187985, guid: 85e21fa8570e41a4f9d2541b6dbca4d6, type: 3}
-    - target: {fileID: 3902049184374826098, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
-      propertyPath: mineralDestroyEffectPrefab
-      value: 
-      objectReference: {fileID: 2087948834549187985, guid: 7eeba5eb7e7b83c4ea7ce62a0e300905, type: 3}
     - target: {fileID: 7420264657858362943, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
       propertyPath: m_Name
       value: MineralManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7420264657858362943, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7413,10 +7401,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObjectPoolManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1056711019755131588, guid: 2102f648428ad82408104fec02a1620d, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8230282949699517282, guid: 2102f648428ad82408104fec02a1620d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.05588924
@@ -9332,63 +9316,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810124110}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1836900099
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2094311683877324296, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_Name
-      value: BattleCruser (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.8647976
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 47.77636
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2294742655553619827, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e11cf59b878556e45a1bb7c7bf3140b4, type: 3}
 --- !u!1 &1860352500
 GameObject:
   m_ObjectHideFlags: 0
@@ -11033,4 +10960,3 @@ SceneRoots:
   - {fileID: 907933372}
   - {fileID: 1333248380}
   - {fileID: 2018279595}
-  - {fileID: 1836900099}

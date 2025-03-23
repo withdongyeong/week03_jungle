@@ -47,6 +47,10 @@ MonoBehaviour:
   mineral1Prefab: {fileID: 3515665591060476402, guid: db99ea6d4e0ef034e9d22bf51c55affc, type: 3}
   mineral2Prefab: {fileID: 3515665591060476402, guid: 93f8efa2de8f4f54faea1d8561ab7f5a, type: 3}
   mineral3Prefab: {fileID: 3515665591060476402, guid: 5d1797d469223b7459a6d2b79257150e, type: 3}
+  mineralCollectEffectPrefab: {fileID: 2087948834549187985, guid: 85e21fa8570e41a4f9d2541b6dbca4d6, type: 3}
+  mineralDestroyEffectPrefab: {fileID: 2087948834549187985, guid: 7eeba5eb7e7b83c4ea7ce62a0e300905, type: 3}
   mineral1Key: 5
   mineral2Key: 6
   mineral3Key: 7
+  mineralCollectEffectKey: 12
+  mineralDestroyEffectKey: 13

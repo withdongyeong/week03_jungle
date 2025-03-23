@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6471687281955175105}
   - component: {fileID: 4505331864836030253}
   - component: {fileID: 3436051809826584108}
-  - component: {fileID: 990533015750440906}
+  - component: {fileID: 6392335028904808576}
   m_Layer: 0
   m_Name: Beam
   m_TagString: Untagged
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1cb4072df51cb654f8c9af42424424b1, type: 2}
+  - {fileID: 2100000, guid: 9c1e541245225df4bbff484f578a694f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,7 +140,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &990533015750440906
+--- !u!114 &6392335028904808576
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
