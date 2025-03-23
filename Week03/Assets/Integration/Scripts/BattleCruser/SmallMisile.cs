@@ -66,7 +66,7 @@ public class SmallMisile : MonoBehaviour, IPoolable
         {
             if (hitColliders[i].CompareTag("Player"))
             {
-                GameInfoManager.Instance.UpdateHP(-10);
+                GameInfoManager.Instance.UpdateHP(-5);
             }
         }
         if (hitColliders.Length > 0)
