@@ -13,8 +13,6 @@ public class MJ_PlayerStateController : MonoBehaviour
     //인풋 매니저와 관련된 변수들.
     public InputAction moveAction { get; private set; }
 
-    public float power;
-
     public float turnSpeed;
 
     public Vector3 direction;
@@ -46,6 +44,8 @@ public class MJ_PlayerStateController : MonoBehaviour
     void Update()
     {
         currentState?.UpdateState();
+        targetdir = cameraTransform.TransformDirection(targetdir);
+        SpeedChange();
     }
 
     public void ChangeState(MJ_IPlayerState nextState)
@@ -85,7 +85,14 @@ public class MJ_PlayerStateController : MonoBehaviour
         {
             speedDif = 0.2f * Mathf.Sign(speedDif);
         }
-        rb.linearVelocity += new Vector3(speedDif * Time.deltaTime * 0.5f, 0, 0);  
+        rb.AddForce(new Vector3(speedDif * Time.deltaTime , 0, 0),ForceMode.Impulse);
+
+        speedDif = targetdir.z * playerMaxPlaneSpeed - rb.linearVelocity.z;
+        if (Mathf.Abs(speedDif) < 0.2f)
+        {
+            speedDif = 0.2f * Mathf.Sign(speedDif);
+        }
+        rb.AddForce(new Vector3(0, 0, speedDif * Time.deltaTime), ForceMode.Impulse);
     }
 
 

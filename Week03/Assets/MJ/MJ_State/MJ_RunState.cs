@@ -15,14 +15,17 @@ public class MJ_RunState : MJ_IPlayerState
         player = controller;
         Debug.Log("enter run");
         player.angularSpeed = 2f;
-        player.maxSpeed = 9f;
-        player.power = 800f;
+        player.playerMaxPlaneSpeed = 15f;
     }
 
     public void UpdateState()
     {
         player.targetdir = player.moveAction.ReadValue<Vector2>();
-        player.targetdir = new Vector3(player.targetdir.y, 0, -player.targetdir.x);
+        player.targetdir = new Vector3(player.targetdir.x, 0, player.targetdir.y);
+        if(player.targetdir.z > 0)
+        {
+            Debug.Log(player.targetdir.z);
+        }
 
  
     }

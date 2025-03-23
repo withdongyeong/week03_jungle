@@ -11,7 +11,7 @@ public class MJ_DashState : MJ_IPlayerState
         player = controller;
         player.angularSpeed = 0f;
         player.StartCoroutine(Dash());
-        player.maxSpeed = 40;
+        player.playerMaxPlaneSpeed = 40;
 
     }
 

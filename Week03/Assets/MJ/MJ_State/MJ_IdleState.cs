@@ -8,8 +8,7 @@ public class MJ_IdleState : MJ_IPlayerState
     {
         player = controller;
         Debug.Log("enter idle");
-        player.power = 0f;
-        player.maxSpeed = 0f;
+        player.playerMaxPlaneSpeed = 0f;
     }
 
     public void UpdateState()
@@ -42,8 +41,5 @@ public class MJ_IdleState : MJ_IPlayerState
         
     }
 
-    private void SpeedChange()
-    {
-
-    }
+   
 }
