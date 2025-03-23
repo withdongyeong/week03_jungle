@@ -59,7 +59,7 @@ public class GameInfoManager : MonoBehaviour
         _airJumpResourceUsage = 30f;
 
         //_currentStage = 1;
-        _objectiveByStage = new List<int> {0, 100, 200, 300, 400, 500 };
+        _objectiveByStage = new List<int> {0, 50, 100, 150, 200, 300};
     }
 
     void TriggerAction()

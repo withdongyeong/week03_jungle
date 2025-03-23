@@ -11,6 +11,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/HW/Scenes/TL2.unity
     guid: 19086620d3fdeac4ea31b127c064ddad
+  - enabled: 1
+    path: Assets/Integration/Scenes_Integration/The Last Prove 1.unity
+    guid: 2d077a1f184780a419f5b8fa70ddb385
+  - enabled: 1
+    path: Assets/Integration/Scenes_Integration/The Last Prove 2.unity
+    guid: 7d04b27e4378c044d975431ad16c3049
+  - enabled: 1
+    path: Assets/Integration/Scenes_Integration/The Last Prove 3.unity
+    guid: b149cd92cc6bcb5408bea542641895af
+  - enabled: 1
+    path: Assets/Integration/Scenes_Integration/The Last Prove 4.unity
+    guid: cae2684eb43313740a9fe51712518b92
+  - enabled: 1
+    path: Assets/Integration/Scenes_Integration/The Last Prove 5.unity
+    guid: c5f3d99f267dba043a23dc3d60e0f451
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
   m_UseUCBPForAssetBundles: 0
