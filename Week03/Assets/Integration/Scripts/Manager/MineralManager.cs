@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class MineralManager : MonoBehaviour
 {
+    public GameObject mapObject;
+    private Bounds mapBounds;
     public GameObject mineral1Prefab;
     public GameObject mineral2Prefab;
     public GameObject mineral3Prefab;
@@ -33,6 +35,8 @@ public class MineralManager : MonoBehaviour
         ObjectPoolManager.Instance.CreatePool(mineral3Key, mineral3Prefab, 3);
         ObjectPoolManager.Instance.CreatePool(mineralCollectEffectKey, mineralCollectEffectPrefab, 3);
         ObjectPoolManager.Instance.CreatePool(mineralDestroyEffectKey, mineralDestroyEffectPrefab, 5);
+        
+        mapBounds = mapObject.GetComponent<Renderer>().bounds;
     }
 
     private void Update()
@@ -50,7 +54,7 @@ public class MineralManager : MonoBehaviour
     private void TrySpawnMineral()
     {
         PoolKey keyToSpawn = GetRandomMineralKey();
-        Vector3 spawnPos = GetRandomSpawnPosition();
+        Vector3 spawnPos = GetRandomSpawnPosition(mapBounds);
         GameObject mineral = ObjectPoolManager.Instance.SpawnFromPool(keyToSpawn, spawnPos, Quaternion.identity);
         if (mineral == null) return;
 
@@ -65,17 +69,12 @@ public class MineralManager : MonoBehaviour
         else return mineral1Key;
     }
 
-    private Vector3 GetRandomSpawnPosition()
+    private Vector3 GetRandomSpawnPosition(Bounds bounds)
     {
-        var player = HW_PlayerStateController.Instance;
-        if (player == null) return Vector3.zero;
-
-        Vector3 basePos = player.transform.position;
-        float x = Random.Range(-SpawnRange, SpawnRange);
-        float z = Random.Range(-SpawnRange, SpawnRange);
+        float x = Random.Range(bounds.min.x, bounds.max.x);
+        float z = Random.Range(bounds.min.z, bounds.max.z);
         float y = 1f;
-
-        return new Vector3(basePos.x + x, y, basePos.z + z);
+        return new Vector3(x, y, z);
     }
 
     public void NotifyMineralCollected(GameObject mineral, Mineral.MineralHitType hitType)
