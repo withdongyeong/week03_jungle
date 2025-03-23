@@ -1,0 +1,46 @@
+{
+    "lines": [
+        {
+            "code": "hp1_1",
+            "talker": "Hero",
+            "line": "체력이 75% 아래로 떨어졌어... 조심해야겠어!",
+            "side": "a",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "hp2_1",
+            "talker": "Hero",
+            "line": "체력이 절반 이하야! 위험해!",
+            "side": "a",
+            "talkingTime": 2.0
+        },
+        {
+            "code": "hp3_1",
+            "talker": "Enemy1",
+            "line": "하하, 이제 끝이야! 체력이 25% 밑이군!",
+            "side": "e",
+            "talkingTime": 3.0
+        },
+        {
+            "code": "mineral1_1",
+            "talker": "Ally1",
+            "line": "광물이 25% 이상 모였어. 괜찮은 시작이야!",
+            "side": "a",
+            "talkingTime": 2.0
+        },
+        {
+            "code": "hp1_2",
+            "talker": "Ally2",
+            "line": "체력이 75% 아래야. 방어에 집중해!",
+            "side": "a",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "mineral3_2",
+            "talker": "Hero",
+            "line": "광물이 75% 이상이야! 승리가 가까워졌어!",
+            "side": "a",
+            "talkingTime": 3.0
+        }
+    ]
+}
