@@ -71,7 +71,7 @@ public class Drone : MonoBehaviour, IPoolable
             {
                 isTracking = false;
             }
-            else if (1.03f < timeForFire)
+            else if (1.04f < timeForFire)
             {
                 isDroneFire = false;
                 lineRenderer.endWidth = 2f;
