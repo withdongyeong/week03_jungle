@@ -56,7 +56,7 @@ public class Drone : MonoBehaviour, IPoolable
                 lineRenderer.SetPosition(1, HW_PlayerStateController.Instance.transform.position);
                 transform.rotation = Quaternion.LookRotation(HW_PlayerStateController.Instance.transform.position - transform.position);
                 finalPosition = HW_PlayerStateController.Instance.transform.position;
-                if(timeForFire < 0.8f)
+                if(timeForFire < 0.75f)
                 {
                     lineRenderer.startColor = Color.yellow;
                     lineRenderer.endColor = Color.yellow;
@@ -71,7 +71,7 @@ public class Drone : MonoBehaviour, IPoolable
             {
                 isTracking = false;
             }
-            else if (1.04f < timeForFire)
+            else if (1.02f < timeForFire)
             {
                 isDroneFire = false;
                 lineRenderer.endWidth = 2f;
