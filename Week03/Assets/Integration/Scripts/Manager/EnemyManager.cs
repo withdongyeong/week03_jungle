@@ -83,6 +83,7 @@ public class EnemyManager : MonoBehaviour
 
         if (rand < 0.1f) // 10% 확률 Boss
         {
+            if (GameInfoManager.Instance.CurrentStage != 5) return;
             if (bossEnemyInstance == null && bossPrefab != null)
             {
                 Vector3 pos = GetRandomSpawnPosition();
@@ -113,7 +114,10 @@ public class EnemyManager : MonoBehaviour
 
         Vector3 spawnPos = GetRandomSpawnPosition();
         Instantiate(selected, spawnPos, Quaternion.identity);
-        currentEnemyCount++;
+        if (selected != cubeEnemyPrefab)
+        {
+            currentEnemyCount++;
+        }
     }
 
 
