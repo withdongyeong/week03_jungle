@@ -9,13 +9,55 @@
         },
         {
             "code": "hp2_1",
+            "talker": "테란 레이스",
+            "line": "이녀석, 귀찮게 잘 피하는군.\n하지만 곧 터뜨려주마.",
+            "side": "e",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "hp3_1",
+            "talker": "프로토스 모선",
+            "line": "치명적인 손상을 입었군.\n하지만 믿고 있다. 프로브.",
+            "side": "a",
+            "talkingTime": 2.8
+        },
+        {
+            "code": "hp1_2",
+            "talker": "프로토스 집행관",
+            "line": "방어막이 손상되었다.\n생존이 우선이다. 프로브.",
+            "side": "a",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "hp2_2",
             "talker": "테란 시즈탱크",
             "line": "하하!\n귀여운 녀석이 곧 터지겠군.",
             "side": "e",
             "talkingTime": 2.5
         },
         {
-            "code": "hp3_1",
+            "code": "hp3_2",
+            "talker": "프로토스 모선",
+            "line": "포기 하지마라.\n부탁이다, 프로브.",
+            "side": "a",
+            "talkingTime": 2.8
+        },
+        {
+            "code": "hp1_3",
+            "talker": "프로토스 집행관",
+            "line": "아직 괜찮다.\n극복할 수 있다, 프로브.",
+            "side": "a",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "hp2_3",
+            "talker": "테란 배틀크루져",
+            "line": "과연, 보통 프로브는 아니군.\n하지만 오래 버티지 못 할 것이다.",
+            "side": "e",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "hp3_3",
             "talker": "프로토스 모선",
             "line": "전 프로토스가 지켜보고 있다.\n희망을 잃지 마라.",
             "side": "a",
@@ -24,13 +66,13 @@
         {
             "code": "mineral1_1",
             "talker": "프로토스 모선",
-            "line": "정말 말도 안되는 상황이지만,\n잘해주고 있다.",
+            "line": "잘해주고 있다.",
             "side": "a",
             "talkingTime": 2.0
         },{
             "code": "mineral2_1",
             "talker": "프로토스 모선",
-            "line": "프로브 잘하고있따",
+            "line": "수집률 50%, 순조롭다.",
             "side": "a",
             "talkingTime": 2.0
         },
@@ -42,16 +84,65 @@
             "talkingTime": 2.8
         },
         {
-            "code": "hp1_2",
-            "talker": "프로토스 집행관",
-            "line": "방어막이 약해졌다. 자원 수집보다\n생존이 우선이다. 프로브.",
+            "code": "mineral1_2",
+            "talker": "프로토스 모선",
+            "line": "믿기지 않는군!\n잘해주고 있다.",
             "side": "a",
-            "talkingTime": 2.2
+            "talkingTime": 2.0
         },
         {
-            "code": "start",
+            "code": "mineral2_2",
             "talker": "프로토스 모선",
-            "line": "프로토스의 운명이 단 하나의 프로브에게 \n달려있다. 포기하지 마라 프로브.",
+            "line": "정말 말도 안되는 일이야!\n아군이라 다행이다, 프로브.",
+            "side": "a",
+            "talkingTime": 2.0
+        },
+        {
+            "code": "mineral3_2",
+            "talker": "프로토스 모선",
+            "line": "목표 달성률 75% \n 역사적인 순간이 다가오고 있다.",
+            "side": "a",
+            "talkingTime": 2.8
+        },
+        {
+            "code": "mineral1_3",
+            "talker": "프로토스 모선",
+            "line": "정말 대단한 움직임이다. 프로브.",
+            "side": "a",
+            "talkingTime": 2.0
+        },
+        {
+            "code": "mineral2_3",
+            "talker": "프로토스 모선",
+            "line": "정말 말도 안되는 상황이지만,\n잘해주고 있다.",
+            "side": "a",
+            "talkingTime": 2.0
+        },
+        {
+            "code": "mineral3_3",
+            "talker": "프로토스 모선",
+            "line": "앞으로 조금이다, 프로브. \n프로토스 역사에 오늘이 기록될 것이다.",
+            "side": "a",
+            "talkingTime": 2.8
+        },
+        {
+            "code": "start1",
+            "talker": "프로토스 모선",
+            "line": "프로토스의 운명이 단 하나의 프로브에게 \n달려있다. 포기하지 마라, 프로브.",
+            "side": "a",
+            "talkingTime": 3.0
+        },
+        {
+            "code": "start2",
+            "talker": "프로토스 모선",
+            "line": "프로토스의 운명이 단 하나의 프로브에게 \n달려있다. 믿고 있다, 프로브.",
+            "side": "a",
+            "talkingTime": 3.0
+        },
+        {
+            "code": "start3",
+            "talker": "프로토스 모선",
+            "line": "마지막이다, 프로브.\n 프로브 한기로 역전할 수 있음을 보여줘라.",
             "side": "a",
             "talkingTime": 3.0
         },
@@ -68,6 +159,13 @@
             "line": "경고. 강력한 에너지 반응 포착.\n거대한 중량 기체의 순간이동 반응 확인.",
             "side": "a",
             "talkingTime": 2.5
+        },{
+            "code": "yamato",
+            "talker": "테란 배틀크루져",
+            "line": "젠장! 야마토포를 발사해!\n 프로브 한마리를 못 잡고 뭐하고 있는거야!",
+            "side": "a",
+            "talkingTime": 2.5
         }
+
     ]
 }
