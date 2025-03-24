@@ -58,10 +58,10 @@ public class EnemyManager : MonoBehaviour
 
     private void Start()
     {
-        ObjectPoolManager.Instance.CreatePool(warningKey, warningPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(explosionKey, explosionPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(laserKey, laserPrefab, 10);
-        ObjectPoolManager.Instance.CreatePool(laserExplosionKey, laserExplosionPrefab, 10);
+        ObjectPoolManager.Instance.CreatePool(warningKey, warningPrefab, 20);
+        ObjectPoolManager.Instance.CreatePool(explosionKey, explosionPrefab, 20);
+        ObjectPoolManager.Instance.CreatePool(laserKey, laserPrefab, 20);
+        ObjectPoolManager.Instance.CreatePool(laserExplosionKey, laserExplosionPrefab, 20);
         ObjectPoolManager.Instance.CreatePool(drone, dronePrefab, 10);
         ObjectPoolManager.Instance.CreatePool(pulse, pulsePrefab, 10);
         ObjectPoolManager.Instance.CreatePool(yamato, yamatoPrefab, 3);
@@ -109,20 +109,14 @@ public class EnemyManager : MonoBehaviour
         float rand = Random.value;
         int stage = GameInfoManager.Instance.CurrentStage;
 
-        if (rand < 0.2f) // 20% 확률 Beam
+        if (beamEnemyInstance == null && beamEnemyPrefab != null && stage>=2)
         {
-            if (stage < 2) return;
-
-            if (beamEnemyInstance == null && beamEnemyPrefab != null)
-            {
-                Vector3 pos = GetRandomSpawnPosition();
-                pos.y = 80f;
-                beamEnemyInstance = Instantiate(beamEnemyPrefab, pos, Quaternion.identity);
-                currentEnemyCount++;
-            }
+            Vector3 pos = GetRandomSpawnPosition();
+            pos.y = 80f;
+            beamEnemyInstance = Instantiate(beamEnemyPrefab, pos, Quaternion.identity);
             return;
         }
-
+            
         // 일반 몬스터
         if (normalEnemyPrefabs.Count == 0) return;
 
@@ -136,7 +130,9 @@ public class EnemyManager : MonoBehaviour
         {
             currentEnemyCount++;
         }
+        
     }
+
     public void SpawnBoss()
     {
         LogManager.Instance.InvokeLine("boss");
@@ -160,12 +156,18 @@ public class EnemyManager : MonoBehaviour
         if (player == null) return Vector3.zero;
 
         Vector3 basePos = player.transform.position;
+        Vector3 forward = player.transform.forward;
         float range = SpawnRange;
 
-        float x = Random.Range(-range, range);
-        float z = Random.Range(-range, range);
+        // 전방으로 일정 거리 이동
+        Vector3 center = basePos + forward * (range * 0.5f);
+
+        // 그 위치 주변에서 랜덤 오프셋
+        float offsetX = Random.Range(-range * 0.5f, range * 0.5f);
+        float offsetZ = Random.Range(-range * 0.5f, range * 0.5f);
         float y = basePos.y;
 
-        return new Vector3(basePos.x + x, y, basePos.z + z);
+        return new Vector3(center.x + offsetX, y, center.z + offsetZ);
     }
+
 }

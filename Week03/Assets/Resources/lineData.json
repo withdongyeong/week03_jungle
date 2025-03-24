@@ -159,10 +159,25 @@
             "line": "경고. 강력한 에너지 반응 포착.\n거대한 중량 기체의 순간이동 반응 확인.",
             "side": "a",
             "talkingTime": 2.5
-        },{
+        },
+        {
             "code": "yamato",
             "talker": "테란 배틀크루져",
             "line": "야마토포 발사.\n지역 초토화로 목표를 파괴하겠다.",
+            "side": "e",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "missile",
+            "talker": "테란 배틀크루져",
+            "line": "유도 미사일 사출.",
+            "side": "e",
+            "talkingTime": 2.5
+        },
+        {
+            "code": "drone",
+            "talker": "테란 배틀크루져",
+            "line": "드론 출격\n 신속히 목표를 파괴하라.",
             "side": "e",
             "talkingTime": 2.5
         }

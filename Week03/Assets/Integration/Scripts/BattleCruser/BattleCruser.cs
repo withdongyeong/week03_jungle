@@ -11,7 +11,7 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        InvokeRepeating("Attack", 1f, 10f);
+        InvokeRepeating("Attack", 1f, 8f);
         
     }
 
@@ -23,6 +23,7 @@ public class BattleCruser : MonoBehaviour
 
     private void FireSmallMissile()
     {
+        LogManager.Instance.InvokeLine("missile");
         Debug.Log("발사");
         for(int b=0; b<3; b++)
         {
@@ -71,6 +72,7 @@ public class BattleCruser : MonoBehaviour
 
     void DroneAttack()
     {
+        LogManager.Instance.InvokeLine("drone");
         List<int> randomList = new() { 0, 1, 2, 3, 4, 5 };
         for(int i=0; i<3; i++)
         {

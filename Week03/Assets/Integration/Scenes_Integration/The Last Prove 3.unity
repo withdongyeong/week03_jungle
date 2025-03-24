@@ -128,14 +128,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6667971590439196984, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 6667971590439196984, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 35
-      objectReference: {fileID: 0}
-    - target: {fileID: 6667971590439196984, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1171,6 +1163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4495142674651201369, guid: bbcda6c9da8cc5644a26ab7f8ae6ea47, type: 3}
+      propertyPath: successCanvasName
+      value: Canvas_Success_Final
+      objectReference: {fileID: 0}
     - target: {fileID: 5650019707334459170, guid: bbcda6c9da8cc5644a26ab7f8ae6ea47, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1815,12 +1811,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: laserDamage
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: maxEnemyCount
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: explosionDamage
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: defaultSpawnRange
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: defaultSpawnInterval
-      value: 1.5
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: defaultProjectileSpeed
       value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: defaultExplosionWarningTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5305511079941269421, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: m_Name
