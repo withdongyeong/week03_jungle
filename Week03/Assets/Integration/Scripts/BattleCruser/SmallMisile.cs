@@ -47,11 +47,11 @@ public class SmallMisile : MonoBehaviour, IPoolable
         {
             rb.linearVelocity = transform.forward * speed * 3.5f;
             Vector3 targetDir = HW_PlayerStateController.Instance.transform.position - transform.position;
-            if (Vector3.Angle(transform.forward, targetDir) <50f && targeting)
+            if (Vector3.Angle(transform.forward, targetDir) <45f && targeting)
             {
-                transform.rotation = Quaternion.LookRotation(Vector3.Slerp(transform.forward, targetDir, 0.15f));
+                transform.rotation = Quaternion.LookRotation(Vector3.Slerp(transform.forward, targetDir, 0.14f));
             }
-            else if ((Vector3.Angle(transform.forward, targetDir) >= 50f))
+            else if ((Vector3.Angle(transform.forward, targetDir) >= 45f))
             {
                 targeting = false;
             }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -29,9 +30,18 @@ public class YamatoCannon : MonoBehaviour, IPoolable
 
     public void ReleaseObject()
     {
-        Destroy(currentWarning);
+        StartCoroutine(DestroyThenReturn());
+    }
+
+    IEnumerator DestroyThenReturn()
+    {
+        if (currentWarning != null)
+        {
+            Destroy(currentWarning);
+            yield return null; // 한 프레임 기다려서 확실히 파괴
+        }
+
         ObjectPoolManager.Instance.ReturnToPool(PoolKey.YamatoCannon, gameObject);
-     
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -107,4 +117,5 @@ public class YamatoCannon : MonoBehaviour, IPoolable
                 ReleaseObject();
         }
     }
+  
 }
