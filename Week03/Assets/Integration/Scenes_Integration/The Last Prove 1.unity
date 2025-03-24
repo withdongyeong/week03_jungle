@@ -1647,14 +1647,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 322066053956501532, guid: ecc87e4035e72dc49a814535ce000027, type: 3}
-      propertyPath: queueInitialize.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 322066053956501532, guid: ecc87e4035e72dc49a814535ce000027, type: 3}
-      propertyPath: 'queueInitialize.Array.data[0]'
-      value: start
-      objectReference: {fileID: 0}
     - target: {fileID: 6177310414283143555, guid: ecc87e4035e72dc49a814535ce000027, type: 3}
       propertyPath: m_Pivot.x
       value: 0

@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckSuccess(int currentMineral, int max)
     {
-        if(currentMineral > max)
+        if(currentMineral >= max)
         {
             Time.timeScale = 0;
 
