@@ -464,4 +464,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 500250db2e68a6d41a17507e84c7d44e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  queueInitialize: []
+  queueInitialize:
+  - start
