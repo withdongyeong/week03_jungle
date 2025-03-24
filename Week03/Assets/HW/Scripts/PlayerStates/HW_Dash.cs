@@ -58,10 +58,10 @@ public class HW_Dash : IPlayerState
         dashDirection.y = yComponent; // Y 성분을 양수로 고정
         finalDashDirection = dashDirection.normalized;
 
-        if (impulseSource != null)
-        {
-            impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
-        }
+        //if (impulseSource != null)
+        //{
+        //    impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
+        //}
 
         // 즉시 회전 대신 코루틴으로 dashTurnTime 이후에 회전
         playerMoveManager.StartCoroutine(RotateToDashDirection());
