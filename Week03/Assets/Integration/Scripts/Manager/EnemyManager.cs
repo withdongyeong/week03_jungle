@@ -158,8 +158,7 @@ public class EnemyManager : MonoBehaviour
         if (bossEnemyInstance != null) return;
         if (bossPrefab == null) return;
 
-        Vector3 pos = GetRandomSpawnPosition();
-        pos.y = 50f;
+        Vector3 pos = new Vector3(0, 50, 240);
         bossEnemyInstance = Instantiate(bossPrefab, pos, Quaternion.identity);
         currentEnemyCount++;
     }

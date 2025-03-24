@@ -48,7 +48,7 @@ public class BattleCruser : MonoBehaviour
         {
            var pulseGun =  ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 0), transform.rotation);
             pulseGun.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized * 300, ForceMode.Impulse);
+            pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized * 320, ForceMode.Impulse);
         }
         yield return new WaitForSeconds(0.5f);
         for(int b=0; b<2; b++)
@@ -57,7 +57,7 @@ public class BattleCruser : MonoBehaviour
             {
                 var pulseGun = ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 10 * b - 5), transform.rotation);
                 pulseGun.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-                pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized *300, ForceMode.Impulse);
+                pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized *320, ForceMode.Impulse);
             }
         }
         yield return new WaitForSeconds(0.5f);
@@ -65,7 +65,7 @@ public class BattleCruser : MonoBehaviour
         {
             var pulseGun =  ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 0), transform.rotation);
             pulseGun.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
-            pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized * 300, ForceMode.Impulse);
+            pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized * 320, ForceMode.Impulse);
         }
         yield return new WaitForSeconds(0.5f);
         FireYamato();
