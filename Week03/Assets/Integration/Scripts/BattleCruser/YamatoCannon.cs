@@ -23,6 +23,10 @@ public class YamatoCannon : MonoBehaviour, IPoolable
     GameObject currentWarning;
 
     RaycastHit hit;
+
+    //야마토포의 데미지를 프레임당이 아닌 시간당으로 변경
+    float tickDamageTime = 0f;
+
     public void ReleaseObject()
     {
         ObjectPoolManager.Instance.ReturnToPool(PoolKey.YamatoCannon, gameObject);
@@ -88,7 +92,14 @@ public class YamatoCannon : MonoBehaviour, IPoolable
             {
                 if (hitColliders[i].CompareTag("Player"))
                 {
-                    GameInfoManager.Instance.UpdateHP(-1);
+                    if (tickDamageTime > 0.05f)
+                    {
+                        GameInfoManager.Instance.UpdateHP(-2);
+                        tickDamageTime = 0;
+                    }
+                        
+                    else
+                        tickDamageTime += Time.deltaTime;
                 }
             }
             if (time > 4.5f)
