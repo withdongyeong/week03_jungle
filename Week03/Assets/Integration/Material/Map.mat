@@ -90,6 +90,6 @@ Material:
     - _EmissionColor: {r: 0.45911938, g: 0.37104928, b: 0.37104928, a: 1}
     - _LineColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _MainColor: {r: 0.4716981, g: 0.12608275, b: 0.12608275, a: 1}
-    - _PlayerPos: {r: 47.107643, g: 0.98931676, b: 81.78832, a: 0}
+    - _PlayerPos: {r: -156.98723, g: 0.99, b: 104.759796, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
