@@ -117,20 +117,26 @@ public class ProjectileAttackPattern : IEnemyAttackPattern
         target.localScale = endScale;
     }
 
-
     private Vector3 GetRandomTargetPosition()
     {
         var player = HW_PlayerStateController.Instance;
         if (player == null) return Vector3.zero;
 
         Vector3 basePos = player.transform.position;
+        Vector3 forward = player.transform.forward;
         float range = GlobalSettings.Instance.attackRandomRange;
         float height = GlobalSettings.Instance.defaultExplosionHeight;
 
-        float x = Random.Range(-range, range);
-        float z = Random.Range(-range, range);
+        float forwardOffset = GlobalSettings.Instance.attackForwardOffset; // 고정된 앞쪽 거리
 
-        return new Vector3(basePos.x + x, height, basePos.z + z);
+        // 중심 위치: 플레이어 앞쪽
+        Vector3 center = basePos + forward * forwardOffset;
+
+        // 중심 기준 원형 범위 내 랜덤 위치
+        Vector2 circleOffset = Random.insideUnitCircle * range;
+        float y = height;
+
+        return new Vector3(center.x + circleOffset.x, y, center.z + circleOffset.y);
     }
 
     private Vector3 GetProjectileSpawnPosition()

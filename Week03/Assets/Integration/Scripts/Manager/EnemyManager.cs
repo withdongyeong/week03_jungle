@@ -72,15 +72,6 @@ public class EnemyManager : MonoBehaviour
 
     private void Update()
     {
-        if (currentEnemyCount >= MaxCount) return;
-
-        spawnTimer += Time.deltaTime;
-        if (spawnTimer >= SpawnInterval)
-        {
-            SpawnEnemy();
-            spawnTimer = 0f;
-        }
-
         int mineral = GameInfoManager.Instance.Mineral;
         int stage = GameInfoManager.Instance.CurrentStage;
 
@@ -96,6 +87,17 @@ public class EnemyManager : MonoBehaviour
             bossTriggered = true;
             SpawnBoss();
         }
+        
+        if (currentEnemyCount >= MaxCount) return;
+
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer >= SpawnInterval)
+        {
+            SpawnEnemy();
+            spawnTimer = 0f;
+        }
+
+        
     }
 
     private void ShowWarning()
@@ -159,15 +161,17 @@ public class EnemyManager : MonoBehaviour
         Vector3 forward = player.transform.forward;
         float range = SpawnRange;
 
-        // 전방으로 일정 거리 이동
-        Vector3 center = basePos + forward * (range * 0.5f);
+        float forwardOffset = GlobalSettings.Instance.spawnForwardOffset; // 고정된 앞쪽 거리
 
-        // 그 위치 주변에서 랜덤 오프셋
-        float offsetX = Random.Range(-range * 0.5f, range * 0.5f);
-        float offsetZ = Random.Range(-range * 0.5f, range * 0.5f);
+        // 중심 위치: 플레이어 앞쪽
+        Vector3 center = basePos + forward * forwardOffset;
+
+        // 중심 기준 원형 범위 내 랜덤 위치
+        Vector2 circleOffset = Random.insideUnitCircle * range;
         float y = basePos.y;
 
-        return new Vector3(center.x + offsetX, y, center.z + offsetZ);
+        return new Vector3(center.x + circleOffset.x, y, center.z + circleOffset.y);
     }
+
 
 }
