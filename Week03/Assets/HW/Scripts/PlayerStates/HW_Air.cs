@@ -57,12 +57,14 @@ public class HW_Air : IPlayerState
         }
     }
 
+    private bool isExiting = false;
+
     public void ExitState()
     {
+        playerMoveManager.onGroundedAction -= ToWalkState;
+        isExiting = true;
         actions.Player.Attack.performed -= ToAirDashState;
         actions.Player.Run.performed -= ToAirRunState;
-
-        // 상태 종료 시 파티클 제거
         if (airJumpParticle != null)
         {
             GameObject.Destroy(airJumpParticle);
@@ -77,6 +79,8 @@ public class HW_Air : IPlayerState
 
     public void FixedUpdateState()
     {
+        if (isExiting) return; // 상태 종료 중이면 업데이트 중단
+
         Vector2 moveVector = actions.Player.Move.ReadValue<Vector2>();
         if (moveVector.magnitude >= 0.1f) // 입력이 있을 때만 이동
         {
