@@ -178,17 +178,17 @@ public class LogManager : MonoBehaviour
 
     void MineralUpdateLineAction(int mineral, int max)
     {
-        float ratio = mineral / max; //현재 획득 점수 비율.
+        float ratio = (float)mineral / (float)max; //현재 획득 점수 비율.
         
-        if (ratio_last <= 25  && ratio > 25)
+        if (ratio_last <= 0.25  && ratio > 0.25)
         {
             q.Enqueue("mineral1_" + gameInfoManager.CurrentStage);
         }
-        else if (ratio_last <= 50 && ratio > 50)
+        else if (ratio_last <= 0.5 && ratio > 0.5)
         {
             q.Enqueue("mineral2_" + gameInfoManager.CurrentStage);
         }
-        else if (ratio_last <= 75 && ratio > 75)
+        else if (ratio_last <= 0.75 && ratio > 0.75)
         {
             q.Enqueue("mineral3_" + gameInfoManager.CurrentStage);
         }

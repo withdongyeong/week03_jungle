@@ -2,45 +2,72 @@
     "lines": [
         {
             "code": "hp1_1",
-            "talker": "Hero",
-            "line": "체력이 75% 아래로 떨어졌어... 조심해야겠어!",
+            "talker": "프로토스 집행관", 
+            "line": "체력 손실이 감지되었다.\n신중하게 움직여라, 프로브.",
             "side": "a",
             "talkingTime": 2.5
         },
         {
             "code": "hp2_1",
-            "talker": "Hero",
-            "line": "체력이 절반 이하야! 위험해!",
-            "side": "a",
-            "talkingTime": 2.0
+            "talker": "테란 시즈탱크",
+            "line": "하하!\n귀여운 녀석이 곧 터지겠군.",
+            "side": "e",
+            "talkingTime": 2.5
         },
         {
             "code": "hp3_1",
-            "talker": "Enemy1",
-            "line": "하하, 이제 끝이야! 체력이 25% 밑이군!",
-            "side": "e",
-            "talkingTime": 3.0
+            "talker": "프로토스 모선",
+            "line": "전 프로토스가 지켜보고 있다.\n희망을 잃지 마라.",
+            "side": "a",
+            "talkingTime": 2.8
         },
         {
             "code": "mineral1_1",
-            "talker": "Ally1",
-            "line": "광물이 25% 이상 모였어. 괜찮은 시작이야!",
+            "talker": "프로토스 모선",
+            "line": "정말 말도 안되는 상황이지만,\n잘해주고 있다.",
+            "side": "a",
+            "talkingTime": 2.0
+        },{
+            "code": "mineral2_1",
+            "talker": "프로토스 모선",
+            "line": "프로브 잘하고있따",
             "side": "a",
             "talkingTime": 2.0
         },
         {
+            "code": "mineral3_1",
+            "talker": "프로토스 모선",
+            "line": "광물 수집률 75%.\n프로토스의 미래가 보이는군.",
+            "side": "a",
+            "talkingTime": 2.8
+        },
+        {
             "code": "hp1_2",
-            "talker": "Ally2",
-            "line": "체력이 75% 아래야. 방어에 집중해!",
+            "talker": "프로토스 집행관",
+            "line": "방어막이 약해졌다. 자원 수집보다\n생존이 우선이다. 프로브.",
+            "side": "a",
+            "talkingTime": 2.2
+        },
+        {
+            "code": "start",
+            "talker": "프로토스 모선",
+            "line": "프로토스의 운명이 단 하나의 프로브에게 \n달려있다. 포기하지 마라 프로브.",
+            "side": "a",
+            "talkingTime": 3.0
+        },
+        {
+            "code": "boss",
+            "talker": "프로토스 집행관",
+            "line": "경고! 배틀 크루져가 전장에 등장했다.\n절망적이지만, 믿고 있다.\n칼라의 축복이 있기를.",
             "side": "a",
             "talkingTime": 2.5
         },
         {
-            "code": "mineral3_2",
-            "talker": "Hero",
-            "line": "광물이 75% 이상이야! 승리가 가까워졌어!",
+            "code": "bossWarning",
+            "talker": "프로토스 모선",
+            "line": "경고. 강력한 에너지 반응 포착.\n거대한 중량 기체의 순간이동 반응 확인.",
             "side": "a",
-            "talkingTime": 3.0
+            "talkingTime": 2.5
         }
     ]
 }
