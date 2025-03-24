@@ -64,7 +64,8 @@ public class BattleCruser : MonoBehaviour
     }
 
     void FireYamato()
-    {   
+    {
+        LogManager.Instance.InvokeLine("yamato");
         ObjectPoolManager.Instance.SpawnFromPool(PoolKey.YamatoCannon, transform.position + new Vector3(0, 0, -24), transform.rotation);
     }
 

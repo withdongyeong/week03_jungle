@@ -42,6 +42,9 @@ public class EnemyManager : MonoBehaviour
     private int MaxCount => GlobalSettings.Instance.maxEnemyCount;
     private float SpawnInterval => GlobalSettings.Instance.defaultSpawnInterval;
     private float SpawnRange => GlobalSettings.Instance.defaultSpawnRange;
+    private bool warningTriggered = false;
+    private bool bossTriggered = false;
+
 
     private void Awake()
     {
@@ -49,6 +52,8 @@ public class EnemyManager : MonoBehaviour
         if (projectileEnemyPrefab != null) normalEnemyPrefabs.Add(projectileEnemyPrefab);
         if (cubeEnemyPrefab != null) normalEnemyPrefabs.Add(cubeEnemyPrefab);
     }
+
+
 
 
     private void Start()
@@ -75,27 +80,39 @@ public class EnemyManager : MonoBehaviour
             SpawnEnemy();
             spawnTimer = 0f;
         }
+
+        int mineral = GameInfoManager.Instance.Mineral;
+        int stage = GameInfoManager.Instance.CurrentStage;
+
+
+        if (!warningTriggered && mineral >= 4 && stage == 3)
+        {
+            warningTriggered = true;
+            ShowWarning();
+        }
+
+        if (!bossTriggered && mineral >= 20 && stage == 3)
+        {
+            bossTriggered = true;
+            SpawnBoss();
+        }
     }
+
+    private void ShowWarning()
+    {
+        LogManager.Instance.InvokeLine("bossWarning");
+    }
+
 
     private void SpawnEnemy()
     {
         float rand = Random.value;
+        int stage = GameInfoManager.Instance.CurrentStage;
 
-        if (rand < 0.1f) // 10% 확률 Boss
+        if (rand < 0.2f) // 20% 확률 Beam
         {
-            if (GameInfoManager.Instance.CurrentStage != 5) return;
-            if (bossEnemyInstance == null && bossPrefab != null)
-            {
-                Vector3 pos = GetRandomSpawnPosition();
-                pos.y = 50f;
-                bossEnemyInstance = Instantiate(bossPrefab, pos, Quaternion.identity);
-                currentEnemyCount++;
-            }
-            return;
-        }
+            if (stage < 2) return;
 
-        if (rand < 0.2f) // 다음 10% 확률 Beam
-        {
             if (beamEnemyInstance == null && beamEnemyPrefab != null)
             {
                 Vector3 pos = GetRandomSpawnPosition();
@@ -106,7 +123,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        // 일반 몬스터 (80% 확률)
+        // 일반 몬스터
         if (normalEnemyPrefabs.Count == 0) return;
 
         GameObject selected = normalEnemyPrefabs[Random.Range(0, normalEnemyPrefabs.Count)];
@@ -114,11 +131,27 @@ public class EnemyManager : MonoBehaviour
 
         Vector3 spawnPos = GetRandomSpawnPosition();
         Instantiate(selected, spawnPos, Quaternion.identity);
+
         if (selected != cubeEnemyPrefab)
         {
             currentEnemyCount++;
         }
     }
+    public void SpawnBoss()
+    {
+        LogManager.Instance.InvokeLine("boss");
+        int stage = GameInfoManager.Instance.CurrentStage;
+
+        if (stage < 3) return;
+        if (bossEnemyInstance != null) return;
+        if (bossPrefab == null) return;
+
+        Vector3 pos = GetRandomSpawnPosition();
+        pos.y = 50f;
+        bossEnemyInstance = Instantiate(bossPrefab, pos, Quaternion.identity);
+        currentEnemyCount++;
+    }
+
 
 
     private Vector3 GetRandomSpawnPosition()

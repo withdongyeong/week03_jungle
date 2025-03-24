@@ -321,7 +321,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!1001 &708416436
+--- !u!1001 &618657118
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -330,8 +330,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
-      propertyPath: maxEnemyCount
-      value: 5
+      propertyPath: defaultSpawnInterval
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: defaultProjectileSpeed
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 5305511079941269421, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: m_Name
@@ -1647,6 +1651,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 322066053956501532, guid: ecc87e4035e72dc49a814535ce000027, type: 3}
+      propertyPath: 'queueInitialize.Array.data[0]'
+      value: start1
+      objectReference: {fileID: 0}
     - target: {fileID: 6177310414283143555, guid: ecc87e4035e72dc49a814535ce000027, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2130,8 +2138,8 @@ SceneRoots:
   - {fileID: 3755427089876133710}
   - {fileID: 8793461780255005455}
   - {fileID: 5196844471795964365}
-  - {fileID: 708416436}
   - {fileID: 907933372}
   - {fileID: 1333248380}
   - {fileID: 2018279595}
   - {fileID: 1190469699}
+  - {fileID: 618657118}
