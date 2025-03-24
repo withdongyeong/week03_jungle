@@ -253,6 +253,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 235133062}
   m_CullTransparentMesh: 1
+--- !u!1 &273703949 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7469911645190143179, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
+  m_PrefabInstance: {fileID: 219995030}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &472123989
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,12 +400,16 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: mineralSpawnRange
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: defaultSpawnInterval
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: mineralSpawnInterval
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5305511079941269421, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: m_Name
@@ -605,6 +614,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3902049184374826098, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
+      propertyPath: mapObject
+      value: 
+      objectReference: {fileID: 273703949}
     - target: {fileID: 7420264657858362943, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
       propertyPath: m_Name
       value: MineralManager
