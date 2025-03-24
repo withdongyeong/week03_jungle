@@ -31,7 +31,7 @@ public class HW_PlayerStateController : MonoBehaviour
 
     private void Start()
     {
-        ChangeState(new HW_Walk(this)); //게임 시작 시에는 Idle.
+        ChangeState(new HW_Idle(this)); //게임 시작 시에는 Idle.
 
 
     }
