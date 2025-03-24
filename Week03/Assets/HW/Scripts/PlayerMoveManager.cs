@@ -147,7 +147,7 @@ public class PlayerMoveManager : MonoBehaviour
             //Invoke("OnGroundActionInvoker", groundedTransitionTime);
             Invoke("OnGroundActionInvoker", 0f);
 
-            //impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
+            impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
             StartVibration();
         }
     }

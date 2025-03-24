@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     GameInfoManager gameInfoManager;
     //[SerializeField] GameObject cam;
 
-    [SerializeField] string successCanvasName;
+
 
     private void Awake()
     {
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 0;
 
-            Instantiate((GameObject)Resources.Load("HW/UI/" + successCanvasName));
+            Instantiate((GameObject)Resources.Load("HW/UI/Canvas_Success"));
         }
     }
 }

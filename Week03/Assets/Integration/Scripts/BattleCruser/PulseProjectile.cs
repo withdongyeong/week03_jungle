@@ -16,7 +16,10 @@ public class PulseProjectile : MonoBehaviour , IPoolable
 
     private void OnEnable()
     {
-       
+        transform.LookAt(HW_PlayerStateController.Instance.transform);
+        rb.linearVelocity = Vector3.zero;
+        rb.AddForce(transform.forward * 200, ForceMode.Impulse);
+
     }
 
     // Update is called once per frame

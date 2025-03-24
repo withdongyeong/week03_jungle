@@ -62,10 +62,10 @@ public class HW_AirDash : IPlayerState
         dashDirection.y = yComponent; // Y 성분을 양수로 고정
         finalAirDashDirection = dashDirection.normalized;
 
-        //if (impulseSource != null)
-        //{
-        //    impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
-        //}
+        if (impulseSource != null)
+        {
+            impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
+        }
 
         //rigidBody.MoveRotation(Quaternion.LookRotation(finalAirDashDirection));
 
