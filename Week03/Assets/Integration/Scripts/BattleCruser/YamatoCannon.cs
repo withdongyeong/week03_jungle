@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -25,8 +26,18 @@ public class YamatoCannon : MonoBehaviour, IPoolable
     RaycastHit hit;
     public void ReleaseObject()
     {
+        StartCoroutine(DestroyThenReturn());
+    }
+
+    IEnumerator DestroyThenReturn()
+    {
+        if (currentWarning != null)
+        {
+            Destroy(currentWarning);
+            yield return null; // 한 프레임 기다려서 확실히 파괴
+        }
+
         ObjectPoolManager.Instance.ReturnToPool(PoolKey.YamatoCannon, gameObject);
-        Destroy(currentWarning);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -82,8 +93,8 @@ public class YamatoCannon : MonoBehaviour, IPoolable
         else if(isGround)
         {
             time += Time.deltaTime;
-            transform.localScale = new Vector3(1, 1, 1) * (-366.5f + time * 150);
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-366.5f + time * 150)/2, 1<<6);
+            transform.localScale = new Vector3(1, 1, 1) * (-268.375f + time * 110.75f);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-268.375f + time * 110.75f)/2, 1<<6);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].CompareTag("Player"))
@@ -95,4 +106,5 @@ public class YamatoCannon : MonoBehaviour, IPoolable
                 ReleaseObject();
         }
     }
+  
 }

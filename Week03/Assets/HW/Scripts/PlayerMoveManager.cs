@@ -25,7 +25,7 @@ public class PlayerMoveManager : MonoBehaviour
     public bool isJumped => _isJumped; bool _isJumped;
     public bool isDash => _isDash; bool _isDash;
 
-    float groundedTransitionTime = 0.1f;
+    float groundedTransitionTime = 0.05f;
     private CinemachineImpulseSource impulseSource;
 
     private void Awake()
@@ -53,9 +53,9 @@ public class PlayerMoveManager : MonoBehaviour
         _isDash = false;
         ResourceRecover = GameInfoManager.Instance.ResourceRecover;
 
-        actions.Player.Interact.performed += RestartCurrentScene;
-        actions.Player.Previous.performed += DecreasePlayerHp;
-        actions.Player.Next.performed += IncreaseMineral;
+        //actions.Player.Interact.performed += RestartCurrentScene;
+        //actions.Player.Previous.performed += DecreasePlayerHp;
+        //actions.Player.Next.performed += IncreaseMineral;
     }
 
     private void IncreaseMineral(InputAction.CallbackContext context)
@@ -144,7 +144,8 @@ public class PlayerMoveManager : MonoBehaviour
         if(isJumped && collision.gameObject.CompareTag("Ground"))
         {
             ManageJumpBool(false);
-            Invoke("OnGroundActionInvoker", groundedTransitionTime);
+            //Invoke("OnGroundActionInvoker", groundedTransitionTime);
+            Invoke("OnGroundActionInvoker", 0f);
 
             impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
             StartVibration();

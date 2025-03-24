@@ -21,10 +21,10 @@ public class HW_Idle : IPlayerState
 
     public void EnterState()
     {
-        
+        ToDashState();
 
-        actions.Player.Move.performed += ToWalkState; //움직임 -> Walk
-        actions.Player.Jump.performed += ToAirState; //점프 -> Jump
+        //actions.Player.Move.performed += ToWalkState; //움직임 -> Walk
+        //actions.Player.Jump.performed += ToAirState; //점프 -> Jump
     }
 
     private void ToAirState(InputAction.CallbackContext context)
@@ -36,6 +36,13 @@ public class HW_Idle : IPlayerState
             HW_PlayerStateController.Instance.ChangeState(new HW_Air(controller)); 
         }
 
+    }
+
+    public void ToDashState()
+    {
+        
+
+        HW_PlayerStateController.Instance.ChangeState(new HW_Dash(controller));
     }
 
     private void ToWalkState(InputAction.CallbackContext context)

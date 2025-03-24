@@ -21,10 +21,6 @@ public class HPBarManager : MonoBehaviour
 
     }
 
-    private void OnDestroy()
-    {
-        StopCoroutine("UpdateHPSliderCoroutine");
-    }
 
     private void Start()
     {
@@ -33,44 +29,11 @@ public class HPBarManager : MonoBehaviour
 
     void SetValue(int newValue)
     {
-        StopCoroutine("UpdateHPSliderCoroutine");
-        StartCoroutine(UpdateHPSliderCoroutine(newValue));
+        HPSlider.value = newValue;
     }
 
     //Slider Reference.
     Slider HPSlider;
 
-    //UI Design Reference.
-    float moveDuration = 0.3f;
-
-    private IEnumerator UpdateHPSliderCoroutine(int newValue)
-    {
-        try
-        {
-            float elapsedTime = 0f;
-            float startValue = HPSlider.value; // 시작 값 저장
-
-            while (elapsedTime < moveDuration)
-            {
-                elapsedTime += Time.deltaTime;
-                float t = elapsedTime / moveDuration; // 0에서 1로 진행률 계산
-
-                // Lerp를 사용해 현재 값에서 목표 값으로 부드럽게 이동
-                HPSlider.value = Mathf.Lerp(startValue, newValue, t);
-
-                yield return null; // 다음 프레임까지 대기
-            }
-
-            //// 정확히 목표 값에 도달하도록 마지막에 강제 설정
-            //HPSlider.value = newValue;
-        }
-        finally
-        {
-            // 정확히 목표 값에 도달하도록 마지막에 강제 설정
-            HPSlider.value = newValue;
-        }
-
-
-       
-    }
+  
 }

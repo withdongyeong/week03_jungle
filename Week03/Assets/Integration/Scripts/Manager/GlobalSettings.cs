@@ -59,6 +59,7 @@ public class GlobalSettings : MonoBehaviour
     public float beamSpeed = 2;
     
     [Header("Spin Settings")]
+    public float CubeSpawnInterval = 1f;
     public int spinDamage = -5;
     public float spinSpeed = 100;
 

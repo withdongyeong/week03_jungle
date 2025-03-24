@@ -11,8 +11,9 @@ public class BattleCruser : MonoBehaviour
     void Start()
     {
         playerTransform = HW_PlayerStateController.Instance.transform;
-        InvokeRepeating("Attack", 1f, 10f);
-        
+        InvokeRepeating("Attack", 1f, 8f);
+    
+
     }
 
     // Update is called once per frame
@@ -23,6 +24,7 @@ public class BattleCruser : MonoBehaviour
 
     private void FireSmallMissile()
     {
+        LogManager.Instance.InvokeLine("missile");
         Debug.Log("발사");
         for(int b=0; b<3; b++)
         {
@@ -44,32 +46,40 @@ public class BattleCruser : MonoBehaviour
     {
         for(int i=0; i<3; i++)
         {
-            ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 0), transform.rotation);
+           var pulseGun =  ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 0), transform.rotation);
+            pulseGun.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized * 320, ForceMode.Impulse);
         }
         yield return new WaitForSeconds(0.5f);
         for(int b=0; b<2; b++)
         {
             for (int i = 0; i < 3; i++)
             {
-                ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 10 * b - 5), transform.rotation);
+                var pulseGun = ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 10 * b - 5), transform.rotation);
+                pulseGun.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+                pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized *320, ForceMode.Impulse);
             }
         }
         yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < 3; i++)
         {
-            ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 0), transform.rotation);
+            var pulseGun =  ObjectPoolManager.Instance.SpawnFromPool(PoolKey.PulseProjectile, transform.position + new Vector3(5 * i - 5, -15.1f, 0), transform.rotation);
+            pulseGun.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            pulseGun.GetComponent<Rigidbody>().AddForce((HW_PlayerStateController.Instance.transform.position - pulseGun.transform.position).normalized * 320, ForceMode.Impulse);
         }
         yield return new WaitForSeconds(0.5f);
         FireYamato();
     }
 
     void FireYamato()
-    {   
+    {
+        LogManager.Instance.InvokeLine("yamato");
         ObjectPoolManager.Instance.SpawnFromPool(PoolKey.YamatoCannon, transform.position + new Vector3(0, 0, -24), transform.rotation);
     }
 
     void DroneAttack()
     {
+        LogManager.Instance.InvokeLine("drone");
         List<int> randomList = new() { 0, 1, 2, 3, 4, 5 };
         for(int i=0; i<3; i++)
         {
