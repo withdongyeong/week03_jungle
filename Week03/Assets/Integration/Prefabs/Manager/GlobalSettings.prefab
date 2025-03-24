@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectPoolCleanupInterval: 30
   laserDamage: -10
-  explosionDamage: -30
+  explosionDamage: -20
   defaultExplosionAttackMinInterval: 5
   defaultExplosionAttackMaxInterval: 8
   defaultExplosionWarningScale: {x: 10, y: 10, z: 10}
@@ -56,10 +56,10 @@ MonoBehaviour:
   attackForwardOffset: 30
   defaultExplosionHeight: 1
   defaultExplosionScale: {x: 10, y: 10, z: 10}
-  explosionScaleUpTime: 0.5
+  explosionScaleUpTime: 0.3
   maxEnemyCount: 30
-  defaultSpawnInterval: 0.2
-  defaultSpawnRange: 80
+  defaultSpawnInterval: 0.1
+  defaultSpawnRange: 150
   spawnForwardOffset: 40
   defaultProjectileSpeed: 130
   defaultProjectileWarningTime: 0.4
@@ -71,8 +71,8 @@ MonoBehaviour:
   defaultProjectileSpawnRange: 15
   laserExplosionEffectTime: 1
   laserExplosionScale: {x: 3, y: 3, z: 3}
-  maxMineralCount: 40
-  mineralSpawnInterval: 1.5
+  maxMineralCount: 60
+  mineralSpawnInterval: 1
   mineralSpawnRange: 80
   mineral1Probability: 0.6
   mineral2Probability: 0.3
@@ -83,5 +83,6 @@ MonoBehaviour:
   beamEnterDamage: -10
   beamStayDamage: -5
   beamSpeed: 3
-  spinDamage: -30
+  CubeSpawnInterval: 1
+  spinDamage: -20
   spinSpeed: 100

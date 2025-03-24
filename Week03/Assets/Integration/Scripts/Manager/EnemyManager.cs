@@ -38,6 +38,7 @@ public class EnemyManager : MonoBehaviour
 
     private int currentEnemyCount = 0;
     private float spawnTimer = 0f;
+    private float cubeSpawnTimer = 0f;
 
     private int MaxCount => GlobalSettings.Instance.maxEnemyCount;
     private float SpawnInterval => GlobalSettings.Instance.defaultSpawnInterval;
@@ -50,7 +51,6 @@ public class EnemyManager : MonoBehaviour
     {
         if (explosionEnemyPrefab != null) normalEnemyPrefabs.Add(explosionEnemyPrefab);
         if (projectileEnemyPrefab != null) normalEnemyPrefabs.Add(projectileEnemyPrefab);
-        if (cubeEnemyPrefab != null) normalEnemyPrefabs.Add(cubeEnemyPrefab);
     }
 
 
@@ -87,7 +87,13 @@ public class EnemyManager : MonoBehaviour
             bossTriggered = true;
             SpawnBoss();
         }
-        
+
+        cubeSpawnTimer += Time.deltaTime;
+        if (cubeSpawnTimer >= GlobalSettings.Instance.CubeSpawnInterval)
+        {
+            SpawnCube();
+            cubeSpawnTimer = 0f;
+        }
         if (currentEnemyCount >= MaxCount) return;
 
         spawnTimer += Time.deltaTime;
@@ -108,7 +114,6 @@ public class EnemyManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        float rand = Random.value;
         int stage = GameInfoManager.Instance.CurrentStage;
 
         if (beamEnemyInstance == null && beamEnemyPrefab != null && stage>=2)
@@ -133,6 +138,15 @@ public class EnemyManager : MonoBehaviour
             currentEnemyCount++;
         }
         
+    }
+
+    private void SpawnCube()
+    {
+        int stage = GameInfoManager.Instance.CurrentStage;
+        if (stage < 2) return;
+
+        Vector3 spawnPos = GetRandomSpawnPosition();
+        Instantiate(cubeEnemyPrefab, spawnPos, Quaternion.identity);
     }
 
     public void SpawnBoss()

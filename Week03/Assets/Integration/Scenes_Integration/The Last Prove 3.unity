@@ -1781,6 +1781,10 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
+      propertyPath: explosionScaleUpTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703780870677181561, guid: 40365ef626e8a2f4199e7fd8b3e831e5, type: 3}
       propertyPath: defaultProjectileSpeed
       value: 130
       objectReference: {fileID: 0}
