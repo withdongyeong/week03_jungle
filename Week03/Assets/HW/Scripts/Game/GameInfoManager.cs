@@ -1,7 +1,9 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameInfoManager : MonoBehaviour
 {
@@ -10,6 +12,9 @@ public class GameInfoManager : MonoBehaviour
 
     public static List<int> ObjectiveByStage => _objectiveByStage;
     static List<int> _objectiveByStage;
+
+    private CinemachineImpulseSource impulseSource;
+    private PlayerMoveManager playerMoveManager;
 
     private void Awake()
     {
@@ -27,7 +32,8 @@ public class GameInfoManager : MonoBehaviour
 
     private void Start()
     {
-
+        playerMoveManager = PlayerMoveManager.Instance;
+        impulseSource = playerMoveManager.GetComponent<CinemachineImpulseSource>();
     }
 
     [Header("GameInfos")]
@@ -77,6 +83,16 @@ public class GameInfoManager : MonoBehaviour
 
     public void UpdateHP(int updateValue)
     {
+        if(updateValue < 0)
+        {
+            playerMoveManager.StartVibration();
+
+            if (impulseSource != null)
+            {
+                impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
+            }
+        }
+
         _HP += updateValue;
         HPUpdateAction?.Invoke(_HP);
     }
