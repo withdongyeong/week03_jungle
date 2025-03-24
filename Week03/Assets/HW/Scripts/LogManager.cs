@@ -91,13 +91,13 @@ public class LogManager : MonoBehaviour
         isTalking = true; //now talking.
 
         //Set Color.
-        if(newLineData.side == "e")
+        if (newLineData.side == "e")
         {
-            talkerText.color = Color.red; //transparent?
+            talkerText.color = new Color(0.8f, 0.2f, 0.2f, 0.9f); // 강렬한 붉은 톤, 살짝 투명
         }
         if (newLineData.side == "a")
         {
-            talkerText.color = Color.blue; //transparent?
+            talkerText.color = new Color(0.2f, 0.6f, 0.8f, 0.9f); // 청록빛 파란 톤, 자연스러운 깊이감
         }
 
         lineText.color = Color.white;

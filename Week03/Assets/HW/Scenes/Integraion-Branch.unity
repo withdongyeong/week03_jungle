@@ -670,6 +670,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MineralManager
       objectReference: {fileID: 0}
+    - target: {fileID: 7420264657858362943, guid: fb1977861167e5f43ae20b619271c84f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2449,7 +2453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7469911645190143179, guid: 01a17df4deeaa6b4598f67cf4fde09fa, type: 3}
       propertyPath: m_Name
-      value: Plane
+      value: Map
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
