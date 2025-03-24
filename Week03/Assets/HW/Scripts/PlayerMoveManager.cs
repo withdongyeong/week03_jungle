@@ -53,7 +53,7 @@ public class PlayerMoveManager : MonoBehaviour
         _isDash = false;
         ResourceRecover = GameInfoManager.Instance.ResourceRecover;
 
-        //actions.Player.Interact.performed += RestartCurrentScene;
+        actions.Player.Interact.performed += RestartCurrentScene;
         //actions.Player.Previous.performed += DecreasePlayerHp;
         //actions.Player.Next.performed += IncreaseMineral;
     }
