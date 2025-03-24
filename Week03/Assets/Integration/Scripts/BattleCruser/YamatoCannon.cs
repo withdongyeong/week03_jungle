@@ -29,8 +29,9 @@ public class YamatoCannon : MonoBehaviour, IPoolable
 
     public void ReleaseObject()
     {
-        ObjectPoolManager.Instance.ReturnToPool(PoolKey.YamatoCannon, gameObject);
         Destroy(currentWarning);
+        ObjectPoolManager.Instance.ReturnToPool(PoolKey.YamatoCannon, gameObject);
+     
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
