@@ -97,8 +97,8 @@ public class YamatoCannon : MonoBehaviour, IPoolable
         else if(isGround)
         {
             time += Time.deltaTime;
-            transform.localScale = new Vector3(1, 1, 1) * (-366.5f + time * 150);
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-366.5f + time * 150)/2, 1<<6);
+            transform.localScale = new Vector3(1, 1, 1) * (-268.375f + time * 110.75f);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, (-268.375f + time * 110.75f)/2, 1<<6);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 if (hitColliders[i].CompareTag("Player"))
