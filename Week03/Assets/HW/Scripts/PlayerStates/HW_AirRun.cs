@@ -66,7 +66,7 @@ public class HW_AirRun : IPlayerState
     public void ExitState()
     {
         actions.Player.Attack.performed -= ToAirDashState;
-
+        playerMoveManager.onGroundedAction -= ToRunState;
         // 상태 종료 시 파티클 제거
         if (airJumpParticle != null)
         {
