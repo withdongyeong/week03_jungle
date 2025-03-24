@@ -18,7 +18,7 @@ public class PulseProjectile : MonoBehaviour , IPoolable
     {
         transform.LookAt(HW_PlayerStateController.Instance.transform);
         rb.linearVelocity = Vector3.zero;
-        rb.AddForce(transform.forward * 100, ForceMode.Impulse);
+        rb.AddForce(transform.forward * 200, ForceMode.Impulse);
 
     }
 

@@ -21,6 +21,11 @@ public class HPBarManager : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        StopCoroutine("UpdateHPSliderCoroutine");
+    }
+
     private void Start()
     {
         GameInfoManager.Instance.HPUpdateAction += SetValue;
@@ -40,21 +45,32 @@ public class HPBarManager : MonoBehaviour
 
     private IEnumerator UpdateHPSliderCoroutine(int newValue)
     {
-        float elapsedTime = 0f;
-        float startValue = HPSlider.value; // Ω√¿€ ∞™ ¿˙¿Â
-
-        while (elapsedTime < moveDuration)
+        try
         {
-            elapsedTime += Time.deltaTime;
-            float t = elapsedTime / moveDuration; // 0ø°º≠ 1∑Œ ¡¯«‡∑¸ ∞ËªÍ
+            float elapsedTime = 0f;
+            float startValue = HPSlider.value; // ÏãúÏûë Í∞í Ï†ÄÏû•
 
-            // Lerp∏¶ ªÁøÎ«ÿ «ˆ¿Á ∞™ø°º≠ ∏Ò«• ∞™¿∏∑Œ ∫ŒµÂ∑¥∞‘ ¿Ãµø
-            HPSlider.value = Mathf.Lerp(startValue, newValue, t);
+            while (elapsedTime < moveDuration)
+            {
+                elapsedTime += Time.deltaTime;
+                float t = elapsedTime / moveDuration; // 0ÏóêÏÑú 1Î°ú ÏßÑÌñâÎ•† Í≥ÑÏÇ∞
 
-            yield return null; // ¥Ÿ¿Ω «¡∑π¿”±Ó¡ˆ ¥Î±‚
+                // LerpÎ•º ÏÇ¨Ïö©Ìï¥ ÌòÑÏû¨ Í∞íÏóêÏÑú Î™©Ìëú Í∞íÏúºÎ°ú Î∂ÄÎìúÎüΩÍ≤å Ïù¥Îèô
+                HPSlider.value = Mathf.Lerp(startValue, newValue, t);
+
+                yield return null; // Îã§Ïùå ÌîÑÎ†àÏûÑÍπåÏßÄ ÎåÄÍ∏∞
+            }
+
+            //// Ï†ïÌôïÌûà Î™©Ìëú Í∞íÏóê ÎèÑÎã¨ÌïòÎèÑÎ°ù ÎßàÏßÄÎßâÏóê Í∞ïÏ†ú ÏÑ§Ï†ï
+            //HPSlider.value = newValue;
+        }
+        finally
+        {
+            // Ï†ïÌôïÌûà Î™©Ìëú Í∞íÏóê ÎèÑÎã¨ÌïòÎèÑÎ°ù ÎßàÏßÄÎßâÏóê Í∞ïÏ†ú ÏÑ§Ï†ï
+            HPSlider.value = newValue;
         }
 
-        // ¡§»Æ»˜ ∏Ò«• ∞™ø° µµ¥ﬁ«œµµ∑œ ∏∂¡ˆ∏∑ø° ∞≠¡¶ º≥¡§
-        HPSlider.value = newValue;
+
+       
     }
 }
