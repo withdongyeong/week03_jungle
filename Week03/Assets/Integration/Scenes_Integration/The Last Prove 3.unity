@@ -958,7 +958,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4495142674651201369, guid: bbcda6c9da8cc5644a26ab7f8ae6ea47, type: 3}
       propertyPath: successCanvasName
-      value: Canvas_Success
+      value: Canvas_Success_Final
       objectReference: {fileID: 0}
     - target: {fileID: 5650019707334459170, guid: bbcda6c9da8cc5644a26ab7f8ae6ea47, type: 3}
       propertyPath: m_LocalPosition.x
