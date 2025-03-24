@@ -148,7 +148,7 @@ public class PlayerMoveManager : MonoBehaviour
             Invoke("OnGroundActionInvoker", 0f);
 
             //impulseSource.GenerateImpulse(); // 기본 설정으로 흔들림
-            //StartVibration();
+            StartVibration();
         }
     }
 
